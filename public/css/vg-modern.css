@@ -268,6 +268,7 @@ small .accent, p .accent, .form-note .accent { color: var(--c-primary-deep); }
 }
 .brand { display: flex; align-items: center; gap: 12px; flex: none; }
 .brand img { height: 42px; width: auto; }
+.brand .brand__logo { height: 46px; border-radius: 6px; }
 .brand__text { font-family: var(--font-display); line-height: 1.05; }
 .brand__text b { display: block; font-size: 1.25rem; font-weight: 900; color: var(--c-ink); letter-spacing: 0.01em; }
 .brand__text span { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.34em; color: var(--c-primary); text-transform: uppercase; }
