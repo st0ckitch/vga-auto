@@ -11,6 +11,42 @@
     document.body.insertBefore(orbs, document.body.firstChild);
   }
 
+  /* ---------- Theme toggle (dark default, light optional) ---------- */
+  var THEME_KEY = 'vg-theme';
+  var theme = 'dark';
+  try { if (localStorage.getItem(THEME_KEY) === 'light') theme = 'light'; } catch (e) {}
+  var applyTheme = function (t) {
+    if (t === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', t === 'light' ? '#F7F4F0' : '#171314');
+    var btn = document.querySelector('.theme-toggle');
+    if (btn) {
+      btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
+      btn.setAttribute('title', t === 'light' ? 'მუქი თემა' : 'ღია თემა');
+    }
+  };
+  var headerIn = document.querySelector('.site-header__in');
+  if (headerIn) {
+    var toggle = document.createElement('button');
+    toggle.className = 'theme-toggle';
+    toggle.type = 'button';
+    toggle.setAttribute('aria-label', 'თემის შეცვლა');
+    toggle.innerHTML =
+      '<svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>' +
+      '<svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    headerIn.insertBefore(toggle, headerIn.querySelector('.header-cta'));
+    toggle.addEventListener('click', function () {
+      theme = theme === 'light' ? 'dark' : 'light';
+      try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+      applyTheme(theme);
+    });
+  }
+  applyTheme(theme);
+
   /* ---------- Sticky header shadow ---------- */
   var header = document.querySelector('.site-header');
   if (header) {

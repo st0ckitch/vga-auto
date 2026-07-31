@@ -39,6 +39,18 @@
 }
 .callout--warn .callout__icon { background: var(--c-primary); color: var(--c-dark); }
 
+/* Light mode: callout text drops to burnt tones for contrast on pale fills */
+[data-theme="light"] .callout--danger {
+  background: rgba(217, 58, 43, 0.08);
+  border-color: rgba(217, 58, 43, 0.3);
+  color: #8A2113;
+}
+[data-theme="light"] .callout--warn {
+  background: rgba(255, 128, 57, 0.1);
+  border-color: rgba(228, 101, 10, 0.35);
+  color: #7A3A12;
+}
+
 /* State tables: row headers styled like body cells, state name on one line */
 .table--states th[scope="row"] {
   text-align: left;
