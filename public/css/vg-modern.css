@@ -15,13 +15,13 @@
 :root {
   --c-primary: #FF8039;
   --c-primary-hover: #FF6711;
-  --c-primary-strong: #E4650A; /* >=3:1 on white — large display accents */
-  --c-primary-deep: #C74E00;   /* >=4.5:1 on white — small orange text */
+  --c-primary-strong: #E4650A; /* >=3:1 — large display accents */
+  --c-primary-deep: #9E3E00;   /* >=5:1 even on frosted-glass surfaces — small orange text */
   --c-primary-soft: #FFF1E8;
   --c-dark: #241F20;
   --c-ink: #241F20;
   --c-body: #4F4F4F;
-  --c-muted: #757575;
+  --c-muted: #5E5E5E; /* >=5:1 on all glass composites */
   --c-line: #EAEAEA;
   --c-bg: #FFFFFF;
   --c-tint: #F2F3FF;
@@ -673,6 +673,135 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
 .playlist button:hover { border-color: var(--c-primary); }
 .playlist button.is-active { background: var(--c-dark); border-color: var(--c-dark); color: #fff; }
 .playlist button .num { font-family: var(--font-display); font-weight: 900; color: var(--c-primary); }
+
+/* ============================================================
+   GLASSMORPHISM LAYER — frosted surfaces over ambient orbs
+   (appended last so it overrides the base component skins)
+   ============================================================ */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.58);
+  --glass-bg-strong: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-dark: rgba(36, 31, 32, 0.82);
+}
+
+body {
+  background: linear-gradient(160deg, #FFFFFF 0%, #F7F7FC 55%, #FDF6F1 100%);
+}
+
+/* Ambient orbs floating behind every page */
+.bg-orbs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg-orbs i {
+  position: absolute; display: block; border-radius: 50%;
+  filter: blur(90px); will-change: transform;
+}
+.bg-orbs i:nth-child(1) {
+  width: 560px; height: 560px; top: -160px; right: -120px;
+  background: rgba(255, 128, 57, 0.22);
+  animation: orbDrift 26s ease-in-out infinite alternate;
+}
+.bg-orbs i:nth-child(2) {
+  width: 480px; height: 480px; bottom: -140px; left: -120px;
+  background: rgba(232, 234, 255, 0.95);
+  animation: orbDrift 32s 4s ease-in-out infinite alternate-reverse;
+}
+.bg-orbs i:nth-child(3) {
+  width: 380px; height: 380px; top: 40%; left: 55%;
+  background: rgba(255, 128, 57, 0.10);
+  animation: orbDrift 38s 2s ease-in-out infinite alternate;
+}
+@keyframes orbDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-70px, 50px) scale(1.12); }
+}
+
+/* Frosted surfaces */
+.card, .feature, .step,
+.search-pill,
+details.accordion,
+.empty-state,
+.table-wrap {
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(36, 31, 32, 0.08);
+}
+.card--flat { background: var(--glass-bg); }
+.table { min-width: 560px; }
+.table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.35); }
+
+.site-header {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+}
+/* NOTE: .nav__menu and the mobile nav are descendants of .site-header, which
+   already carries backdrop-filter — nesting another backdrop-filter samples the
+   wrong backdrop root, so these use near-opaque backgrounds instead. */
+.nav__menu {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--glass-border);
+}
+@media (max-width: 1200px) {
+  body.nav-open .nav { background: rgba(255, 255, 255, 0.97); }
+}
+
+dialog.dlg {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(26px) saturate(1.5);
+  -webkit-backdrop-filter: blur(26px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+}
+dialog.dlg::backdrop { background: rgba(36, 31, 32, 0.45); backdrop-filter: blur(6px); }
+
+.page-hero {
+  background: rgba(242, 243, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+}
+.section--tint { background: rgba(242, 243, 255, 0.5); }
+.section--warm { background: rgba(236, 233, 224, 0.5); }
+
+.chip { background: var(--glass-bg); border-color: rgba(255, 255, 255, 0.9); }
+.chip:hover { border-color: var(--c-primary); }
+.calc-total { background: rgba(242, 243, 255, 0.65); border: 1px solid var(--glass-border); }
+.form-msg--ok, .form-msg--err { backdrop-filter: none; }
+.input, .select, .textarea { background: rgba(255, 255, 255, 0.75); }
+.input:focus, .select:focus, .textarea:focus { background: #fff; }
+
+.marquee {
+  background: var(--glass-dark);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.section--dark, .cta-band {
+  background: var(--glass-dark);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+.cta-band { border: 1px solid rgba(255, 255, 255, 0.08); }
+
+.hero-stack .hero-badge { background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(14px) saturate(1.5); border: 1px solid var(--glass-border); }
+.hero-stack__second { border-color: rgba(255, 255, 255, 0.85); }
+
+.gallery a { box-shadow: 0 8px 24px rgba(36, 31, 32, 0.10); border: 1px solid rgba(255,255,255,0.6); }
+
+/* Graceful fallback when backdrop-filter is unsupported */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card, .feature, .step, .search-pill, details.accordion, .empty-state,
+  .table-wrap, .nav__menu, dialog.dlg { background: #fff; }
+  .site-header { background: rgba(255, 255, 255, 0.97); }
+  .page-hero { background: var(--c-tint); }
+  .section--dark, .cta-band, .marquee { background: var(--c-dark); }
+  @media (max-width: 1200px) {
+    body.nav-open .nav { background: #fff; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-orbs i { animation: none; }
+}
 
 /* ---------- Utilities ---------- */
 .u-center { text-align: center; }
