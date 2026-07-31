@@ -1,0 +1,15 @@
+/* Contact page */
+
+.contact-form-card .card__body { padding: 28px 28px 30px; }
+
+.contact-map { margin: 0; }
+.contact-map a { display: block; border-radius: var(--r-lg); overflow: hidden; }
+.contact-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-lg);
+  transition: transform 0.4s ease;
+}
+.contact-map a:hover img { transform: scale(1.03); }
+.contact-map figcaption { font-size: 0.85rem; margin-top: 10px; }

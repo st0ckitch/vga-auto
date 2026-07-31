@@ -1,0 +1,892 @@
+
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>იმპორტირებული ავტომობილების კატალოგი | VG Auto Export</title>
+<meta name="description" content="იმპორტირებული ავტომობილების კატალოგი: მოძებნეთ მწარმოებლის, წლის, ფასის, საწვავისა და კატეგორიის მიხედვით. განბაჟებული და განუბაჟებელი ავტომობილები საქართველოში.">
+<link rel="canonical" href="https://st0ckitch.github.io/vga-auto/cars/">
+<meta name="theme-color" content="#241F20">
+
+<meta property="og:site_name" content="VG Auto Export">
+<meta property="og:type" content="website">
+<meta property="og:title" content="იმპორტირებული ავტომობილების კატალოგი | VG Auto Export">
+<meta property="og:description" content="იმპორტირებული ავტომობილების კატალოგი: მოძებნეთ მწარმოებლის, წლის, ფასის, საწვავისა და კატეგორიის მიხედვით. განბაჟებული და განუბაჟებელი ავტომობილები საქართველოში.">
+<meta property="og:url" content="https://st0ckitch.github.io/vga-auto/cars/">
+<meta property="og:image" content="https://st0ckitch.github.io/vga-auto/images/logo400.png">
+<meta property="og:locale" content="ka_GE">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="https://st0ckitch.github.io/vga-auto/favicon2.ico">
+<link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=2">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/cars.css?v=1">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "VG Auto Export",
+  "url": "https://st0ckitch.github.io/vga-auto/",
+  "logo": "https://st0ckitch.github.io/vga-auto/images/logo400.png",
+  "description": "იმპორტირებული ავტომობილების კატალოგი: მოძებნეთ მწარმოებლის, წლის, ფასის, საწვავისა და კატეგორიის მიხედვით. განბაჟებული და განუბაჟებელი ავტომობილები საქართველოში."
+}
+</script>
+<script>
+  var class_name = 'Cars';
+  var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+</script>
+</head>
+<body class="page-cars">
+<div class="scroll-progress" aria-hidden="true"></div>
+<a class="skip-link" href="#main">მთავარ შიგთავსზე გადასვლა</a>
+
+<header class="site-header">
+  <div class="container container--wide site-header__in">
+    <a class="brand" href="https://st0ckitch.github.io/vga-auto/" aria-label="VG Auto Export — მთავარი გვერდი">
+      <img src="https://st0ckitch.github.io/vga-auto/img/icons/logos/white.png" alt="VG Auto Export ლოგო" width="42" height="45">
+      <span class="brand__text"><b>VG</b><span>Auto Export</span></span>
+    </a>
+
+    <button class="burger" aria-label="მენიუს გახსნა" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" aria-label="მთავარი ნავიგაცია">
+      <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
+      <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a>
+      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a>
+      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/parts/">ავტონაწილები</a>
+      <div class="nav__item">
+        <button class="nav__link nav__toggle" aria-expanded="false">კალკულაცია</button>
+        <div class="nav__menu">
+          <button data-open="#dlg-calc">კალკულატორი</button>
+          <button data-open="#dlg-track">კონტეინერის ძებნა</button>
+          <a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a>
+          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">განბაჟების კალკულატორი</a>
+        </div>
+      </div>
+      <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
+      <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
+      <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+    </nav>
+
+    <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
+  </div>
+</header>
+
+
+<dialog class="dlg" id="dlg-calc" aria-labelledby="dlg-calc-title">
+  <div class="dlg__head">
+    <h2 id="dlg-calc-title">კალკულატორი</h2>
+    <button class="dlg__close" data-close aria-label="დახურვა">✕</button>
+  </div>
+  <div class="dlg__body" data-calc>
+    <p class="form-note u-mb-16">გამოთვალეთ ტრანსპორტირების სავარაუდო ღირებულება აუქციონიდან საქართველომდე.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="vehicleType">ავტომობილის ტიპი</label>
+        <select class="select" id="vehicleType">
+                      <option value="1">CAR</option>
+                      <option value="2">MOTO</option>
+                      <option value="3">VAN</option>
+                  </select>
+      </div>
+      <div class="field">
+        <label for="us_auc">აუქციონი</label>
+        <select class="select js-calc-auction" id="us_auc">
+                      <option value="Copart">Copart</option>
+                      <option value="IAAI">IAAI</option>
+                      <option value="Manheim">Manheim</option>
+                      <option value="Adesa">Adesa</option>
+                      <option value="Pipeline">Pipeline</option>
+                      <option value="Ove">Ove</option>
+                      <option value="DPrivat">DPrivat</option>
+                  </select>
+      </div>
+      <div class="field">
+        <label for="us_city">ქალაქი</label>
+        <select class="select js-calc-city" id="us_city"><option value="">—</option></select>
+      </div>
+      <div class="field">
+        <label for="geo_port">პორტი საქართველოში</label>
+        <select class="select" id="geo_port">
+          <option value="poti">ფოთი</option>
+          <option value="batumi">ბათუმი</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-total" aria-live="polite">
+      <span>ჯამი</span>
+      <b id="calcresult" class="js-calc-result" data-msg-unavailable="მონაცემები დროებით მიუწვდომელია">—</b>
+    </div>
+    <p class="form-note u-mt-16 u-mb-0">ზუსტი ტარიფებისთვის დაგვიკავშირდით — ფასი დამოკიდებულია აუქციონის მდებარეობასა და ავტომობილის ტიპზე.</p>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="dlg-track" aria-labelledby="dlg-track-title">
+  <div class="dlg__head">
+    <h2 id="dlg-track-title">კონტეინერის ძებნა</h2>
+    <button class="dlg__close" data-close aria-label="დახურვა">✕</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">შეიყვანეთ კონტეინერის ნომერი და აირჩიეთ საკონტეინერო ხაზი — გადამისამართდებით გადამზიდავის ოფიციალურ სისტემაზე.</p>
+    <form data-track-form>
+      <div class="field u-mb-16">
+        <label for="track-carrier">საკონტეინერო ხაზი</label>
+        <select class="select" id="track-carrier" name="carrier">
+          <option value="maersk">Maersk</option>
+          <option value="msc">MSC</option>
+          <option value="cosco">COSCO</option>
+          <option value="zim">ZIM</option>
+          <option value="hapag">Hapag-Lloyd</option>
+        </select>
+      </div>
+      <div class="field u-mb-24">
+        <label for="track-number">კონტეინერი</label>
+        <input class="input" id="track-number" name="container" type="text" placeholder="MSKU1234567" autocomplete="off">
+      </div>
+      <button class="btn btn--primary btn--lg" type="submit" style="width:100%;">ძებნა</button>
+    </form>
+  </div>
+</dialog>
+
+<dialog class="lightbox" id="vg-lightbox" aria-label="ფოტოს გადიდება">
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="წინა ფოტო">‹</button>
+  <figure style="margin:0;">
+    <img alt="">
+    <figcaption></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" aria-label="შემდეგი ფოტო">›</button>
+</dialog>
+<main id="main">
+  <section class="page-hero">
+  <div class="container">
+    <nav aria-label="ნავიგაციის ჯაჭვი">
+      <ol class="breadcrumbs">
+        <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
+        <li aria-current="page">ავტომობილები</li>
+      </ol>
+    </nav>
+    <h1>ავტომობილები</h1>
+    <p class="lead">აშშ-ის აუქციონებიდან იმპორტირებული ავტომობილების კატალოგი — მოძებნეთ სასურველი ავტომობილი მწარმოებლის, წლის, ფასის, საწვავისა და მდებარეობის მიხედვით.</p>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="cars-search-title">
+  <div class="container">
+    <form class="card filter-card reveal" id="car-search-form" role="search" onsubmit="searchCar(); return false;">
+      <h2 id="cars-search-title" class="filter-card__title">ძებნა</h2>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="manufacturer">მწარმოებელი</label>
+          <select id="manufacturer" class="select search-param">
+            <option value="0">ყველა</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="model">მოდელი</label>
+          <select id="model" name="model" class="select search-param">
+            <option value="0">ყველა</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="year-from">წლიდან</label>
+          <select id="year-from" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option>1995</option>
+                          <option>1996</option>
+                          <option>1997</option>
+                          <option>1998</option>
+                          <option>1999</option>
+                          <option>2000</option>
+                          <option>2001</option>
+                          <option>2002</option>
+                          <option>2003</option>
+                          <option>2004</option>
+                          <option>2005</option>
+                          <option>2006</option>
+                          <option>2007</option>
+                          <option>2008</option>
+                          <option>2009</option>
+                          <option>2010</option>
+                          <option>2011</option>
+                          <option>2012</option>
+                          <option>2013</option>
+                          <option>2014</option>
+                          <option>2015</option>
+                          <option>2016</option>
+                          <option>2017</option>
+                          <option>2018</option>
+                          <option>2019</option>
+                          <option>2020</option>
+                          <option>2021</option>
+                          <option>2022</option>
+                          <option>2023</option>
+                          <option>2024</option>
+                          <option>2025</option>
+                          <option>2026</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="year-to">წლამდე</label>
+          <select id="year-to" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option>1995</option>
+                          <option>1996</option>
+                          <option>1997</option>
+                          <option>1998</option>
+                          <option>1999</option>
+                          <option>2000</option>
+                          <option>2001</option>
+                          <option>2002</option>
+                          <option>2003</option>
+                          <option>2004</option>
+                          <option>2005</option>
+                          <option>2006</option>
+                          <option>2007</option>
+                          <option>2008</option>
+                          <option>2009</option>
+                          <option>2010</option>
+                          <option>2011</option>
+                          <option>2012</option>
+                          <option>2013</option>
+                          <option>2014</option>
+                          <option>2015</option>
+                          <option>2016</option>
+                          <option>2017</option>
+                          <option>2018</option>
+                          <option>2019</option>
+                          <option>2020</option>
+                          <option>2021</option>
+                          <option>2022</option>
+                          <option>2023</option>
+                          <option>2024</option>
+                          <option>2025</option>
+                          <option>2026</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="price-from">ფასიდან</label>
+          <select id="price-from" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option>100</option>
+                          <option>200</option>
+                          <option>300</option>
+                          <option>400</option>
+                          <option>500</option>
+                          <option>600</option>
+                          <option>700</option>
+                          <option>800</option>
+                          <option>900</option>
+                          <option>1000</option>
+                                      <option>1500</option>
+                          <option>2000</option>
+                          <option>2500</option>
+                          <option>3000</option>
+                          <option>3500</option>
+                          <option>4000</option>
+                          <option>4500</option>
+                          <option>5000</option>
+                          <option>5500</option>
+                          <option>6000</option>
+                          <option>6500</option>
+                          <option>7000</option>
+                          <option>7500</option>
+                          <option>8000</option>
+                          <option>8500</option>
+                          <option>9000</option>
+                          <option>9500</option>
+                          <option>10000</option>
+                                      <option>10500</option>
+                          <option>11500</option>
+                          <option>12500</option>
+                          <option>13500</option>
+                          <option>14500</option>
+                          <option>15500</option>
+                          <option>16500</option>
+                          <option>17500</option>
+                          <option>18500</option>
+                          <option>19500</option>
+                          <option>20500</option>
+                          <option>21500</option>
+                          <option>22500</option>
+                          <option>23500</option>
+                          <option>24500</option>
+                          <option>25500</option>
+                          <option>26500</option>
+                          <option>27500</option>
+                          <option>28500</option>
+                          <option>29500</option>
+                          <option>30500</option>
+                          <option>31500</option>
+                          <option>32500</option>
+                          <option>33500</option>
+                          <option>34500</option>
+                          <option>35500</option>
+                          <option>36500</option>
+                          <option>37500</option>
+                          <option>38500</option>
+                          <option>39500</option>
+                          <option>40500</option>
+                          <option>41500</option>
+                          <option>42500</option>
+                          <option>43500</option>
+                          <option>44500</option>
+                          <option>45500</option>
+                          <option>46500</option>
+                          <option>47500</option>
+                          <option>48500</option>
+                          <option>49500</option>
+                          <option>50500</option>
+                          <option>51500</option>
+                          <option>52500</option>
+                          <option>53500</option>
+                          <option>54500</option>
+                          <option>55500</option>
+                          <option>56500</option>
+                          <option>57500</option>
+                          <option>58500</option>
+                          <option>59500</option>
+                          <option>60500</option>
+                          <option>61500</option>
+                          <option>62500</option>
+                          <option>63500</option>
+                          <option>64500</option>
+                          <option>65500</option>
+                          <option>66500</option>
+                          <option>67500</option>
+                          <option>68500</option>
+                          <option>69500</option>
+                          <option>70500</option>
+                          <option>71500</option>
+                          <option>72500</option>
+                          <option>73500</option>
+                          <option>74500</option>
+                          <option>75500</option>
+                          <option>76500</option>
+                          <option>77500</option>
+                          <option>78500</option>
+                          <option>79500</option>
+                          <option>80500</option>
+                          <option>81500</option>
+                          <option>82500</option>
+                          <option>83500</option>
+                          <option>84500</option>
+                          <option>85500</option>
+                          <option>86500</option>
+                          <option>87500</option>
+                          <option>88500</option>
+                          <option>89500</option>
+                          <option>90500</option>
+                          <option>91500</option>
+                          <option>92500</option>
+                          <option>93500</option>
+                          <option>94500</option>
+                          <option>95500</option>
+                          <option>96500</option>
+                          <option>97500</option>
+                          <option>98500</option>
+                          <option>99500</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="price-to">ფასამდე</label>
+          <select id="price-to" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option>100</option>
+                          <option>200</option>
+                          <option>300</option>
+                          <option>400</option>
+                          <option>500</option>
+                          <option>600</option>
+                          <option>700</option>
+                          <option>800</option>
+                          <option>900</option>
+                          <option>1000</option>
+                                      <option>1500</option>
+                          <option>2000</option>
+                          <option>2500</option>
+                          <option>3000</option>
+                          <option>3500</option>
+                          <option>4000</option>
+                          <option>4500</option>
+                          <option>5000</option>
+                          <option>5500</option>
+                          <option>6000</option>
+                          <option>6500</option>
+                          <option>7000</option>
+                          <option>7500</option>
+                          <option>8000</option>
+                          <option>8500</option>
+                          <option>9000</option>
+                          <option>9500</option>
+                          <option>10000</option>
+                                      <option>10500</option>
+                          <option>11500</option>
+                          <option>12500</option>
+                          <option>13500</option>
+                          <option>14500</option>
+                          <option>15500</option>
+                          <option>16500</option>
+                          <option>17500</option>
+                          <option>18500</option>
+                          <option>19500</option>
+                          <option>20500</option>
+                          <option>21500</option>
+                          <option>22500</option>
+                          <option>23500</option>
+                          <option>24500</option>
+                          <option>25500</option>
+                          <option>26500</option>
+                          <option>27500</option>
+                          <option>28500</option>
+                          <option>29500</option>
+                          <option>30500</option>
+                          <option>31500</option>
+                          <option>32500</option>
+                          <option>33500</option>
+                          <option>34500</option>
+                          <option>35500</option>
+                          <option>36500</option>
+                          <option>37500</option>
+                          <option>38500</option>
+                          <option>39500</option>
+                          <option>40500</option>
+                          <option>41500</option>
+                          <option>42500</option>
+                          <option>43500</option>
+                          <option>44500</option>
+                          <option>45500</option>
+                          <option>46500</option>
+                          <option>47500</option>
+                          <option>48500</option>
+                          <option>49500</option>
+                          <option>50500</option>
+                          <option>51500</option>
+                          <option>52500</option>
+                          <option>53500</option>
+                          <option>54500</option>
+                          <option>55500</option>
+                          <option>56500</option>
+                          <option>57500</option>
+                          <option>58500</option>
+                          <option>59500</option>
+                          <option>60500</option>
+                          <option>61500</option>
+                          <option>62500</option>
+                          <option>63500</option>
+                          <option>64500</option>
+                          <option>65500</option>
+                          <option>66500</option>
+                          <option>67500</option>
+                          <option>68500</option>
+                          <option>69500</option>
+                          <option>70500</option>
+                          <option>71500</option>
+                          <option>72500</option>
+                          <option>73500</option>
+                          <option>74500</option>
+                          <option>75500</option>
+                          <option>76500</option>
+                          <option>77500</option>
+                          <option>78500</option>
+                          <option>79500</option>
+                          <option>80500</option>
+                          <option>81500</option>
+                          <option>82500</option>
+                          <option>83500</option>
+                          <option>84500</option>
+                          <option>85500</option>
+                          <option>86500</option>
+                          <option>87500</option>
+                          <option>88500</option>
+                          <option>89500</option>
+                          <option>90500</option>
+                          <option>91500</option>
+                          <option>92500</option>
+                          <option>93500</option>
+                          <option>94500</option>
+                          <option>95500</option>
+                          <option>96500</option>
+                          <option>97500</option>
+                          <option>98500</option>
+                          <option>99500</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="engine-from">ძრავიდან</label>
+          <select id="engine-from" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option>0.1</option>
+                          <option>0.2</option>
+                          <option>0.3</option>
+                          <option>0.4</option>
+                          <option>0.5</option>
+                          <option>0.6</option>
+                          <option>0.7</option>
+                          <option>0.8</option>
+                          <option>0.9</option>
+                          <option>1</option>
+                          <option>1.1</option>
+                          <option>1.2</option>
+                          <option>1.3</option>
+                          <option>1.4</option>
+                          <option>1.5</option>
+                          <option>1.6</option>
+                          <option>1.7</option>
+                          <option>1.8</option>
+                          <option>1.9</option>
+                          <option>2</option>
+                          <option>2.1</option>
+                          <option>2.2</option>
+                          <option>2.3</option>
+                          <option>2.4</option>
+                          <option>2.5</option>
+                          <option>2.6</option>
+                          <option>2.7</option>
+                          <option>2.8</option>
+                          <option>2.9</option>
+                          <option>3</option>
+                          <option>3.1</option>
+                          <option>3.2</option>
+                          <option>3.3</option>
+                          <option>3.4</option>
+                          <option>3.5</option>
+                          <option>3.6</option>
+                          <option>3.7</option>
+                          <option>3.8</option>
+                          <option>3.9</option>
+                          <option>4</option>
+                          <option>4.1</option>
+                          <option>4.2</option>
+                          <option>4.3</option>
+                          <option>4.4</option>
+                          <option>4.5</option>
+                          <option>4.6</option>
+                          <option>4.7</option>
+                          <option>4.8</option>
+                          <option>4.9</option>
+                          <option>5</option>
+                          <option>5.1</option>
+                          <option>5.2</option>
+                          <option>5.3</option>
+                          <option>5.4</option>
+                          <option>5.5</option>
+                          <option>5.6</option>
+                          <option>5.7</option>
+                          <option>5.8</option>
+                          <option>5.9</option>
+                          <option>6</option>
+                          <option>6.1</option>
+                          <option>6.2</option>
+                          <option>6.3</option>
+                          <option>6.4</option>
+                          <option>6.5</option>
+                          <option>6.6</option>
+                          <option>6.7</option>
+                          <option>6.8</option>
+                          <option>6.9</option>
+                          <option>7</option>
+                          <option>7.1</option>
+                          <option>7.2</option>
+                          <option>7.3</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="engine-to">ძრავამდე</label>
+          <select id="engine-to" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option>0.1</option>
+                          <option>0.2</option>
+                          <option>0.3</option>
+                          <option>0.4</option>
+                          <option>0.5</option>
+                          <option>0.6</option>
+                          <option>0.7</option>
+                          <option>0.8</option>
+                          <option>0.9</option>
+                          <option>1</option>
+                          <option>1.1</option>
+                          <option>1.2</option>
+                          <option>1.3</option>
+                          <option>1.4</option>
+                          <option>1.5</option>
+                          <option>1.6</option>
+                          <option>1.7</option>
+                          <option>1.8</option>
+                          <option>1.9</option>
+                          <option>2</option>
+                          <option>2.1</option>
+                          <option>2.2</option>
+                          <option>2.3</option>
+                          <option>2.4</option>
+                          <option>2.5</option>
+                          <option>2.6</option>
+                          <option>2.7</option>
+                          <option>2.8</option>
+                          <option>2.9</option>
+                          <option>3</option>
+                          <option>3.1</option>
+                          <option>3.2</option>
+                          <option>3.3</option>
+                          <option>3.4</option>
+                          <option>3.5</option>
+                          <option>3.6</option>
+                          <option>3.7</option>
+                          <option>3.8</option>
+                          <option>3.9</option>
+                          <option>4</option>
+                          <option>4.1</option>
+                          <option>4.2</option>
+                          <option>4.3</option>
+                          <option>4.4</option>
+                          <option>4.5</option>
+                          <option>4.6</option>
+                          <option>4.7</option>
+                          <option>4.8</option>
+                          <option>4.9</option>
+                          <option>5</option>
+                          <option>5.1</option>
+                          <option>5.2</option>
+                          <option>5.3</option>
+                          <option>5.4</option>
+                          <option>5.5</option>
+                          <option>5.6</option>
+                          <option>5.7</option>
+                          <option>5.8</option>
+                          <option>5.9</option>
+                          <option>6</option>
+                          <option>6.1</option>
+                          <option>6.2</option>
+                          <option>6.3</option>
+                          <option>6.4</option>
+                          <option>6.5</option>
+                          <option>6.6</option>
+                          <option>6.7</option>
+                          <option>6.8</option>
+                          <option>6.9</option>
+                          <option>7</option>
+                          <option>7.1</option>
+                          <option>7.2</option>
+                          <option>7.3</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="transmission">ტრანსმისია</label>
+          <select id="transmission" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option value="1">მექანიკა</option>
+                          <option value="2">ავტომატიკა</option>
+                          <option value="3">ტიპტრონიკი</option>
+                          <option value="4">ვარიატორი</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="fuel">საწვავი</label>
+          <select id="fuel" class="select search-param">
+            <option value="0">ყველა</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="wheel">საჭე</label>
+          <select id="wheel" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option value="0">მარცხნივ</option>
+                          <option value="1">მარჯვნივ</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="customs">განბაჟება</label>
+          <select id="customs" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option value="0">განუბაჟებელი</option>
+                          <option value="1">განბაჟებული</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="category">კატეგორია</label>
+          <select id="category" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option value="1">სედანი</option>
+                          <option value="2">ჯიპი</option>
+                          <option value="3">ჰიბრიდი</option>
+                          <option value="4">ჰეჩბექი</option>
+                          <option value="5">მოტო</option>
+                          <option value="6">სპეცტექნიკა</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="deal">გარიგების ტიპი</label>
+          <select id="deal" class="select search-param">
+            <option value="0">ყველა</option>
+                          <option value="1">იყიდება</option>
+                          <option value="2">ქირავდება</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="location">მდებარეობა</label>
+          <select id="location" class="select search-param">
+            <option value="0">ყველა</option>
+                      </select>
+        </div>
+
+        <div class="field">
+          <label for="vin">VIN</label>
+          <input type="text" id="vin" class="input search-param" placeholder="VIN კოდი" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" id="car-search-btn" class="btn btn--primary btn--lg">ძებნა</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="cars-list-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="cars-list-title">არსებული ავტომობილები</h2>
+    </div>
+
+          <div class="empty-state reveal">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"></path>
+            <path d="M4 11h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-1"></path>
+            <path d="M4 11a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h1"></path>
+            <circle cx="7.5" cy="17" r="1.5"></circle>
+            <circle cx="16.5" cy="17" r="1.5"></circle>
+          </svg>
+        </div>
+        <h3>ავტომობილები ამ ეტაპზე ვერ მოიძებნა</h3>
+        <p>სცადეთ მოგვიანებით ან დაგვიკავშირდით — დაგეხმარებით სასურველი ავტომობილის შერჩევასა და ჩამოყვანაში.</p>
+        <a class="btn btn--primary" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+      </div>
+      </div>
+</section>
+
+<script>
+
+(function () {
+  'use strict';
+
+  /* Manufacturer change -> load models (mirrors the old #manufacturer handler in lib/util.js) */
+  var makerSel = document.getElementById('manufacturer');
+  if (makerSel) {
+    makerSel.addEventListener('change', function () {
+      fetch(siteUrl + 'index.php?class=Action&method=models&ajax=1&make=' + encodeURIComponent(this.value))
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          var model = document.getElementById('model');
+          if (model) model.innerHTML = html;
+        })
+        .catch(function () {});
+    });
+  }
+
+  /* Search (mirrors old searchCar() in lib/functions.js: collect .search-param fields
+     as json[i][value]/json[i][name], POST to Action/search_params, then go to Cars) */
+  window.searchCar = function () {
+    var params = new URLSearchParams();
+    var fields = document.querySelectorAll('#car-search-form .search-param');
+    Array.prototype.forEach.call(fields, function (el, i) {
+      params.append('json[' + i + '][value]', el.value);
+      params.append('json[' + i + '][name]', el.id);
+    });
+    fetch(siteUrl + 'index.php?class=Action&method=search_params', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+      body: params.toString()
+    }).then(function () {
+      window.location.href = siteUrl + 'index.php?class=Cars';
+    }).catch(function () {
+      window.location.href = siteUrl + 'index.php?class=Cars';
+    });
+  };
+
+  /* Submission is handled by the form's onsubmit (searchCar(); return false) —
+     the submit button and Enter inside any field both trigger it natively. */
+})();
+
+</script>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="footer-brand">
+        <img src="https://st0ckitch.github.io/vga-auto/public/img/VG-logo1.png" alt="VG Auto Export ლოგო">
+        <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
+      </div>
+
+      <nav aria-label="ფუტერის ნავიგაცია">
+        <h3>ნავიგაცია</h3>
+        <ul>
+          <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/import/">ავტომობილის ჩამოყვანა</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/parts/">ავტონაწილები</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="სერვისები">
+        <h3>სერვისები</h3>
+        <ul>
+          <li><button data-open="#dlg-calc">კალკულატორი</button></li>
+          <li><button data-open="#dlg-track">კონტეინერის ძებნა</button></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/video/">ვიდეო გაკვეთილები</a></li>
+          <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერის პორტალი</a></li>
+          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">განბაჟების კალკულატორი</a></li>
+        </ul>
+      </nav>
+
+      <div>
+                <h3>სიახლეების გამოწერა</h3>
+                <form class="footer-news" data-news-form>
+          <label class="u-hidden" for="footer-email">ელ-ფოსტა</label>
+          <input id="footer-email" type="email" placeholder="ელ-ფოსტა" autocomplete="email">
+          <button class="btn btn--primary" type="submit" aria-label="გამოწერა">→</button>
+        </form>
+        <p class="form-msg" role="status"></p>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>© 2026 VG AUTO EXPORT LLC — ყველა უფლება დაცულია</span>
+      <div class="social-row">
+        <a href="https://www.facebook.com/113606630441191" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.6V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.6H7.6V14h2.7v8h3.2z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/results?search_query=vg+auto+export" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.5s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.4-1C16.6 4 12 4 12 4s-4.6 0-7.7.2c-.5.1-1.5.1-2.4 1-.7.7-.9 2.3-.9 2.3S1 9.4 1 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.9.2 7.4.2 7.4.2s4.6 0 7.7-.2c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 15.1V8.9l6 3.1-6 3.1z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=1" defer></script>
+</body>
+</html>

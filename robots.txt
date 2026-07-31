@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://st0ckitch.github.io/vga-auto/sitemap.xml

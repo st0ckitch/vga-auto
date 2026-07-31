@@ -1,0 +1,23 @@
+/* PartList — ნაწილების ბარათები */
+
+.part-card a.card__media { display: block; }
+
+.part-card .card__title { margin-bottom: 10px; }
+
+.part-price {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--c-ink);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 12px 0 14px;
+}
+.part-price__old {
+  color: var(--c-danger);
+  text-decoration: line-through;
+  font-size: 0.95rem;
+  font-weight: 600;
+}

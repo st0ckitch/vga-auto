@@ -1,0 +1,17 @@
+/* Partners page */
+
+.partner-card .card__body { padding: 26px 24px 28px; }
+
+.partner-card__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: var(--c-tint);
+  color: var(--c-primary);
+  font-size: 1.4rem;
+  font-weight: 900;
+}

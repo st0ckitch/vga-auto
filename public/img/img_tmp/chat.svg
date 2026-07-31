@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 61" width="65" height="61">
+	<defs>
+		<linearGradient id="grd1" gradientUnits="userSpaceOnUse"  x1="32.421" y1="22.105" x2="32.421" y2="28.421">
+			<stop offset="0" stop-color="#3b97d3"  />
+			<stop offset="0.5" stop-color="#eb00ff"  />
+			<stop offset="1" stop-color="#e75252"  />
+		</linearGradient>
+		<linearGradient id="grd2" gradientUnits="userSpaceOnUse"  x1="19.789" y1="22.105" x2="19.789" y2="28.421">
+			<stop offset="0" stop-color="#3b97d3"  />
+			<stop offset="0.5" stop-color="#eb00ff"  />
+			<stop offset="1" stop-color="#e75252"  />
+		</linearGradient>
+		<linearGradient id="grd3" gradientUnits="userSpaceOnUse"  x1="45.052" y1="22.105" x2="45.052" y2="28.421">
+			<stop offset="0" stop-color="#3b97d3"  />
+			<stop offset="0.5" stop-color="#eb00ff"  />
+			<stop offset="1" stop-color="#e75252"  />
+		</linearGradient>
+		<linearGradient id="grd4" gradientUnits="userSpaceOnUse"  x1="32.421" y1="0" x2="32.421" y2="60">
+			<stop offset="0" stop-color="#3b97d3"  />
+			<stop offset="0.5" stop-color="#eb00ff"  />
+			<stop offset="1" stop-color="#e75252"  />
+		</linearGradient>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: url(#grd1) } 
+		.shp1 { fill: url(#grd2) } 
+		.shp2 { fill: url(#grd3) } 
+		.shp3 { fill: url(#grd4) } 
+	</style>
+	<g id="homepage">
+		<g id="ჩატი">
+			<path id="Vector" class="shp0" d="M29.26 25.26C29.26 27.01 30.68 28.42 32.42 28.42C34.16 28.42 35.58 27.01 35.58 25.26C35.58 23.52 34.16 22.11 32.42 22.11C30.68 22.11 29.26 23.52 29.26 25.26Z" />
+			<path id="Vector" class="shp1" d="M16.63 25.26C16.63 27.01 18.05 28.42 19.79 28.42C21.53 28.42 22.95 27.01 22.95 25.26C22.95 23.52 21.53 22.11 19.79 22.11C18.05 22.11 16.63 23.52 16.63 25.26Z" />
+			<path id="Vector" class="shp2" d="M41.89 25.26C41.89 27.01 43.31 28.42 45.05 28.42C46.8 28.42 48.21 27.01 48.21 25.26C48.21 23.52 46.8 22.11 45.05 22.11C43.31 22.11 41.89 23.52 41.89 25.26Z" />
+			<path id="Vector" fill-rule="evenodd" class="shp3" d="M10.32 0L54.53 0C57.04 0 59.45 1 61.22 2.77C63 4.55 64 6.96 64 9.47L64 56.84C64 57.4 63.85 57.95 63.57 58.43C63.28 58.92 62.88 59.32 62.39 59.59C61.92 59.86 61.38 60 60.84 60C60.28 60 59.72 59.85 59.23 59.56L45.05 50.97C44.53 50.66 43.92 50.5 43.32 50.53L10.32 50.53C7.8 50.53 5.39 49.53 3.62 47.75C1.84 45.97 0.84 43.57 0.84 41.05L0.84 9.47C0.84 6.96 1.84 4.55 3.62 2.77C5.39 1 7.8 0 10.32 0ZM7.16 41.05C7.16 41.89 7.49 42.69 8.08 43.29C8.67 43.88 9.48 44.21 10.32 44.21L43.32 44.21C45.04 44.21 46.73 44.68 48.21 45.57L57.68 51.25L57.68 9.47C57.68 8.64 57.35 7.83 56.76 7.24C56.17 6.65 55.36 6.32 54.53 6.32L10.32 6.32C9.48 6.32 8.67 6.65 8.08 7.24C7.49 7.83 7.16 8.64 7.16 9.47L7.16 41.05Z" />
+		</g>
+	</g>
+</svg>

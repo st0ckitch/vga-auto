@@ -1,0 +1,82 @@
+/* ============ Home page ============ */
+
+/* Clickable feature cards: links and dialog-trigger buttons look identical */
+a.feature,
+button.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+button.feature {
+  background: #fff;
+}
+a.feature:hover,
+button.feature:hover {
+  border-color: var(--c-primary, #FF8039);
+}
+.feature h3 { color: var(--c-ink); }
+.feature p { color: var(--c-body); }
+
+/* Company-values chip row inside About */
+.value-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 20px;
+}
+.value-chips .chip { cursor: default; }
+.value-chips .chip:hover { border-color: var(--c-line); color: var(--c-ink); }
+
+/* About figure */
+.home-about__figure { margin: 0; }
+.home-about__figure img {
+  width: 100%;
+  display: block;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.home-about__figure figcaption {
+  margin-top: 12px;
+  font-size: 0.88rem;
+}
+
+/* Car-type quick-filter chips */
+.home-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.home-filters .chip { font-family: inherit; }
+
+/* Featured car cards in the scroller */
+.home-car a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.home-car__price {
+  margin: 0;
+  font-weight: 800;
+  color: var(--c-ink);
+}
+
+/* Company video */
+.home-video .video-shell {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* CTA band actions */
+.cta-band__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

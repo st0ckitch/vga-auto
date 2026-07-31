@@ -1,0 +1,46 @@
+/* ============ About page ============ */
+
+.prose {
+  max-width: 780px;
+}
+.prose h2 {
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  margin-bottom: 20px;
+}
+.prose p {
+  margin-bottom: 18px;
+  color: var(--c-muted);
+  line-height: 1.75;
+}
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* Company values chips */
+.values-chips {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 22px;
+}
+.values-chips li {
+  display: inline-flex;
+}
+.values-chips .chip {
+  cursor: default;
+}
+
+/* Mission photo */
+.about-figure {
+  margin: 0;
+}
+.about-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-lg, 24px);
+  box-shadow: var(--shadow-md);
+}
+.about-figure figcaption {
+  margin-top: 12px;
+  font-size: 0.88rem;
+}

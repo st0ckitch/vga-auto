@@ -1,0 +1,37 @@
+/* Parts — ბრენდის არჩევა + მოდელების AJAX პანელი */
+
+/* Brand logo tiles: square media, logo fully visible (not cropped) */
+.brand-card { text-align: center; }
+.brand-card .card__media {
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  margin: 0;
+}
+.brand-card .card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.brand-card .card__body { padding: 14px 16px 20px; }
+.brand-card .card__title { margin-bottom: 0; }
+
+@media (max-width: 980px) {
+  #brand-grid.grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  #brand-grid.grid--4 { grid-template-columns: 1fr; }
+}
+
+/* Models panel (AJAX-injected chips land in #tagcloud) */
+.models-panel {
+  margin-top: 8px;
+  background: var(--c-tint);
+  border-radius: var(--r-lg);
+  padding: 28px;
+}
+.models-chips { gap: 10px; align-items: flex-start; }
+.models-chips .chip { background: #fff; }

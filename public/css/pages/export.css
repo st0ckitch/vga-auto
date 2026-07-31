@@ -1,0 +1,43 @@
+/* Export page — callouts + state tables */
+
+.callout {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 24px 28px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-line);
+  font-weight: 600;
+  line-height: 1.55;
+}
+.callout p { margin: 0; }
+.callout__icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.callout--danger {
+  background: #FDEEEC;
+  border-color: #F3CCC7;
+  color: #7C1D12;
+}
+.callout--danger .callout__icon { background: var(--c-danger); color: #fff; }
+.callout--warn {
+  background: var(--c-primary-soft);
+  border-color: #FFD9C0;
+  color: #7A3A12;
+}
+.callout--warn .callout__icon { background: var(--c-primary); color: #fff; }
+
+/* State tables: row headers styled like body cells, state name on one line */
+.table--states th[scope="row"] {
+  text-align: left;
+  background: inherit;
+  font-weight: 600;
+  color: var(--c-ink);
+  white-space: nowrap;
+}

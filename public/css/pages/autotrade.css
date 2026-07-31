@@ -1,0 +1,11 @@
+/* Autotrade — Georgian calculator widget */
+.calc-widget {
+  max-width: 460px;
+  margin: 0 auto;
+}
+.calc-widget__title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}

@@ -1,0 +1,26 @@
+/* ---------- Search page (VIN shipment tracking) ---------- */
+
+/* Big centered VIN pill */
+.page-search .search-pill {
+  margin: 0 auto;
+  max-width: 680px;
+}
+
+/* Stage headings for the 4 photo-report galleries */
+.stage-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.stage-head .stage-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--c-primary);
+}
+.stage-head h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+}

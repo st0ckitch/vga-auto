@@ -1,0 +1,63 @@
+/* ============ Car detail page ============ */
+
+.car-layout { align-items: start; }
+
+/* Gallery */
+.car-gallery__main {
+  display: block; border-radius: var(--r-lg); overflow: hidden; background: var(--c-tint);
+}
+.car-gallery__main img {
+  width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block;
+  transition: transform 0.35s ease;
+}
+.car-gallery__main:hover img { transform: scale(1.03); }
+
+.car-gallery__thumbs {
+  display: flex; gap: 12px; margin-top: 14px; overflow-x: auto;
+  padding-bottom: 6px; scrollbar-width: thin;
+}
+.car-gallery__thumbs a {
+  flex: 0 0 96px; border-radius: var(--r-md); overflow: hidden; background: var(--c-tint);
+}
+.car-gallery__thumbs img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
+  transition: transform 0.3s ease;
+}
+.car-gallery__thumbs a:hover img { transform: scale(1.06); }
+
+.car-gallery__placeholder {
+  border-radius: var(--r-lg); background: var(--c-tint); color: var(--c-muted);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; aspect-ratio: 16 / 10; text-align: center; padding: 24px;
+}
+.car-gallery__placeholder svg { width: 48px; height: 48px; color: var(--c-primary); }
+.car-gallery__placeholder p { margin: 0; font-weight: 600; }
+
+/* Summary card */
+.car-summary .card__body { padding: 26px 28px 28px; }
+.car-summary__price { margin: 0 0 14px; font-weight: 800; }
+.car-summary__price b {
+  color: var(--c-primary); font-size: 1.7rem; letter-spacing: -0.01em;
+}
+.car-summary__price span { color: var(--c-muted); font-weight: 600; }
+
+.car-summary__phone {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding: 12px 16px; border-radius: var(--r-md); background: var(--c-tint);
+  margin-bottom: 18px;
+}
+.car-summary__phone b { font-size: 1.05rem; color: var(--c-ink); }
+
+/* Car cards */
+.car-card { display: block; color: inherit; }
+.car-card figure { margin: 0; }
+.car-card__meta {
+  display: flex; flex-wrap: wrap; gap: 4px 14px;
+  font-size: 0.88rem; color: var(--c-muted); margin: 0 0 12px;
+}
+.car-card__price { margin: 0; font-weight: 800; color: var(--c-ink); }
+.car-card__price b { color: var(--c-primary); font-size: 1.15rem; }
+.car-card__price span { color: var(--c-muted); font-weight: 600; font-size: 0.9rem; }
+
+/* Not-found state */
+.car-notfound__title { font-size: 1.4rem; margin-bottom: 10px; }

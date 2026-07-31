@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 19" width="19" height="19">
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ece9e0 } 
+	</style>
+	<g id="product info">
+		<g id="Search">
+			<path id="Vector" fill-rule="evenodd" class="shp0" d="M0 8C0 3.59 3.59 0 8 0C12.41 0 16 3.59 16 8C16 9.78 15.4 11.5 14.31 12.9L18.71 17.3L17.29 18.71L12.9 14.31C11.5 15.41 9.77 16 8 16C3.59 16 0 12.41 0 8ZM2 8C2 11.31 4.69 14 8 14C11.31 14 14 11.31 14 8C14 4.69 11.31 2 8 2C4.69 2 2 4.69 2 8Z" />
+		</g>
+	</g>
+</svg>
