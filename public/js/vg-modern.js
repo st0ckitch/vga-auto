@@ -2,6 +2,15 @@
 (function () {
   'use strict';
 
+  /* ---------- Ambient aurora orbs (inject on pages missing the markup) ---------- */
+  if (!document.querySelector('.bg-orbs')) {
+    var orbs = document.createElement('div');
+    orbs.className = 'bg-orbs';
+    orbs.setAttribute('aria-hidden', 'true');
+    orbs.innerHTML = '<i></i><i></i><i></i>';
+    document.body.insertBefore(orbs, document.body.firstChild);
+  }
+
   /* ---------- Sticky header shadow ---------- */
   var header = document.querySelector('.site-header');
   if (header) {
@@ -182,7 +191,9 @@
   }
 
   /* ---------- Active nav link ---------- */
+  var NAV_ALIAS = { PartList: 'Parts', Car: 'Cars', Post: 'Blog' };
   var cls = (window.class_name || 'Home');
+  cls = NAV_ALIAS[cls] || cls;
   document.querySelectorAll('.nav__link[data-class]').forEach(function (a) {
     if (a.getAttribute('data-class') === cls) {
       a.classList.add('is-active');
@@ -201,15 +212,26 @@
     updateProgress();
   }
 
-  /* ---------- Spotlight hover on cards ---------- */
+  /* ---------- Spotlight + 3D tilt on glass cards ---------- */
   var fine = window.matchMedia('(pointer: fine)').matches;
+  var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (fine) {
     document.querySelectorAll('.feature, .card--hover').forEach(function (el) {
       el.classList.add('spotlight');
       el.addEventListener('mousemove', function (e) {
         var r = el.getBoundingClientRect();
-        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        var x = e.clientX - r.left;
+        var y = e.clientY - r.top;
+        el.style.setProperty('--mx', x + 'px');
+        el.style.setProperty('--my', y + 'px');
+        if (!noMotion) {
+          var rx = ((y / r.height) - 0.5) * -5; /* max ~2.5deg */
+          var ry = ((x / r.width) - 0.5) * 5;
+          el.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-4px)';
+        }
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.transform = '';
       });
     });
   }

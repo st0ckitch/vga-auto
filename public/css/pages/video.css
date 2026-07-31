@@ -23,8 +23,11 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  background: #fff;
-  border: 1px solid var(--c-line);
+  background: var(--glass-2);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-edge);
   border-radius: var(--r-lg);
   padding: 22px 26px;
   font-weight: 700;

@@ -21,17 +21,23 @@
   justify-content: center;
 }
 .callout--danger {
-  background: #FDEEEC;
-  border-color: #F3CCC7;
-  color: #7C1D12;
+  background: rgba(255, 99, 71, 0.10);
+  border-color: rgba(255, 99, 71, 0.35);
+  color: #FFC4BC;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge);
 }
-.callout--danger .callout__icon { background: var(--c-danger); color: #fff; }
+.callout--danger .callout__icon { background: #E14B38; color: #fff; }
 .callout--warn {
-  background: var(--c-primary-soft);
-  border-color: #FFD9C0;
-  color: #7A3A12;
+  background: rgba(255, 128, 57, 0.10);
+  border-color: rgba(255, 128, 57, 0.35);
+  color: #FFD3B8;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge);
 }
-.callout--warn .callout__icon { background: var(--c-primary); color: #fff; }
+.callout--warn .callout__icon { background: var(--c-primary); color: var(--c-dark); }
 
 /* State tables: row headers styled like body cells, state name on one line */
 .table--states th[scope="row"] {

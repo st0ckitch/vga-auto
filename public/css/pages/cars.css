@@ -30,9 +30,12 @@
 .pager__link {
   min-width: 40px; height: 40px; padding: 0 12px;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid var(--c-line); border-radius: 999px;
+  background: var(--glass-2);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border); border-radius: 999px;
+  box-shadow: var(--glass-edge);
   font-weight: 700; font-size: 0.9rem; color: var(--c-ink);
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
-.pager__link:hover { border-color: var(--c-primary); color: var(--c-primary); }
-.pager__link--active { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
+.pager__link:hover { border-color: var(--c-primary); color: var(--c-primary-deep); box-shadow: var(--glass-edge), 0 6px 20px rgba(255, 128, 57, 0.18); }
+.pager__link--active { background: var(--grad-primary); border-color: transparent; color: var(--c-dark); box-shadow: var(--glow-primary); }

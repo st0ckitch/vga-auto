@@ -2,9 +2,10 @@
 
 /* Brand logo tiles: square media, logo fully visible (not cropped) */
 .brand-card { text-align: center; }
+/* Brand marks stay on a light plate so dark logos remain legible on the dark canvas */
 .brand-card .card__media {
   aspect-ratio: 1 / 1;
-  background: var(--glass-bg-strong);
+  background: rgba(255, 250, 246, 0.94);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,9 +30,12 @@
 /* Models panel (AJAX-injected chips land in #tagcloud) */
 .models-panel {
   margin-top: 8px;
-  background: var(--c-tint);
+  background: var(--glass-1);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-edge);
   border-radius: var(--r-lg);
   padding: 28px;
 }
 .models-chips { gap: 10px; align-items: flex-start; }
-.models-chips .chip { background: var(--glass-bg-strong); }

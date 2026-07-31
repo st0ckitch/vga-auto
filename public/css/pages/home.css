@@ -14,7 +14,7 @@ button.feature {
   width: 100%;
 }
 button.feature {
-  background: var(--glass-bg);
+  background: var(--glass-2);
 }
 a.feature:hover,
 button.feature:hover {

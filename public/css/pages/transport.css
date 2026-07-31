@@ -2,4 +2,8 @@
 
 .gallery--slides img {
   aspect-ratio: 16 / 9;   /* presentation slides are 16:9 — avoid heavy cropping */
+  /* slides have white backgrounds — soften them into the dark canvas */
+  filter: brightness(0.9);
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
+.gallery--slides a:hover img { filter: none; }
