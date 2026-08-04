@@ -74,8 +74,8 @@ function init(host) {
      A wave-displaced plane under the car: layered sines with analytic
      normals so crests catch the studio light, and a radial alpha fade
      so the water dissolves into the page instead of ending at an edge. */
-  const SEA_SIZE = 26, SEA_SEG = 72;
-  const seaGeo = new THREE.PlaneGeometry(SEA_SIZE, SEA_SIZE, SEA_SEG, SEA_SEG);
+  const SEA_W = 110, SEA_D = 64;
+  const seaGeo = new THREE.PlaneGeometry(SEA_W, SEA_D, 96, 72);
   seaGeo.rotateX(-Math.PI / 2);
   const seaBase = seaGeo.attributes.position.array.slice(); /* rest positions */
   /* Custom shader: deep water with warm spec glints and a radial alpha
@@ -84,10 +84,11 @@ function init(host) {
     transparent: true,
     depthWrite: false,
     uniforms: {
-      uDeep: { value: new THREE.Color(0x0e2c40) },
-      uShallow: { value: new THREE.Color(0x2f6b8c) },
+      uDeep: { value: new THREE.Color(0x14384f) },
+      uShallow: { value: new THREE.Color(0x3d7fa3) },
       uWarm: { value: new THREE.Color(0xff9a52) },
       uCool: { value: new THREE.Color(0x8d82ff) },
+      uHaze: { value: new THREE.Color(0x2e211d) },
     },
     vertexShader: `
       varying vec3 vNormalW;
@@ -109,6 +110,7 @@ function init(host) {
       uniform vec3 uShallow;
       uniform vec3 uWarm;
       uniform vec3 uCool;
+      uniform vec3 uHaze;
       void main() {
         vec3 N = normalize(vNormalW);
         vec3 V = normalize(cameraPosition - vPosW);
@@ -119,15 +121,19 @@ function init(host) {
         vec3 Lc = normalize(vec3(-4.5, 2.5, 3.0));
         col += uWarm * pow(max(dot(reflect(-Lw, N), V), 0.0), 70.0) * 0.9;
         col += uCool * pow(max(dot(reflect(-Lc, N), V), 0.0), 90.0) * 0.35;
-        float a = (1.0 - smoothstep(3.2, 7.5, length(vLocal))) * 0.96;
+        /* vLocal.y runs +32 (near) .. -32 (far): haze the distance, then
+           fade the last stretch so the horizon melts into the sky */
+        float haze = 1.0 - smoothstep(-26.0, 2.0, vLocal.y);
+        col = mix(col, uHaze, haze * 0.85);
+        float a = 0.94 * smoothstep(-30.0, -21.0, vLocal.y);
         gl_FragColor = vec4(col, a);
       }
     `,
   });
   const WAVES = [
     /* ax, az, k (spatial freq), amp, speed */
-    [0.84, 0.55, 1.9, 0.085, 1.15],
-    [-0.42, 0.91, 3.1, 0.05, 1.7],
+    [0.84, 0.55, 1.9, 0.12, 1.15],
+    [-0.42, 0.91, 3.1, 0.07, 1.7],
     [0.99, -0.14, 5.3, 0.024, 2.3],
     [0.26, -0.97, 8.0, 0.012, 3.1],
   ];
@@ -153,8 +159,16 @@ function init(host) {
     posAttr.needsUpdate = true;
     nrmAttr.needsUpdate = true;
   };
+  const applySeaTheme = () => {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    seaMat.uniforms.uDeep.value.set(light ? 0x35678a : 0x14384f);
+    seaMat.uniforms.uShallow.value.set(light ? 0x7fb2d4 : 0x3d7fa3);
+    seaMat.uniforms.uHaze.value.set(light ? 0xd8cfc9 : 0x2e211d);
+  };
+  applySeaTheme();
+  new MutationObserver(applySeaTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   const sea = new THREE.Mesh(seaGeo, seaMat);
-  sea.position.y = -2.0;
+  sea.position.set(0, -2.3, -10);
   group.add(sea);
   updateSea(0);
   renderer.render(scene, camera); /* sea shows immediately, car pops in when loaded */
