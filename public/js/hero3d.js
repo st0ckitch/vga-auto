@@ -70,108 +70,6 @@ function init(host) {
   group.add(turntable);
   scene.add(group);
 
-  /* ---------- The sea ----------
-     A wave-displaced plane under the car: layered sines with analytic
-     normals so crests catch the studio light, and a radial alpha fade
-     so the water dissolves into the page instead of ending at an edge. */
-  const SEA_W = 240, SEA_D = 100;
-  const seaGeo = new THREE.PlaneGeometry(SEA_W, SEA_D, 110, 60);
-  seaGeo.rotateX(-Math.PI / 2);
-  const seaBase = seaGeo.attributes.position.array.slice(); /* rest positions */
-  /* Custom shader: deep water with warm spec glints and a radial alpha
-     fade so the surface dissolves into the page instead of ending at an edge. */
-  const seaMat = new THREE.ShaderMaterial({
-    transparent: true,
-    depthWrite: false,
-    uniforms: {
-      uDeep: { value: new THREE.Color(0x1a4560) },
-      uShallow: { value: new THREE.Color(0x4a8fb5) },
-      uWarm: { value: new THREE.Color(0xff9a52) },
-      uCool: { value: new THREE.Color(0x8d82ff) },
-      uHaze: { value: new THREE.Color(0x2e211d) },
-    },
-    vertexShader: `
-      varying vec3 vNormalW;
-      varying vec3 vPosW;
-      varying vec2 vLocal;
-      void main() {
-        vLocal = vec2(position.x, position.z);
-        vNormalW = normalize(mat3(modelMatrix) * normal);
-        vec4 wp = modelMatrix * vec4(position, 1.0);
-        vPosW = wp.xyz;
-        gl_Position = projectionMatrix * viewMatrix * wp;
-      }
-    `,
-    fragmentShader: `
-      varying vec3 vNormalW;
-      varying vec3 vPosW;
-      varying vec2 vLocal;
-      uniform vec3 uDeep;
-      uniform vec3 uShallow;
-      uniform vec3 uWarm;
-      uniform vec3 uCool;
-      uniform vec3 uHaze;
-      void main() {
-        vec3 N = normalize(vNormalW);
-        vec3 V = normalize(cameraPosition - vPosW);
-        float fres = pow(1.0 - max(dot(N, V), 0.0), 2.0);
-        vec3 col = mix(uDeep, uShallow, fres);
-        /* warm key glint + faint cool rim, like the studio lights */
-        vec3 Lw = normalize(vec3(4.5, 3.5, 4.0));
-        vec3 Lc = normalize(vec3(-4.5, 2.5, 3.0));
-        col += uWarm * pow(max(dot(reflect(-Lw, N), V), 0.0), 70.0) * 0.9;
-        col += uCool * pow(max(dot(reflect(-Lc, N), V), 0.0), 90.0) * 0.35;
-        /* vLocal.y runs +50 (near) .. -50 (far): haze the distance, fade the
-           far edge into the sky and the near edge into the shoreline */
-        float haze = 1.0 - smoothstep(-42.0, 20.0, vLocal.y);
-        col = mix(col, uHaze, haze * 0.8);
-        float a = 0.94 * smoothstep(-50.0, -36.0, vLocal.y) * (1.0 - smoothstep(28.0, 37.0, vLocal.y));
-        gl_FragColor = vec4(col, a);
-      }
-    `,
-  });
-  const WAVES = [
-    /* ax, az, k (spatial freq), amp, speed */
-    [0.84, 0.55, 1.9, 0.12, 1.15],
-    [-0.42, 0.91, 3.1, 0.07, 1.7],
-    [0.99, -0.14, 5.3, 0.024, 2.3],
-    [0.26, -0.97, 8.0, 0.012, 3.1],
-  ];
-  const updateSea = (time) => {
-    const posAttr = seaGeo.attributes.position;
-    const nrmAttr = seaGeo.attributes.normal;
-    const p = posAttr.array, nrm = nrmAttr.array;
-    for (let i = 0; i < p.length; i += 3) {
-      const x = seaBase[i], z = seaBase[i + 2];
-      let h = 0, dhx = 0, dhz = 0;
-      for (const [ax, az, k, amp, sp] of WAVES) {
-        const ph = (x * ax + z * az) * k + time * sp;
-        h += amp * Math.sin(ph);
-        const d = amp * k * Math.cos(ph);
-        dhx += d * ax;
-        dhz += d * az;
-      }
-      p[i + 1] = h;
-      /* analytic surface normal: normalize(-dh/dx, 1, -dh/dz) */
-      const inv = 1 / Math.sqrt(dhx * dhx + 1 + dhz * dhz);
-      nrm[i] = -dhx * inv; nrm[i + 1] = inv; nrm[i + 2] = -dhz * inv;
-    }
-    posAttr.needsUpdate = true;
-    nrmAttr.needsUpdate = true;
-  };
-  const applySeaTheme = () => {
-    const light = document.documentElement.getAttribute('data-theme') === 'light';
-    seaMat.uniforms.uDeep.value.set(light ? 0x35678a : 0x1a4560);
-    seaMat.uniforms.uShallow.value.set(light ? 0x7fb2d4 : 0x4a8fb5);
-    seaMat.uniforms.uHaze.value.set(light ? 0xd8cfc9 : 0x2e211d);
-  };
-  applySeaTheme();
-  new MutationObserver(applySeaTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  const sea = new THREE.Mesh(seaGeo, seaMat);
-  sea.position.set(0, -2.1, -50);
-  group.add(sea);
-  updateSea(0);
-  renderer.render(scene, camera); /* sea shows immediately, car pops in when loaded */
 
   /* Motion state, populated once the subject is ready.
      Scene-space axes after the model's baked rotation: car length = Z
@@ -285,9 +183,8 @@ function init(host) {
 
   let t = 0;
   renderer.setAnimationLoop(() => {
-    if (!visible || document.hidden) return;
+    if (!visible || document.hidden || (!spin && !carRig)) return;
     t += 1 / 60;
-    updateSea(t);
     if (carRig) {
       /* rolling wheels */
       for (const w of carRig.wheels) w.rotation.x += WHEEL_SPEED;

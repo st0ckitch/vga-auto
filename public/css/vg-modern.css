@@ -550,13 +550,6 @@ h1 .accent, h2 .accent, .display .accent {
 .hero-3d__canvas {
   position: absolute; inset: 0; width: 100%; height: 100%;
   display: block; z-index: 2;
-  /* screen-space vignette: the 3D scene dissolves before the canvas crops it */
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-    linear-gradient(to bottom, #000 0, #000 74%, transparent 95%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-    linear-gradient(to bottom, #000 0, #000 74%, transparent 95%);
-  mask-composite: intersect;
 }
 /* warm light pooling under the sculpture, like the reference */
 .hero-3d__glow {
@@ -585,15 +578,6 @@ h1 .accent, h2 .accent, .display .accent {
   transform: rotate(9deg);
   border-color: transparent;
   border-bottom-color: rgba(255, 128, 57, 0.22);
-}
-/* soft contact shadow grounding the car on the implied road */
-.hero-3d__shadow {
-  position: absolute; left: 22%; right: 6%; top: 64%; height: 11%;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(8, 5, 4, 0.6), transparent 70%);
-  filter: blur(12px); z-index: 1; pointer-events: none;
-}
-[data-theme="light"] .hero-3d__shadow {
-  background: radial-gradient(50% 50% at 50% 50%, rgba(36, 31, 32, 0.35), transparent 70%);
 }
 /* faint starfield */
 .hero-3d::after {
