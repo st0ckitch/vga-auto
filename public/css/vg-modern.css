@@ -12,6 +12,8 @@
    ============================================================ */
 
 /* ---------- FiraGO (self-hosted, Georgian+Latin+Cyrillic) ---------- */
+@font-face { font-family: "FiraGO"; src: url("../fonts/firago/FiraGO-UltraLight.woff2") format("woff2"); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: "FiraGO"; src: url("../fonts/firago/FiraGO-Light.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
 @font-face { font-family: "FiraGO"; src: url("../fonts/firago/FiraGO-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "FiraGO"; src: url("../fonts/firago/FiraGO-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
 @font-face { font-family: "FiraGO"; src: url("../fonts/firago/FiraGO-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
@@ -82,11 +84,13 @@ body {
   margin: 0;
   font-family: var(--font-body);
   font-size: 16px;
+  font-weight: 300; /* FiraGO Light — airy body text; UI labels re-bolden below */
   line-height: 1.65;
   color: var(--c-body);
   background: var(--c-bg);
   -webkit-font-smoothing: antialiased;
 }
+b, strong { font-weight: 700; }
 
 /* Ambient gradient canvas (fixed, behind everything) */
 body::before {
@@ -212,7 +216,7 @@ h1 .accent, h2 .accent, .display .accent {
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: var(--c-primary-strong);
 }
-.lead { font-size: 1.12rem; color: var(--c-body); }
+.lead { font-size: 1.12rem; font-weight: 200; color: var(--c-body); }
 .muted { color: var(--c-muted); }
 
 /* ---------- Buttons ---------- */
@@ -511,7 +515,7 @@ h1 .accent, h2 .accent, .display .accent {
 }
 .hero-v2__title .w { display: inline-block; opacity: 0; transform: translateY(22px); animation: wordUp 0.6s cubic-bezier(0.2, 0.6, 0.2, 1) forwards; animation-delay: var(--d, 0s); }
 @keyframes wordUp { to { opacity: 1; transform: none; } }
-.hero-v2__sub { font-size: 1.08rem; color: var(--c-body); max-width: 520px; margin-bottom: 30px; }
+.hero-v2__sub { font-size: 1.08rem; font-weight: 200; color: var(--c-body); max-width: 520px; margin-bottom: 30px; }
 .hero-v2 .search-pill { margin-bottom: 22px; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-bottom: 40px; }
 .hero-links a, .hero-links button {
@@ -524,28 +528,81 @@ h1 .accent, h2 .accent, .display .accent {
 .hero-links a:hover::after, .hero-links button:hover::after { transform: translateX(4px); }
 .hero-v2__stats .stat b { font-size: 1.5rem; }
 
+/* Availability pill above the title */
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 8px 16px; border-radius: var(--r-pill); margin: 0 0 18px;
+  background: var(--glass-2); border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge);
+  font-family: var(--font-display); font-weight: 600; font-size: 0.82rem;
+  letter-spacing: 0.04em; color: var(--c-ink);
+}
+.hero-pill i {
+  width: 8px; height: 8px; border-radius: 50%; flex: none;
+  background: #3DDC84; box-shadow: 0 0 10px rgba(61, 220, 132, 0.9);
+  animation: pillPulse 2.4s ease-in-out infinite;
+}
+@keyframes pillPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.72); opacity: 0.6; } }
+
+/* ----- Live 3D glass sculpture (three.js torus knot, hero3d.js) ----- */
+.hero-3d { position: relative; min-height: 520px; }
+.hero-3d__canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block; z-index: 2;
+}
+/* warm light pooling under the sculpture, like the reference */
+.hero-3d__glow {
+  position: absolute; left: 50%; top: 56%; width: 78%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(circle at 50% 62%, rgba(255, 128, 57, 0.34), transparent 58%),
+    radial-gradient(circle at 46% 40%, rgba(255, 179, 128, 0.14), transparent 52%);
+  filter: blur(26px); z-index: 0; pointer-events: none;
+}
+/* thin orbital arcs sweeping through the scene */
+.hero-3d__ring, .hero-3d__ring::after {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.hero-3d__ring {
+  left: 50%; top: 50%; width: 130%; aspect-ratio: 1.9;
+  transform: translate(-50%, -50%) rotate(-24deg);
+  border-color: transparent;
+  border-top-color: rgba(255, 255, 255, 0.16);
+  border-right-color: rgba(255, 255, 255, 0.05);
+  z-index: 1;
+}
+.hero-3d__ring::after {
+  content: ""; left: -12%; top: 8%; width: 124%; aspect-ratio: 2.1;
+  transform: rotate(9deg);
+  border-color: transparent;
+  border-bottom-color: rgba(255, 128, 57, 0.22);
+}
+/* faint starfield */
+.hero-3d::after {
+  content: ""; position: absolute; inset: -8% -4%; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 18%, rgba(255, 255, 255, 0.55), transparent 100%),
+    radial-gradient(1.2px 1.2px at 78% 8%, rgba(255, 255, 255, 0.4), transparent 100%),
+    radial-gradient(1.1px 1.1px at 92% 42%, rgba(255, 255, 255, 0.35), transparent 100%),
+    radial-gradient(1.8px 1.8px at 68% 88%, rgba(255, 200, 160, 0.4), transparent 100%),
+    radial-gradient(1.2px 1.2px at 8% 72%, rgba(255, 255, 255, 0.3), transparent 100%),
+    radial-gradient(1px 1px at 38% 4%, rgba(255, 255, 255, 0.35), transparent 100%),
+    radial-gradient(1.4px 1.4px at 52% 96%, rgba(255, 255, 255, 0.3), transparent 100%),
+    radial-gradient(1px 1px at 96% 78%, rgba(255, 200, 160, 0.35), transparent 100%);
+}
+/* static fallback when WebGL is unavailable */
+.hero-3d.no-webgl .hero-3d__canvas { display: none; }
+.hero-3d.no-webgl .hero-3d__glow { filter: blur(34px); opacity: 1.2; }
+[data-theme="light"] .hero-3d__ring { border-top-color: rgba(36, 31, 32, 0.14); border-right-color: rgba(36, 31, 32, 0.04); }
+[data-theme="light"] .hero-3d__ring::after { border-bottom-color: rgba(228, 101, 10, 0.28); }
+[data-theme="light"] .hero-3d::after { opacity: 0.35; }
+
 .hero-stack { position: relative; min-height: 480px; }
-.hero-stack__watermark {
-  position: absolute; top: -30px; right: -20px;
-  font-family: var(--font-display); font-weight: 900; font-size: clamp(9rem, 16vw, 15rem);
-  line-height: 0.8; color: #fff; opacity: 0.05; letter-spacing: -0.05em;
-  user-select: none; pointer-events: none;
-}
-.hero-stack__main {
-  width: 88%; margin-left: auto; display: block;
-  border-radius: var(--r-lg); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.12);
-  aspect-ratio: 4 / 3.4; object-fit: cover;
-  animation: heroFloat 7s ease-in-out infinite alternate;
-}
-.hero-stack__second {
-  position: absolute; left: -6px; bottom: 26px; width: 46%;
-  border-radius: var(--r-md); box-shadow: var(--shadow-lg);
-  aspect-ratio: 4 / 3; object-fit: cover;
-  border: 5px solid rgba(255, 255, 255, 0.16);
-  animation: heroFloat 7s 1.2s ease-in-out infinite alternate-reverse;
-}
 @keyframes heroFloat { from { transform: translateY(0); } to { transform: translateY(-12px); } }
-.hero-stack .hero-badge {
+.hero-stack .hero-badge,
+.hero-3d .hero-badge {
   position: absolute;
   background: var(--glass-3);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
@@ -555,14 +612,14 @@ h1 .accent, h2 .accent, .display .accent {
   display: flex; align-items: center; gap: 11px; font-size: 0.85rem; font-weight: 700; color: var(--c-ink);
 }
 .hero-badge svg { width: 22px; height: 22px; color: var(--c-primary-strong); flex: none; }
-.hero-badge--tr { top: 18px; right: -8px; animation: heroFloat 6s 0.6s ease-in-out infinite alternate; }
-.hero-badge--bl { bottom: -8px; left: 24%; animation: heroFloat 6s 1.8s ease-in-out infinite alternate-reverse; }
+.hero-badge--tr { top: 18px; right: -8px; animation: heroFloat 6s 0.6s ease-in-out infinite alternate; z-index: 3; }
+.hero-badge--bl { bottom: -8px; left: 24%; animation: heroFloat 6s 1.8s ease-in-out infinite alternate-reverse; z-index: 3; }
 @media (max-width: 1080px) {
   .hero-v2 { padding: 40px 0 64px; }
   .hero-v2__grid { grid-template-columns: 1fr; gap: 40px; }
   .hero-stack { min-height: 0; margin-top: 8px; }
-  .hero-stack__main { width: 100%; aspect-ratio: 16 / 10; }
-  .hero-stack__second { width: 38%; bottom: -18px; }
+  .hero-3d { min-height: 380px; margin-top: -12px; }
+  .hero-3d__ring { width: 110%; }
 }
 
 /* ---------- Marquee ticker ---------- */
@@ -942,7 +999,7 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
-  .hero-v2::before, .hero-stack__main, .hero-stack__second, .hero-badge { animation: none; }
+  .hero-v2::before, .hero-badge, .hero-pill i { animation: none; }
   .hero-v2__title .w { opacity: 1; transform: none; animation: none; }
   .marquee__track { animation: none; }
   .bg-orbs i { animation: none; }

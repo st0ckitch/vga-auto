@@ -1,10 +1,72 @@
-/* Transport page — presentation slide gallery */
+/* Transport page — service details (former presentation slides, now text blocks) */
 
-.gallery--slides img {
-  aspect-ratio: 16 / 9;   /* presentation slides are 16:9 — avoid heavy cropping */
-  /* slides have white backgrounds — soften them into the dark canvas */
-  filter: brightness(0.9);
-  transition: transform 0.35s ease, filter 0.35s ease;
+/* CargoLoop partnership strip */
+.partner-strip {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  border-radius: var(--r-lg);
+  background: var(--glass-2);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-edge);
 }
-.gallery--slides a:hover img { filter: none; }
-[data-theme="light"] .gallery--slides img { filter: none; }
+.partner-strip img {
+  height: 56px;
+  width: auto;
+  flex: none;
+  object-fit: contain;
+  background: rgba(255, 250, 246, 0.94);
+  padding: 8px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+.partner-strip p { margin: 0; font-size: 0.96rem; }
+@media (max-width: 620px) {
+  .partner-strip { flex-direction: column; align-items: flex-start; }
+}
+
+/* Detail cards */
+.detail-card h3 { font-size: 1.15rem; margin-bottom: 16px; }
+.detail-card__sub {
+  font-size: 0.92rem;
+  margin: 18px 0 10px;
+  color: var(--c-primary-deep);
+  letter-spacing: 0.04em;
+}
+
+.check-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.check-list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.check-list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.52em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  box-shadow: 0 0 8px rgba(255, 128, 57, 0.5);
+}
+
+.detail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.detail-chips .chip { font-size: 0.82rem; padding: 7px 14px; }
