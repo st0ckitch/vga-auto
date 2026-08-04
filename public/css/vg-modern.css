@@ -586,6 +586,15 @@ h1 .accent, h2 .accent, .display .accent {
   border-color: transparent;
   border-bottom-color: rgba(255, 128, 57, 0.22);
 }
+/* soft contact shadow grounding the car on the implied road */
+.hero-3d__shadow {
+  position: absolute; left: 22%; right: 6%; top: 64%; height: 11%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(8, 5, 4, 0.6), transparent 70%);
+  filter: blur(12px); z-index: 1; pointer-events: none;
+}
+[data-theme="light"] .hero-3d__shadow {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(36, 31, 32, 0.35), transparent 70%);
+}
 /* faint starfield */
 .hero-3d::after {
   content: ""; position: absolute; inset: -8% -4%; z-index: 0; pointer-events: none;
