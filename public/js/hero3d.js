@@ -1,8 +1,10 @@
-/* VG AUTO EXPORT — live 3D glass sculpture for the home hero.
-   A slowly turning glass torus knot rendered with three.js (self-hosted),
-   lit by a procedural studio environment in the brand palette.
-   Degrades gracefully: no WebGL -> static glow; reduced motion -> still frame. */
+/* VG AUTO EXPORT — live 3D glass car for the home hero.
+   A CC0 car model (Khronos glTF sample "ToyCar", geometry only) re-skinned
+   as brand-orange glass and slowly turntabling, rendered with self-hosted
+   three.js. Degrades gracefully: model load error -> glass torus knot;
+   no WebGL -> static glow; reduced motion -> still frame. */
 import * as THREE from './three.module.min.js?v=160';
+import { GLTFLoader } from './GLTFLoader.js?v=160';
 
 const host = document.querySelector('[data-hero-3d]');
 if (host) {
@@ -25,7 +27,8 @@ function init(host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 60);
-  camera.position.set(0, 0, 8.7);
+  camera.position.set(0, 0.7, 8.7);
+  camera.lookAt(0, -0.1, 0);
 
   /* Procedural "studio" environment: warm key, orange and indigo fills.
      Rendered once into a PMREM env map — this is what makes the glass read as glass. */
@@ -46,28 +49,62 @@ function init(host) {
   scene.environment = pmrem.fromScene(envScene, 0.05).texture;
   pmrem.dispose();
 
+  const glassMat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    transmission: 1,
+    thickness: 0.9,
+    roughness: 0.07,
+    metalness: 0,
+    ior: 1.45,
+    clearcoat: 1,
+    clearcoatRoughness: 0.12,
+    attenuationColor: new THREE.Color(0xff8039),
+    attenuationDistance: 3.0,
+    iridescence: 0.28,
+    iridescenceIOR: 1.3,
+  });
+
+  /* parallax group > turntable group > model */
   const group = new THREE.Group();
+  const turntable = new THREE.Group();
+  group.add(turntable);
   scene.add(group);
 
-  const knot = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1.45, 0.44, 280, 44, 2, 3),
-    new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      transmission: 1,
-      thickness: 1.7,
-      roughness: 0.07,
-      metalness: 0,
-      ior: 1.45,
-      clearcoat: 1,
-      clearcoatRoughness: 0.12,
-      attenuationColor: new THREE.Color(0xff8039),
-      attenuationDistance: 1.6,
-      iridescence: 0.6,
-      iridescenceIOR: 1.3,
-    })
+  let spin = null; /* set once the subject is ready */
+
+  const loader = new GLTFLoader();
+  const modelUrl = new URL('../models/car.glb?v=2', import.meta.url).href;
+  loader.load(
+    modelUrl,
+    (gltf) => {
+      const car = gltf.scene;
+      car.traverse((o) => { if (o.isMesh) o.material = glassMat; });
+      /* normalize: center at origin, longest side ~5 world units */
+      let box = new THREE.Box3().setFromObject(car);
+      const size = box.getSize(new THREE.Vector3());
+      const s = 5.4 / Math.max(size.x, size.y, size.z);
+      car.scale.setScalar(s);
+      box = new THREE.Box3().setFromObject(car);
+      const center = box.getCenter(new THREE.Vector3());
+      car.position.sub(center);
+      const shell = new THREE.Group();
+      shell.add(car);
+      shell.rotation.x = 0.26;          /* slight top-down view */
+      shell.rotation.y = -0.7;          /* three-quarter start pose */
+      turntable.add(shell);
+      spin = shell;
+      renderer.render(scene, camera);   /* first frame + reduced-motion frame */
+    },
+    undefined,
+    () => {
+      /* model failed to load — fall back to the glass knot so the hero never looks empty */
+      const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.45, 0.44, 280, 44, 2, 3), glassMat);
+      knot.rotation.set(0.45, -0.35, 0.1);
+      turntable.add(knot);
+      spin = knot;
+      renderer.render(scene, camera);
+    }
   );
-  knot.rotation.set(0.45, -0.35, 0.1);
-  group.add(knot);
 
   const warm = new THREE.PointLight(0xff8039, 40, 30);
   warm.position.set(4.5, 3.5, 4);
@@ -89,10 +126,7 @@ function init(host) {
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
   else window.addEventListener('resize', resize);
 
-  if (reduced) {
-    renderer.render(scene, camera);
-    return;
-  }
+  if (reduced) return; /* still frame is rendered when the model arrives */
 
   /* Cursor parallax (lerped) */
   let targetX = 0, targetY = 0;
@@ -100,7 +134,7 @@ function init(host) {
   heroSection.addEventListener('pointermove', (e) => {
     const r = heroSection.getBoundingClientRect();
     targetY = ((e.clientX - r.left) / r.width - 0.5) * 0.5;
-    targetX = ((e.clientY - r.top) / r.height - 0.5) * 0.35;
+    targetX = ((e.clientY - r.top) / r.height - 0.5) * 0.3;
   });
   heroSection.addEventListener('pointerleave', () => { targetX = 0; targetY = 0; });
 
@@ -111,9 +145,8 @@ function init(host) {
   }
 
   renderer.setAnimationLoop(() => {
-    if (!visible || document.hidden) return;
-    knot.rotation.y += 0.0035;
-    knot.rotation.x += 0.0012;
+    if (!visible || document.hidden || !spin) return;
+    spin.rotation.y += 0.004;
     group.rotation.x += (targetX - group.rotation.x) * 0.06;
     group.rotation.y += (targetY - group.rotation.y) * 0.06;
     renderer.render(scene, camera);
