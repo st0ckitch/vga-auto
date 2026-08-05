@@ -7,6 +7,10 @@
 <title>ტრანსპორტირების კალკულატორი — ჩამოყვანის ღირებულება | VG Auto Export</title>
 <meta name="description" content="გამოთვალეთ ავტომობილის ამერიკიდან ჩამოყვანის სავარაუდო ღირებულება: აუქციონი, ქალაქი, პორტი. რისგან შედგება ფასი და სად გამოითვლება განბაჟება.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/calculator/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/calculator/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/calculator/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/calculator/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/calculator/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -39,6 +43,14 @@
 <script>
   var class_name = 'Calculator';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'
+  };
 </script>
 </head>
 <body class="page-calculator">
@@ -74,6 +86,12 @@
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
       <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+    </nav>
+
+    <nav class="lang-switch" aria-label="ენის არჩევა">
+      <a href="https://st0ckitch.github.io/vga-auto/calculator/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+      <a href="https://st0ckitch.github.io/vga-auto/en/calculator/"  hreflang="en">EN</a>
+      <a href="https://st0ckitch.github.io/vga-auto/ru/calculator/"  hreflang="ru">RU</a>
     </nav>
 
     <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
@@ -205,7 +223,7 @@
           </div>
           <div class="field">
             <label for="calc-city">ქალაქი</label>
-            <select class="select js-calc-city" id="calc-city"><option value="">აირჩიეთ ქალაქი</option></select>
+            <select class="select js-calc-city" id="calc-city"><option value="">—</option></select>
           </div>
           <div class="field">
             <label for="calc-port">პორტი საქართველოში</label>
@@ -226,11 +244,11 @@
         <h2 style="font-size:1.25rem;">რისგან შედგება ჩამოყვანის ღირებულება</h2>
         <p>ავტომობილის ამერიკიდან ჩამოყვანის საბოლოო ფასი რამდენიმე კომპონენტისგან დგება:</p>
         <dl class="spec-list spec-list--stack" style="margin-bottom:24px;">
-          <div><dt>ავტომობილის ფასი აუქციონზე</dt><dd>ლოტის საბოლოო ფასი + აუქციონის მოსაკრებლები</dd></div>
-          <div><dt>სახმელეთო გადაზიდვა აშშ-ში</dt><dd>აუქციონიდან პორტამდე — დამოკიდებულია შტატზე</dd></div>
-          <div><dt>საზღვაო გადაზიდვა</dt><dd>კონტეინერით ფოთის ან ბათუმის პორტამდე</dd></div>
-          <div><dt>განბაჟება</dt><dd>წელი, ძრავა და საწვავის ტიპი — გამოთვალეთ <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">RS.ge-ზე</a></dd></div>
-        </dl>
+                    <div><dt>ავტომობილის ფასი აუქციონზე</dt><dd>ლოტის საბოლოო ფასი + აუქციონის მოსაკრებლები</dd></div>
+                    <div><dt>სახმელეთო გადაზიდვა აშშ-ში</dt><dd>აუქციონიდან პორტამდე — დამოკიდებულია შტატზე</dd></div>
+                    <div><dt>საზღვაო გადაზიდვა</dt><dd>კონტეინერით ფოთის ან ბათუმის პორტამდე</dd></div>
+                    <div><dt>განბაჟება</dt><dd>წელი, ძრავა და საწვავის ტიპი — გამოთვალეთ <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">RS.ge-ზე</a></dd></div>
+                  </dl>
         <p>სრული პროცესის აღწერა იხილეთ <a href="https://st0ckitch.github.io/vga-auto/import/">ავტომობილის ჩამოყვანის გვერდზე</a>, ხოლო გადაზიდვის დეტალები — <a href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირების გვერდზე</a>.</p>
       </div>
 
@@ -296,7 +314,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>

@@ -7,9 +7,6 @@
 <title>Калькулятор транспортировки | VG Auto Export</title>
 <meta name="description" content="Рассчитайте стоимость транспортировки автомобиля с аукционов США до Грузии.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/az/">
-<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/autotrade/">
-<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/az/">
-<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/autotrade/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -42,6 +39,14 @@
 <script>
   var class_name = 'Az';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'
+  };
 </script>
 </head>
 <body class="page-az">
@@ -79,6 +84,12 @@
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
     </nav>
 
+    <nav class="lang-switch" aria-label="ენის არჩევა">
+      <a href="https://st0ckitch.github.io/vga-auto/az/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+      <a href="https://st0ckitch.github.io/vga-auto/en/az/"  hreflang="en">EN</a>
+      <a href="https://st0ckitch.github.io/vga-auto/ru/az/"  hreflang="ru">RU</a>
+    </nav>
+
     <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
   </div>
 </header>
@@ -114,7 +125,7 @@
       </div>
       <div class="field">
         <label for="us_city">ქალაქი</label>
-        <select class="select js-calc-city" id="us_city"><option value="">Выберите город</option></select>
+        <select class="select js-calc-city" id="us_city"><option value="">აირჩიეთ ქალაქი</option></select>
       </div>
       <div class="field">
         <label for="geo_port">პორტი საქართველოში</label>
@@ -200,7 +211,7 @@
           </div>
           <div class="field">
             <label for="us_port-az">Порт</label>
-            <select class="select" id="us_port-az"><option value="">—</option></select>
+            <select class="select" id="us_port-az"><option value="">Выберите город</option></select>
           </div>
           <div class="field field--full">
             <label for="geo_port-az">Порт в Грузии</label>
@@ -227,7 +238,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>

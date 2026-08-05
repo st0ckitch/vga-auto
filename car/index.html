@@ -7,7 +7,11 @@
 <title>ავტომობილის დეტალები | VG Auto Export</title>
 <meta name="description" content="ავტომობილის სრული მახასიათებლები, ფოტო გალერეა და ფასი — VG Auto Export-ის კატალოგიდან.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/car/">
-<meta name="robots" content="noindex, follow"><meta name="theme-color" content="#171314">
+<meta name="robots" content="noindex, follow"><link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/car/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/car/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/car/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/car/">
+<meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
 <meta property="og:site_name" content="VG Auto Export">
@@ -39,6 +43,14 @@
 <script>
   var class_name = 'Car';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'
+  };
 </script>
 </head>
 <body class="page-car">
@@ -74,6 +86,12 @@
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
       <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+    </nav>
+
+    <nav class="lang-switch" aria-label="ენის არჩევა">
+      <a href="https://st0ckitch.github.io/vga-auto/car/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+      <a href="https://st0ckitch.github.io/vga-auto/en/car/"  hreflang="en">EN</a>
+      <a href="https://st0ckitch.github.io/vga-auto/ru/car/"  hreflang="ru">RU</a>
     </nav>
 
     <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
@@ -204,7 +222,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>

@@ -7,6 +7,10 @@
 <title>ავტომობილის ჩამოყვანა ამერიკიდან | VG Auto Export</title>
 <meta name="description" content="ავტომობილის ჩამოყვანა ამერიკიდან საქართველოში: შერჩევა აუქციონზე, შეძენა, ტრანსპორტირება, განბაჟება და ჩაბარება ფოთის პორტში — სრული სერვისი ერთ ფასად.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/import/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/import/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/import/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/import/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/import/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -39,6 +43,14 @@
 <script>
   var class_name = 'Import';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'
+  };
 </script>
 </head>
 <body class="page-import">
@@ -74,6 +86,12 @@
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
       <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+    </nav>
+
+    <nav class="lang-switch" aria-label="ენის არჩევა">
+      <a href="https://st0ckitch.github.io/vga-auto/import/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+      <a href="https://st0ckitch.github.io/vga-auto/en/import/"  hreflang="en">EN</a>
+      <a href="https://st0ckitch.github.io/vga-auto/ru/import/"  hreflang="ru">RU</a>
     </nav>
 
     <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
@@ -185,13 +203,13 @@
         <p>ავტომობილის ჩამოყვანა ამერიკიდან რამდენიმე ეტაპისგან შედგება — აუქციონზე შერჩევიდან ფოთის პორტში ჩაბარებამდე. VG Auto Export თითოეულ ეტაპს თავად უზრუნველყოფს, თქვენ კი პროცესს <a href="https://st0ckitch.github.io/vga-auto/search/">VIN კოდით</a> ონლაინ ადევნებთ თვალს.</p>
         <p>ვმუშაობთ Copart-ის, IAAI-ისა და სხვა მსხვილი ამერიკული ავტოაუქციონების ავტომობილებზე. შეძენამდე გირჩევთ გაეცნოთ <a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაციის ცხრილს</a> — ყველა შტატის საბუთი არ არის ვალიდური ექსპორტისთვის.</p>
         <ul class="u-flex u-flex-wrap" style="list-style:none; padding:0; gap:10px;">
-          <li><span class="chip">აუქციონზე შერჩევა</span></li>
-          <li><span class="chip">შეძენა და გადახდა</span></li>
-          <li><span class="chip">სახმელეთო გადაზიდვა აშშ-ში</span></li>
-          <li><span class="chip">საკონტეინერო გადაზიდვა</span></li>
-          <li><span class="chip">განბაჟება</span></li>
-          <li><span class="chip">ჩაბარება ფოთში</span></li>
-        </ul>
+                    <li><span class="chip">აუქციონზე შერჩევა</span></li>
+                    <li><span class="chip">შეძენა და გადახდა</span></li>
+                    <li><span class="chip">სახმელეთო გადაზიდვა აშშ-ში</span></li>
+                    <li><span class="chip">საკონტეინერო გადაზიდვა</span></li>
+                    <li><span class="chip">განბაჟება</span></li>
+                    <li><span class="chip">ჩაბარება ფოთში</span></li>
+                  </ul>
       </div>
       <figure style="margin:0;">
         <img src="https://st0ckitch.github.io/vga-auto/images/present/cargoloop.jpg" alt="ავტომობილების საკონტეინერო გადაზიდვა — VG Auto Export" style="width:100%; border-radius:var(--r-lg); box-shadow:var(--shadow-lg); aspect-ratio:4/3.4; object-fit:cover;">
@@ -207,12 +225,12 @@
       <h2>ჩამოყვანის პროცესი ნაბიჯ-ნაბიჯ</h2>
     </div>
     <div class="steps" style="grid-template-columns:repeat(5,1fr);">
-      <div class="step"><h3>შერჩევა</h3><p>გეხმარებით ავტომობილის შერჩევასა და მდგომარეობის შეფასებაში აუქციონის მონაცემებით.</p></div>
-      <div class="step"><h3>შეძენა</h3><p>ვვაჭრობთ თქვენ ნაცვლად აუქციონზე და ვასრულებთ შესყიდვას.</p></div>
-      <div class="step"><h3>ტრანსპორტირება აშშ-ში</h3><p>ავტომობილი აუქციონიდან პორტის საწყობში გადაგვაქვს.</p></div>
-      <div class="step"><h3>საზღვაო გადაზიდვა</h3><p>კონტეინერი მიემართება ფოთის ან ბათუმის პორტისკენ — თან ახლავს ფოტო-რეპორტი.</p></div>
-      <div class="step"><h3>განბაჟება და ჩაბარება</h3><p>პორტში ჩამოსვლის შემდეგ ავტომობილი გადის განბაჟებას და ბარდება მფლობელს.</p></div>
-    </div>
+            <div class="step"><h3>შერჩევა</h3><p>გეხმარებით ავტომობილის შერჩევასა და მდგომარეობის შეფასებაში აუქციონის მონაცემებით.</p></div>
+            <div class="step"><h3>შეძენა</h3><p>ვვაჭრობთ თქვენ ნაცვლად აუქციონზე და ვასრულებთ შესყიდვას.</p></div>
+            <div class="step"><h3>ტრანსპორტირება აშშ-ში</h3><p>ავტომობილი აუქციონიდან პორტის საწყობში გადაგვაქვს.</p></div>
+            <div class="step"><h3>საზღვაო გადაზიდვა</h3><p>კონტეინერი მიემართება ფოთის ან ბათუმის პორტისკენ — თან ახლავს ფოტო-რეპორტი.</p></div>
+            <div class="step"><h3>განბაჟება და ჩაბარება</h3><p>პორტში ჩამოსვლის შემდეგ ავტომობილი გადის განბაჟებას და ბარდება მფლობელს.</p></div>
+          </div>
   </div>
 </section>
 
@@ -289,7 +307,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>

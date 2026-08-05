@@ -7,6 +7,10 @@
 <title>საექსპორტო დოკუმენტაცია შტატების მიხედვით | VG Auto Export</title>
 <meta name="description" content="რომელი სათაურის დოკუმენტია ვალიდური ავტომობილის ექსპორტისთვის აშშ-ის თითოეული შტატიდან — სრული ცხრილი და რეკომენდაციები ყიდვამდე.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/export/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/export/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/export/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/export/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/export/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -39,6 +43,14 @@
 <script>
   var class_name = 'Export';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'
+  };
 </script>
 </head>
 <body class="page-export">
@@ -74,6 +86,12 @@
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
       <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+    </nav>
+
+    <nav class="lang-switch" aria-label="ენის არჩევა">
+      <a href="https://st0ckitch.github.io/vga-auto/export/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+      <a href="https://st0ckitch.github.io/vga-auto/en/export/"  hreflang="en">EN</a>
+      <a href="https://st0ckitch.github.io/vga-auto/ru/export/"  hreflang="ru">RU</a>
     </nav>
 
     <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
@@ -173,9 +191,9 @@
                 <li aria-current="page">საექსპორტო დოკუმენტაცია</li>
             </ol>
         </nav>
-                    <h1>საექსპორტო <span class="accent">დოკუმენტაცია</span></h1>
-            <p class="lead">მომხმარებელთა საყურადღებოდ: ავტომობილის ყიდვამდე გთხოვთ გაეცნოთ საექსპორტოდ ვალიდურ დოკუმენტთა ნუსხას.</p>
-            </div>
+        <h1>საექსპორტო <span class="accent">დოკუმენტაცია</span></h1>
+        <p class="lead">მომხმარებელთა საყურადღებოდ: ავტომობილის ყიდვამდე გთხოვთ გაეცნოთ საექსპორტოდ ვალიდურ დოკუმენტთა ნუსხას.</p>
+    </div>
 </section>
 
 <section class="section section--tight reveal">
@@ -184,28 +202,24 @@
             <span class="callout__icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
             </span>
-                            <p>უსაბუთო ავტომობილის შეძენის შემთხვევაში კომპანია პასუხს არ აგებს ავტომობილის ჩამოყვანაზე. ასევე, საექსპორტოდ საჭირო დოკუმენტაციის მომზადება დამოკიდებულია ამერიკულ DMV-ზე და ყველა საბუთი განიხილება ინდივიდუალურად!</p>
-                    </div>
+            <p>უსაბუთო ავტომობილის შეძენის შემთხვევაში კომპანია პასუხს არ აგებს ავტომობილის ჩამოყვანაზე. ასევე, საექსპორტოდ საჭირო დოკუმენტაციის მომზადება დამოკიდებულია ამერიკულ DMV-ზე და ყველა საბუთი განიხილება ინდივიდუალურად!</p>
+        </div>
     </div>
 </section>
 
 <section class="section section--tight reveal">
     <div class="container">
         <div class="section-head">
-            <p class="eyebrow">
-                არ იყიდოთ            </p>
-            <h2>
-                საბუთები, რომლებიც არავალიდურია ექსპორტისთვის            </h2>
+            <p class="eyebrow">არ იყიდოთ</p>
+            <h2>საბუთები, რომლებიც არავალიდურია ექსპორტისთვის</h2>
         </div>
         <div class="table-wrap">
             <table class="table table--danger table--states">
-                <caption>
-                    არავალიდურ საბუთთა ნუსხა შტატების მიხედვით                </caption>
+                <caption>არავალიდურ საბუთთა ნუსხა შტატების მიხედვით</caption>
                 <thead>
                     <tr>
                         <th scope="col">შტატი</th>
-                        <th scope="col">
-                            არავალიდური საბუთები საექსპორტოდ — არ იყიდოთ!                        </th>
+                        <th scope="col">არავალიდური საბუთები საექსპორტოდ — არ იყიდოთ!</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -241,30 +255,25 @@
             <span class="callout__icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
             </span>
-                            <p>არასაკმარისი დოკუმენტაციის შემთხვევაში საჭიროა დამატებითი დრო და ხარჯები — გთხოვთ, დეტალები დააზუსტოთ კომპანიასთან ავტომობილის ყიდვამდე!</p>
-                    </div>
+            <p>არასაკმარისი დოკუმენტაციის შემთხვევაში საჭიროა დამატებითი დრო და ხარჯები — გთხოვთ, დეტალები დააზუსტოთ კომპანიასთან ავტომობილის ყიდვამდე!</p>
+        </div>
     </div>
 </section>
 
 <section class="section reveal">
     <div class="container">
         <div class="section-head">
-            <p class="eyebrow">
-                50 შტატი            </p>
-            <h2>
-                ვალიდური დოკუმენტები შტატების მიხედვით            </h2>
+            <p class="eyebrow">50 შტატი</p>
+            <h2>ვალიდური დოკუმენტები შტატების მიხედვით</h2>
         </div>
         <div class="table-wrap">
             <table class="table table--states">
-                <caption>
-                    საექსპორტო დოკუმენტაცია აშშ-ის შტატების მიხედვით                </caption>
+                <caption>საექსპორტო დოკუმენტაცია აშშ-ის შტატების მიხედვით</caption>
                 <thead>
                     <tr>
                         <th scope="col">შტატი</th>
-                        <th scope="col">
-                            შეიძლება ექსპორტირება დამატებითი დოკუმენტაციის გარეშე                        </th>
-                        <th scope="col">
-                            არ არის საკმარისი საბაჟო დოკუმენტაციის მისაღებად და ავტომობილის ექსპორტირებისთვის                        </th>
+                        <th scope="col">შეიძლება ექსპორტირება დამატებითი დოკუმენტაციის გარეშე</th>
+                        <th scope="col">არ არის საკმარისი საბაჟო დოკუმენტაციის მისაღებად და ავტომობილის ექსპორტირებისთვის</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -615,7 +624,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>

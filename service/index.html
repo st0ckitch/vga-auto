@@ -7,6 +7,10 @@
 <title>სერვისი — მომსახურების სრული ციკლი | VG Auto Export</title>
 <meta name="description" content="VG Auto Export-ის სერვისები: აუქციონზე შეძენა, ტრანსპორტირება, განბაჟება, დაზღვევა და ავტონაწილები — სრული ციკლი ერთ კომპანიაში.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/service/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/service/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/service/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/service/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/service/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -39,6 +43,14 @@
 <script>
   var class_name = 'Service';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'
+  };
 </script>
 </head>
 <body class="page-service">
@@ -74,6 +86,12 @@
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
       <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+    </nav>
+
+    <nav class="lang-switch" aria-label="ენის არჩევა">
+      <a href="https://st0ckitch.github.io/vga-auto/service/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+      <a href="https://st0ckitch.github.io/vga-auto/en/service/"  hreflang="en">EN</a>
+      <a href="https://st0ckitch.github.io/vga-auto/ru/service/"  hreflang="ru">RU</a>
     </nav>
 
     <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
@@ -201,7 +219,7 @@
         <div class="feature__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01"/></svg>
         </div>
-        <h3>განბაჟების კალკულატორი</h3>
+        <h3>ტრანსპორტირების კალკულატორი</h3>
         <p>გამოთვალეთ ტრანსპორტირების სავარაუდო ღირებულება აუქციონის მდებარეობისა და ავტომობილის ტიპის მიხედვით.</p>
         <span class="feature__more">გახსნა →</span>
       </button>
@@ -254,23 +272,23 @@
       <p class="lead">ოთხი ეტაპი — ავტომობილის შერჩევიდან ფოთის პორტში ჩაბარებამდე.</p>
     </div>
     <ol class="steps">
-      <li class="step reveal">
+            <li class="step reveal">
         <h3>შერჩევა და ყიდვა</h3>
         <p>შეარჩიეთ ავტომობილი ამერიკის ავტოაუქციონზე. დაგეხმარებით შერჩევასა და ყიდვის პროცესში.</p>
       </li>
-      <li class="step reveal">
+            <li class="step reveal">
         <h3>დოკუმენტაცია</h3>
         <p>ფორმდება საექსპორტო დოკუმენტაცია შესაბამისი შტატის ტარიფის მიხედვით.</p>
       </li>
-      <li class="step reveal">
+            <li class="step reveal">
         <h3>ტრანსპორტირება</h3>
         <p>ავტომობილი გადაიზიდება აუქციონიდან ამერიკის პორტამდე, შემდეგ კი კონტეინერით — საზღვაო გზით.</p>
       </li>
-      <li class="step reveal">
+            <li class="step reveal">
         <h3>ჩაბარება ფოთში</h3>
         <p>ავტომობილი ჩამოდის ფოთის პორტში. პროცესს თან ახლავს 4 ეტაპის ფოტო-რეპორტი.</p>
       </li>
-    </ol>
+          </ol>
   </div>
 </section>
 
@@ -297,7 +315,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>

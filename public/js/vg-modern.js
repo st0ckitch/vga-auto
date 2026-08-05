@@ -26,7 +26,7 @@
     var btn = document.querySelector('.theme-toggle');
     if (btn) {
       btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
-      btn.setAttribute('title', t === 'light' ? 'მუქი თემა' : 'ღია თემა');
+      btn.setAttribute('title', t === 'light' ? ((window.VG_T||{}).themeDark||'Dark theme') : ((window.VG_T||{}).themeLight||'Light theme'));
     }
   };
   var headerIn = document.querySelector('.site-header__in');
@@ -34,7 +34,7 @@
     var toggle = document.createElement('button');
     toggle.className = 'theme-toggle';
     toggle.type = 'button';
-    toggle.setAttribute('aria-label', 'თემის შეცვლა');
+    toggle.setAttribute('aria-label', (window.VG_T||{}).themeToggle||'Toggle theme');
     toggle.innerHTML =
       '<svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>' +
       '<svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
@@ -148,7 +148,7 @@
       if (!vin) { input.focus(); return; }
       var base = form.getAttribute('action') || ((window.siteUrl || '/') + 'index.php');
       var sep = base.indexOf('?') >= 0 ? '&' : '?';
-      window.location.href = base + sep + 'class=Search&vin=' + encodeURIComponent(vin);
+      window.location.href = base + sep + 'class=Search&vin=' + encodeURIComponent(vin) + (window.langQ||'');
     });
   });
 
@@ -186,12 +186,12 @@
           try { ok = JSON.parse(t).error === 0; } catch (err) { ok = false; }
           if (msg) {
             msg.className = ok ? 'form-msg form-msg--ok' : 'form-msg form-msg--err';
-            msg.textContent = ok ? 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.' : 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.';
+            msg.textContent = ok ? ((window.VG_T||{}).newsOk||'Subscribed!') : ((window.VG_T||{}).newsErr||'Subscription failed.');
           }
           if (ok) input.value = '';
         })
         .catch(function () {
-          if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'; }
+          if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = (window.VG_T||{}).newsErr||'Subscription failed.'; }
         });
     });
   }
