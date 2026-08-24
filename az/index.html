@@ -26,7 +26,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=11">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=12">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/az.css?v=3">
 
 <script type="application/ld+json">
@@ -255,7 +255,8 @@
 
         <div class="form-grid">
           <div class="field">
-            <select class="select" id="vehicleType-az" aria-label="Тип транспорта">
+            <label for="vehicleType-az">Тип транспорта</label>
+            <select class="select" id="vehicleType-az">
                               <option value="1">CAR</option>
                               <option value="2">MOTO</option>
                               <option value="3">VAN</option>
@@ -279,7 +280,7 @@
           </div>
           <div class="field">
             <label for="us_port-az">Порт</label>
-            <select class="select" id="us_port-az"><option value="">—</option></select>
+            <select class="select" id="us_port-az"><option value="">Сначала выберите город</option></select>
           </div>
           <div class="field field--full">
             <label for="geo_port-az">Порт в Грузии</label>

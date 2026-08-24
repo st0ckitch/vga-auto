@@ -70,3 +70,7 @@
   margin-top: 12px;
 }
 .detail-chips .chip { font-size: 0.82rem; padding: 7px 14px; }
+
+/* cards hold very different amounts of text — let each size to its own content
+   instead of stretching to the tallest sibling and leaving dead space */
+.detail-card { align-self: start; height: auto; }
