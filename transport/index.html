@@ -7,6 +7,10 @@
 <title>ტრანსპორტირება ამერიკიდან — VG Auto Export</title>
 <meta name="description" content="ავტომობილის ტრანსპორტირება აშშ-ის ნებისმიერი შტატიდან ფოთისა და ბათუმის პორტებამდე: სახმელეთო გადაზიდვა, საკონტეინერო გადაზიდვა და ეტაპობრივი ფოტო-რეპორტი.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/transport/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/transport/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/transport/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/transport/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/transport/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -23,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=12">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=13">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/transport.css?v=5">
 
 <script type="application/ld+json">
@@ -39,6 +43,26 @@
 <script>
   var class_name = 'Transport';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.',
+    navOpen: 'მენიუს გახსნა',
+    navClose: 'მენიუს დახურვა',
+    cbBadPhone: 'შეიყვანეთ სწორი ტელეფონის ნომერი.',
+    cbOk: 'მადლობა! ჩვენი მენეჯერი უახლოეს დროში დაგიკავშირდებათ.',
+    cbFail: 'ონლაინ განაცხადი დროებით მიუწვდომელია — დაგვირეკეთ: ',
+    lotSearching: 'მიმდინარეობს ლოტის მონაცემების მოძიება…',
+    lotUnavailable: 'ლოტის ავტომატური შემოწმება ამ ეტაპზე მიუწვდომელია. გამოიყენეთ სტანდარტული კალკულატორი, ან დაგვიკავშირდით — ზუსტ ტარიფს სწრაფად დაგითვლით.',
+    lotCalc: 'კალკულატორი',
+    lotLand: 'სახმელეთო გადაზიდვა აშშ-ში',
+    lotOcean: 'საზღვაო გადაზიდვა',
+    lotTotal: 'ტრანსპორტირება სულ',
+    lotLot: 'ლოტი '
+  };
 </script>
 </head>
 <body class="page-transport">
@@ -62,6 +86,12 @@
     </div>
 
     <nav class="nav" aria-label="მთავარი ნავიგაცია">
+
+      <nav class="lang-switch" aria-label="ენის არჩევა">
+        <a href="https://st0ckitch.github.io/vga-auto/transport/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+        <a href="https://st0ckitch.github.io/vga-auto/en/transport/"  hreflang="en">EN</a>
+        <a href="https://st0ckitch.github.io/vga-auto/ru/transport/"  hreflang="ru">RU</a>
+      </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a>
       <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a>
@@ -244,7 +274,7 @@
   <button class="lightbox__nav lightbox__nav--next" aria-label="შემდეგი ფოტო">›</button>
 </dialog>
 <main id="main">
-  <section class="page-hero">
+    <section class="page-hero">
     <div class="container">
         <nav aria-label="ნავიგაციის ჯაჭვი">
             <ol class="breadcrumbs">
@@ -268,23 +298,23 @@
             <p>პროცესის გამჭვირვალობისთვის მომხმარებელი ყველა ეტაპზე იღებს ფოტო-რეპორტს — აუქციონიდან გატანიდან კონტეინერში ჩატვირთვამდე და პორტში ჩამოსვლამდე. ასე ზუსტად იცით, სად არის თქვენი ავტომობილი და რა მდგომარეობაშია იგი.</p>
         </div>
         <div class="steps u-mt-48">
-            <div class="step">
+                        <div class="step">
                 <h3>აუქციონიდან გატანა</h3>
                 <p>ავტომობილი სახმელეთო ტრანსპორტით გადაიზიდება აუქციონიდან უახლოეს პორტის საწყობამდე.</p>
             </div>
-            <div class="step">
+                        <div class="step">
                 <h3>კონტეინერში ჩატვირთვა</h3>
                 <p>საწყობში მიღების შემდეგ ავტომობილი იტვირთება კონტეინერში — მომხმარებელი იღებს ფოტო-რეპორტს.</p>
             </div>
-            <div class="step">
+                        <div class="step">
                 <h3>საზღვაო გადაზიდვა</h3>
                 <p>კონტეინერი საკონტეინერო გემით მიემართება საქართველოსკენ — ფოთის ან ბათუმის პორტში.</p>
             </div>
-            <div class="step">
+                        <div class="step">
                 <h3>ჩამოსვლა საქართველოში</h3>
                 <p>პორტში ჩამოსვლის შემდეგ ავტომობილი გადის განბაჟებას და მზადდება მფლობელისთვის გადასაცემად.</p>
             </div>
-        </div>
+                    </div>
     </div>
 </section>
 
@@ -304,12 +334,12 @@
             <article class="feature detail-card">
                 <h3>რატომ VG?</h3>
                 <ul class="check-list">
-                    <li>ჩემი მეგობარი კომპანია — მომხმარებელზე ორიენტირებული სერვისი.</li>
-                    <li>სწრაფი, საიმედო და ხარისხიანი გადაზიდვა.</li>
-                    <li>ტვირთის დაზღვევა ქვეყნის წამყვან სადაზღვევო კომპანიებში.</li>
-                    <li>თანამშრომლები, რომლებიც ორიენტირებულნი არიან სწრაფ, ხარისხიან და საიმედო მომსახურებაზე.</li>
-                    <li>კომპანია, რომელიც ზრუნავს თქვენი ოჯახის ტრანსპორტით უზრუნველყოფაზე.</li>
-                </ul>
+                                        <li>ჩემი მეგობარი კომპანია — მომხმარებელზე ორიენტირებული სერვისი.</li>
+                                        <li>სწრაფი, საიმედო და ხარისხიანი გადაზიდვა.</li>
+                                        <li>ტვირთის დაზღვევა ქვეყნის წამყვან სადაზღვევო კომპანიებში.</li>
+                                        <li>თანამშრომლები, რომლებიც ორიენტირებულნი არიან სწრაფ, ხარისხიან და საიმედო მომსახურებაზე.</li>
+                                        <li>კომპანია, რომელიც ზრუნავს თქვენი ოჯახის ტრანსპორტით უზრუნველყოფაზე.</li>
+                                    </ul>
             </article>
 
             <article class="feature detail-card">
@@ -329,40 +359,40 @@
                 </div>
                 <h4 class="detail-card__sub">საწყობი ამერიკის 5 შტატში</h4>
                 <div class="detail-chips">
-                    <span class="chip">GA — ჯორჯია</span>
-                    <span class="chip">TX — ტეხასი</span>
-                    <span class="chip">FL — ფლორიდა</span>
-                    <span class="chip">NJ — ნიუ-ჯერსი</span>
-                    <span class="chip">CA — კალიფორნია</span>
-                </div>
+                                        <span class="chip">GA — ჯორჯია</span>
+                                        <span class="chip">TX — ტეხასი</span>
+                                        <span class="chip">FL — ფლორიდა</span>
+                                        <span class="chip">NJ — ნიუ-ჯერსი</span>
+                                        <span class="chip">CA — კალიფორნია</span>
+                                    </div>
             </article>
 
             <article class="feature detail-card">
                 <h3>როგორ ვაწარმოებთ ტვირთის მონიტორინგს</h3>
                 <ul class="check-list">
-                    <li>ავტომობილის შემოწმება და დათვალიერება.</li>
-                    <li>სახმელეთო ტრანსპორტირების დაწყებამდე გიგზავნით ტვირთის 10 ფოტოსურათს.</li>
-                    <li>საწყობში ავტომობილის მისვლისთანავე გიგზავნით 30–35 ფოტოსურათს, რათა ზუსტად იცოდეთ მანქანის მდგომარეობა ტრანსპორტირებამდე.</li>
-                    <li>დამატებითი ფოტოსურათები — მოთხოვნის შესაბამისად.</li>
-                    <li>წარმომადგენლები ტერმინალებზე, რომლებიც ზრუნავენ თქვენი ტვირთის უსაფრთხო გადმოტვირთვაზე.</li>
-                    <li>დაზიანების შემთხვევაში სწრაფი რეაგირება გადმოტვირთვაზე.</li>
-                    <li>მოთხოვნის შესაბამისად ავტომობილის საბუთის (ტაიტლის) ფოთში გაცემა.</li>
-                    <li>ევაკუატორის მომსახურება.</li>
-                </ul>
+                                        <li>ავტომობილის შემოწმება და დათვალიერება.</li>
+                                        <li>სახმელეთო ტრანსპორტირების დაწყებამდე გიგზავნით ტვირთის 10 ფოტოსურათს.</li>
+                                        <li>საწყობში ავტომობილის მისვლისთანავე გიგზავნით 30–35 ფოტოსურათს, რათა ზუსტად იცოდეთ მანქანის მდგომარეობა ტრანსპორტირებამდე.</li>
+                                        <li>დამატებითი ფოტოსურათები — მოთხოვნის შესაბამისად.</li>
+                                        <li>წარმომადგენლები ტერმინალებზე, რომლებიც ზრუნავენ თქვენი ტვირთის უსაფრთხო გადმოტვირთვაზე.</li>
+                                        <li>დაზიანების შემთხვევაში სწრაფი რეაგირება გადმოტვირთვაზე.</li>
+                                        <li>მოთხოვნის შესაბამისად ავტომობილის საბუთის (ტაიტლის) ფოთში გაცემა.</li>
+                                        <li>ევაკუატორის მომსახურება.</li>
+                                    </ul>
             </article>
 
             <article class="feature detail-card">
                 <h3>რას იღებს დილერი და ავტომობილის დამკვეთი</h3>
                 <ul class="check-list">
-                    <li>სწრაფი სერვისი.</li>
-                    <li>სრული ინფორმაცია ტვირთის შესახებ.</li>
-                    <li>სწრაფი და მოქნილი სამუშაო ვებ-გვერდი.</li>
-                    <li>ფინანსების მართვა.</li>
-                    <li>საუკეთესო და რეალური ფასი გადაზიდვებზე.</li>
-                    <li>კონფიდენციალურობის გარანტია.</li>
-                    <li>გადაზიდვის კალკულატორი, რომელიც აძლევს დილერს საშუალებას გამოიმუშაოს დამატებითი თანხა.</li>
-                    <li>დაზღვეული ტვირთი.</li>
-                </ul>
+                                        <li>სწრაფი სერვისი.</li>
+                                        <li>სრული ინფორმაცია ტვირთის შესახებ.</li>
+                                        <li>სწრაფი და მოქნილი სამუშაო ვებ-გვერდი.</li>
+                                        <li>ფინანსების მართვა.</li>
+                                        <li>საუკეთესო და რეალური ფასი გადაზიდვებზე.</li>
+                                        <li>კონფიდენციალურობის გარანტია.</li>
+                                        <li>გადაზიდვის კალკულატორი, რომელიც აძლევს დილერს საშუალებას გამოიმუშაოს დამატებითი თანხა.</li>
+                                        <li>დაზღვეული ტვირთი.</li>
+                                    </ul>
             </article>
         </div>
     </div>
@@ -390,7 +420,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
@@ -441,6 +471,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=6" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=7" defer></script>
 </body>
 </html>

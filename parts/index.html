@@ -7,6 +7,10 @@
 <title>ავტონაწილები ამერიკიდან — Toyota, Lexus, Ford | VG Auto Export</title>
 <meta name="description" content="ორიგინალი ავტონაწილები ამერიკიდან: Toyota, Lexus, Honda, Ford, Kia, Volkswagen და Hyundai. აირჩიეთ მარკა და მოდელი, ნახეთ ფოტოები, კოდები და ფასები.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/parts/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/parts/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/parts/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/parts/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/parts/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
@@ -23,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=12">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=13">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/parts.css?v=3">
 
 <script type="application/ld+json">
@@ -39,6 +43,26 @@
 <script>
   var class_name = 'Parts';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.',
+    navOpen: 'მენიუს გახსნა',
+    navClose: 'მენიუს დახურვა',
+    cbBadPhone: 'შეიყვანეთ სწორი ტელეფონის ნომერი.',
+    cbOk: 'მადლობა! ჩვენი მენეჯერი უახლოეს დროში დაგიკავშირდებათ.',
+    cbFail: 'ონლაინ განაცხადი დროებით მიუწვდომელია — დაგვირეკეთ: ',
+    lotSearching: 'მიმდინარეობს ლოტის მონაცემების მოძიება…',
+    lotUnavailable: 'ლოტის ავტომატური შემოწმება ამ ეტაპზე მიუწვდომელია. გამოიყენეთ სტანდარტული კალკულატორი, ან დაგვიკავშირდით — ზუსტ ტარიფს სწრაფად დაგითვლით.',
+    lotCalc: 'კალკულატორი',
+    lotLand: 'სახმელეთო გადაზიდვა აშშ-ში',
+    lotOcean: 'საზღვაო გადაზიდვა',
+    lotTotal: 'ტრანსპორტირება სულ',
+    lotLot: 'ლოტი '
+  };
 </script>
 </head>
 <body class="page-parts">
@@ -62,6 +86,12 @@
     </div>
 
     <nav class="nav" aria-label="მთავარი ნავიგაცია">
+
+      <nav class="lang-switch" aria-label="ენის არჩევა">
+        <a href="https://st0ckitch.github.io/vga-auto/parts/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+        <a href="https://st0ckitch.github.io/vga-auto/en/parts/"  hreflang="en">EN</a>
+        <a href="https://st0ckitch.github.io/vga-auto/ru/parts/"  hreflang="ru">RU</a>
+      </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a>
       <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a>
@@ -253,9 +283,7 @@
       </ol>
     </nav>
     <h1>ავტონაწილები <span class="accent">ამერიკიდან</span></h1>
-    <p class="lead">ავტონაწილები Toyota-ს, Lexus-ის, Honda-ს, Ford-ის, Kia-ს, Volkswagen-ისა და
-      Hyundai-ის მოდელებისთვის — აირჩიეთ მწარმოებელი, შემდეგ მოდელი და იხილეთ ხელმისაწვდომი
-      ნაწილები ფოტოთი, კოდითა და ფასით.</p>
+    <p class="lead">ავტონაწილები Toyota-ს, Lexus-ის, Honda-ს, Ford-ის, Kia-ს, Volkswagen-ისა და Hyundai-ის მოდელებისთვის — აირჩიეთ მწარმოებელი, შემდეგ მოდელი და იხილეთ ხელმისაწვდომი ნაწილები ფოტოთი, კოდითა და ფასით.</p>
   </div>
 </section>
 
@@ -363,6 +391,11 @@
 </section>
 
 <script>
+var PARTS_T = {
+  models: 'მოდელები',
+  loading: 'იტვირთება…',
+  loadErr: 'მოდელები ვერ ჩაიტვირთა — გთხოვთ, სცადოთ თავიდან.'
+};
 
 (function () {
   var grid  = document.getElementById('brand-grid');
@@ -380,11 +413,11 @@
     var makerId = tile.getAttribute('data-maker-id');
     var brand   = tile.getAttribute('data-brand') || '';
 
-    title.textContent = brand ? brand + ' — მოდელები' : 'მოდელები';
+    title.textContent = brand ? brand + ' — ' + PARTS_T.models : PARTS_T.models;
     panel.hidden = false;
-    cloud.innerHTML = '<p class="form-note">იტვირთება…</p>';
+    cloud.innerHTML = '<p class="form-note">' + PARTS_T.loading + '</p>';
 
-    fetch(siteUrl + 'index.php?class=Action&method=car_models&makerId=' + encodeURIComponent(makerId))
+    fetch(siteUrl + 'index.php?class=Action&method=car_models&makerId=' + encodeURIComponent(makerId) + (window.langQ || ''))
       .then(function (r) {
         if (!r.ok) throw new Error(r.status);
         return r.text();
@@ -395,7 +428,7 @@
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       })
       .catch(function () {
-        cloud.innerHTML = '<p class="form-note">მოდელები ვერ ჩაიტვირთა — გთხოვთ, სცადოთ თავიდან.</p>';
+        cloud.innerHTML = '<p class="form-note">' + PARTS_T.loadErr + '</p>';
       });
   });
 
@@ -417,7 +450,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
@@ -468,6 +501,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=6" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=7" defer></script>
 </body>
 </html>

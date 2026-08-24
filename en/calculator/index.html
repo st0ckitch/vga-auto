@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shipping Calculator — Car Import Cost | VG Auto Export</title>
+<meta name="description" content="Estimate the cost of importing a car from the USA by auction, city and port. See what makes up the price and where customs duty is calculated.">
+<link rel="canonical" href="https://st0ckitch.github.io/vga-auto/en/calculator/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/calculator/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/calculator/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/calculator/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/calculator/">
+<meta name="theme-color" content="#171314">
+<script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
+
+<meta property="og:site_name" content="VG Auto Export">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shipping Calculator — Car Import Cost | VG Auto Export">
+<meta property="og:description" content="Estimate the cost of importing a car from the USA by auction, city and port. See what makes up the price and where customs duty is calculated.">
+<meta property="og:url" content="https://st0ckitch.github.io/vga-auto/en/calculator/">
+<meta property="og:image" content="https://st0ckitch.github.io/vga-auto/images/logo400.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="https://st0ckitch.github.io/vga-auto/favicon2.ico">
+<link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=13">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/calculator.css?v=3">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "VG Auto Export",
+  "url": "https://st0ckitch.github.io/vga-auto/",
+  "logo": "https://st0ckitch.github.io/vga-auto/images/logo400.png",
+  "description": "Estimate the cost of importing a car from the USA by auction, city and port. See what makes up the price and where customs duty is calculated."
+}
+</script>
+<script>
+  var class_name = 'Calculator';
+  var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '&lang=en';
+  var VG_T = {
+    themeToggle: 'Toggle theme',
+    themeDark: 'Dark theme',
+    themeLight: 'Light theme',
+    newsOk: 'Thank you! You are subscribed.',
+    newsErr: 'Subscription failed — please try again later.',
+    navOpen: 'Open menu',
+    navClose: 'Close menu',
+    cbBadPhone: 'Please enter a valid phone number.',
+    cbOk: 'Thank you! Our manager will call you back shortly.',
+    cbFail: 'Online requests are temporarily unavailable — please call us: ',
+    lotSearching: 'Looking up the lot…',
+    lotUnavailable: 'Automatic lot lookup is not available yet. Use the standard calculator, or contact us — we will quote the exact rate quickly.',
+    lotCalc: 'Calculator',
+    lotLand: 'Road transport in the USA',
+    lotOcean: 'Ocean freight',
+    lotTotal: 'Shipping total',
+    lotLot: 'Lot '
+  };
+</script>
+</head>
+<body class="page-calculator">
+<div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container container--wide site-header__in">
+    <a class="brand" href="https://st0ckitch.github.io/vga-auto/en/" aria-label="VG Auto Export — home page">
+      <img class="brand__logo" src="https://st0ckitch.github.io/vga-auto/public/img/VG-logo1.png" alt="VG Auto Export logo" width="98" height="58">
+    </a>
+
+    <div class="header-actions">
+      <a class="btn header-dealer" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">
+        <span class="is-full">Dealer Portal</span><span class="is-short">Dealer</span>
+      </a>
+      <button class="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <nav class="nav" aria-label="Main navigation">
+
+      <nav class="lang-switch" aria-label="Choose language">
+        <a href="https://st0ckitch.github.io/vga-auto/calculator/"  hreflang="ka">KA</a>
+        <a href="https://st0ckitch.github.io/vga-auto/en/calculator/" class="is-active" aria-current="true" hreflang="en">EN</a>
+        <a href="https://st0ckitch.github.io/vga-auto/ru/calculator/"  hreflang="ru">RU</a>
+      </nav>
+      <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import</a>
+      <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/en/transport/">Shipping</a>
+      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/en/cars/">Cars</a>
+      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/en/parts/">Auto Parts</a>
+      <div class="nav__item">
+        <button class="nav__link nav__toggle" aria-expanded="false">Tools</button>
+        <div class="nav__menu">
+          <a href="https://st0ckitch.github.io/vga-auto/en/calculator/">Calculator</a>
+          <button data-open="#dlg-lot">Calculate by lot number</button>
+          <button data-open="#dlg-track">Container Tracking</button>
+          <a href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a>
+          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Customs Calculator</a>
+        </div>
+      </div>
+      <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/en/blog/">Blog</a>
+      <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/en/partners/">Partners</a>
+      <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a>
+      <div class="nav__cta">
+        <button class="btn btn--primary" type="button" data-open="#dlg-callback">Request a call</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<dialog class="dlg" id="dlg-calc" aria-labelledby="dlg-calc-title">
+  <div class="dlg__head">
+    <h2 id="dlg-calc-title">Calculator</h2>
+    <button class="dlg__close" data-close aria-label="Close">✕</button>
+  </div>
+  <div class="dlg__body" data-calc>
+    <p class="form-note u-mb-16">Estimate the shipping cost from the auction to Georgia.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="vehicleType">Car Type</label>
+        <select class="select" id="vehicleType">
+                      <option value="1">CAR</option>
+                      <option value="2">MOTO</option>
+                      <option value="3">VAN</option>
+                  </select>
+      </div>
+      <div class="field">
+        <label for="us_auc">Auction</label>
+        <select class="select js-calc-auction" id="us_auc">
+                      <option value="Copart">Copart</option>
+                      <option value="IAAI">IAAI</option>
+                      <option value="Manheim">Manheim</option>
+                      <option value="Adesa">Adesa</option>
+                      <option value="Pipeline">Pipeline</option>
+                      <option value="Ove">Ove</option>
+                      <option value="DPrivat">DPrivat</option>
+                  </select>
+      </div>
+      <div class="field">
+        <label for="us_city">City</label>
+        <select class="select js-calc-city" id="us_city"><option value="">Select a city</option></select>
+      </div>
+      <div class="field">
+        <label for="geo_port">Port in Georgia</label>
+        <select class="select" id="geo_port">
+          <option value="poti">Poti</option>
+          <option value="batumi">Batumi</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-total" aria-live="polite">
+      <span>Total</span>
+      <b id="calcresult" class="js-calc-result" data-msg-unavailable="Data temporarily unavailable">—</b>
+    </div>
+    <p class="form-note u-mt-16 u-mb-0">Contact us for exact rates — the price depends on the auction location and vehicle type.</p>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="dlg-track" aria-labelledby="dlg-track-title">
+  <div class="dlg__head">
+    <h2 id="dlg-track-title">Container Tracking</h2>
+    <button class="dlg__close" data-close aria-label="Close">✕</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">Enter your container number and choose the shipping line — you will be redirected to the carrier's official tracker.</p>
+    <form data-track-form>
+      <div class="field u-mb-16">
+        <label for="track-carrier">Shipping line</label>
+        <select class="select" id="track-carrier" name="carrier">
+          <option value="maersk">Maersk</option>
+          <option value="msc">MSC</option>
+          <option value="cosco">COSCO</option>
+          <option value="zim">ZIM</option>
+          <option value="hapag">Hapag-Lloyd</option>
+        </select>
+      </div>
+      <div class="field u-mb-24">
+        <label for="track-number">Container</label>
+        <input class="input" id="track-number" name="container" type="text" placeholder="MSKU1234567" autocomplete="off">
+      </div>
+      <button class="btn btn--primary btn--lg" type="submit" style="width:100%;">Search</button>
+    </form>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="dlg-callback" aria-labelledby="dlg-callback-title">
+  <div class="dlg__head">
+    <h2 id="dlg-callback-title">Contact the sales manager</h2>
+    <button class="dlg__close" data-close aria-label="&#10005;">&#10005;</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">Leave your number — a manager will call you back and answer any question about choosing a car, the price and the timing.</p>
+    <form data-callback-form>
+      <div class="form-grid u-mb-24">
+        <div class="field">
+          <label for="cb-name">Name</label>
+          <input class="input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="Your name">
+        </div>
+        <div class="field">
+          <label for="cb-phone">Phone</label>
+          <input class="input" id="cb-phone" name="phone" type="tel" autocomplete="tel" placeholder="5XX XX XX XX">
+        </div>
+        <div class="field field--full">
+          <label for="cb-note">Comment — optional</label>
+          <input class="input" id="cb-note" name="note" type="text" placeholder="e.g. I am interested in a 2019 Toyota Camry">
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg" type="submit" style="width:100%;">Send</button>
+      <p class="form-msg" role="status"></p>
+    </form>
+    <p class="form-note u-mt-16 u-mb-0">Or call us directly: <a href="tel:+995322500504">0322 50 05 04</a></p>
+  </div>
+</dialog>
+
+<dialog class="dlg dlg--wide" id="dlg-lot" aria-labelledby="dlg-lot-title">
+  <div class="dlg__head">
+    <h2 id="dlg-lot-title">Calculate by lot number</h2>
+    <button class="dlg__close" data-close aria-label="&#10005;">&#10005;</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">Enter the auction lot number — we look up where the car is and calculate shipping to Georgia.</p>
+    <form class="lot-form" data-lot-form data-lot-result="#lot-result-dlg">
+      <div class="form-grid">
+        <div class="field">
+          <label for="lot-auction">Auction</label>
+          <select class="select" id="lot-auction" name="auction">
+            <option value="Copart">Copart</option>
+            <option value="IAAI">IAAI</option>
+            <option value="Manheim">Manheim</option>
+            <option value="Adesa">Adesa</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lot-number">Lot number</label>
+          <input class="input" id="lot-number" name="lot" type="text" inputmode="numeric" placeholder="e.g. 58412345" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="lot-vehicle">Vehicle type</label>
+          <select class="select" id="lot-vehicle" name="vehicle">
+            <option value="1">CAR</option>
+            <option value="2">MOTO</option>
+            <option value="3">VAN</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lot-port">Port in Georgia</label>
+          <select class="select" id="lot-port" name="port">
+            <option value="poti">Poti</option>
+            <option value="batumi">Batumi</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg u-mt-24" type="submit" style="width:100%;">Calculate</button>
+    </form>
+    <div class="lot-result" id="lot-result-dlg"></div>
+  </div>
+</dialog>
+
+<dialog class="lightbox" id="vg-lightbox" aria-label="Enlarge photo">
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">‹</button>
+  <figure style="margin:0;">
+    <img alt="">
+    <figcaption></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" aria-label="Next photo">›</button>
+</dialog>
+<main id="main">
+  <section class="page-hero">
+  <div class="container">
+    <nav aria-label="Breadcrumb"><ol class="breadcrumbs">
+      <li><a href="https://st0ckitch.github.io/vga-auto/en/">Home</a></li>
+      <li aria-current="page">Calculator</li>
+    </ol></nav>
+    <h1>Shipping <span class="accent">Calculator</span></h1>
+    <p class="lead">Estimate the cost of importing a car from the USA — choose an auction, city, and port.</p>
+  </div>
+</section>
+
+<section class="section section--tight section--tint reveal" id="lot">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">New</p>
+      <h2>Calculate by lot number</h2>
+      <p class="lead">Every car at auction has its own lot number. Enter it and we find the vehicle’s location and work out the shipping cost to Georgia.</p>
+    </div>
+    <div class="card" style="padding:32px;">
+      <form class="lot-form" data-lot-form data-lot-result="#lot-result-page">
+        <div class="form-grid">
+          <div class="field">
+            <label for="page-lot-auction">Auction</label>
+            <select class="select" id="page-lot-auction" name="auction">
+              <option value="Copart">Copart</option>
+              <option value="IAAI">IAAI</option>
+              <option value="Manheim">Manheim</option>
+              <option value="Adesa">Adesa</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="page-lot-number">Lot number</label>
+            <input class="input" id="page-lot-number" name="lot" type="text" inputmode="numeric" placeholder="e.g. 58412345" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="page-lot-vehicle">Vehicle type</label>
+            <select class="select" id="page-lot-vehicle" name="vehicle">
+              <option value="1">CAR</option>
+              <option value="2">MOTO</option>
+              <option value="3">VAN</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="page-lot-port">Port in Georgia</label>
+            <select class="select" id="page-lot-port" name="port">
+              <option value="poti">Poti</option>
+              <option value="batumi">Batumi</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-actions u-mt-24">
+          <button class="btn btn--primary btn--lg" type="submit">Calculate</button>
+        </div>
+      </form>
+      <div class="lot-result" id="lot-result-page"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight reveal">
+  <div class="container">
+    <div class="grid grid--split" style="align-items:start;">
+
+      <div class="card" data-calc style="padding:32px;">
+        <h2 style="font-size:1.25rem;">Calculate the Cost</h2>
+        <div class="form-grid">
+          <div class="field">
+            <label for="calc-type">Car Type</label>
+            <select class="select" id="calc-type">
+                              <option value="1">CAR</option>
+                              <option value="2">MOTO</option>
+                              <option value="3">VAN</option>
+                          </select>
+          </div>
+          <div class="field">
+            <label for="calc-auc">Auction</label>
+            <select class="select js-calc-auction" id="calc-auc">
+                              <option value="Copart">Copart</option>
+                              <option value="IAAI">IAAI</option>
+                              <option value="Manheim">Manheim</option>
+                              <option value="Adesa">Adesa</option>
+                              <option value="Pipeline">Pipeline</option>
+                              <option value="Ove">Ove</option>
+                              <option value="DPrivat">DPrivat</option>
+                          </select>
+          </div>
+          <div class="field">
+            <label for="calc-city">City</label>
+            <select class="select js-calc-city" id="calc-city"><option value="">—</option></select>
+          </div>
+          <div class="field">
+            <label for="calc-port">Port in Georgia</label>
+            <select class="select" id="calc-port">
+              <option value="poti">Poti</option>
+              <option value="batumi">Batumi</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc-total" aria-live="polite">
+          <span>Total</span>
+          <b class="js-calc-result" data-msg-unavailable="Data temporarily unavailable">—</b>
+        </div>
+        <p class="form-note u-mt-16 u-mb-0">The exact rate depends on the auction location and vehicle type — <a href="https://st0ckitch.github.io/vga-auto/en/contact/">contact us</a> for a final price.</p>
+      </div>
+
+      <div>
+        <h2 style="font-size:1.25rem;">What Makes Up the Import Cost</h2>
+        <p>The final price of importing a car from the USA is made up of several components:</p>
+        <dl class="spec-list spec-list--stack" style="margin-bottom:24px;">
+                    <div><dt>Vehicle price at auction</dt><dd>The final lot price + auction fees</dd></div>
+                    <div><dt>Inland transport in the USA</dt><dd>From the auction to the port — depends on the state</dd></div>
+                    <div><dt>Ocean freight</dt><dd>By container to the port of Poti or Batumi</dd></div>
+                    <div><dt>Customs clearance</dt><dd>Year, engine, and fuel type — calculate it on <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">RS.ge</a></dd></div>
+                  </dl>
+        <p>See the full process on the <a href="https://st0ckitch.github.io/vga-auto/en/import/">car import page</a>, and shipping details on the <a href="https://st0ckitch.github.io/vga-auto/en/transport/">shipping page</a>.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="container">
+    <div class="section-head"><h2 style="font-size:1.4rem;">Frequently Asked Questions</h2></div>
+    <details class="accordion">
+      <summary>Is the calculator price final?</summary>
+      <div class="accordion__body"><p>The calculator shows an estimate. The final price depends on the specific lot, auction fees, and the shipping schedule — <a href="https://st0ckitch.github.io/vga-auto/en/contact/">get in touch</a> to confirm.</p></div>
+    </details>
+    <details class="accordion">
+      <summary>Is customs clearance included in this price?</summary>
+      <div class="accordion__body"><p>No — customs duty is calculated separately based on the vehicle's year, engine, and fuel type. Use the Revenue Service's <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">official calculator</a>.</p></div>
+    </details>
+    <details class="accordion">
+      <summary>Which port should I choose — Poti or Batumi?</summary>
+      <div class="accordion__body"><p>We serve both ports. The choice mostly depends on your location and the shipping line's schedule.</p></div>
+    </details>
+  </div>
+</section>
+
+<section class="section section--tight reveal">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <h2>Have a specific lot in mind?</h2>
+        <p>Send us the link — we'll calculate your full budget through to handover.</p>
+      </div>
+      <div class="u-flex">
+        <a class="btn btn--primary btn--lg" href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a>
+        <a class="btn btn--light btn--lg" href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import Service</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Is the calculator price final?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The calculator shows an estimate. The final price depends on the specific lot, auction fees, and the shipping schedule." } },
+    { "@type": "Question", "name": "Is customs clearance included in this price?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — customs duty is calculated separately based on the vehicle's year, engine, and fuel type, using the Revenue Service's official calculator." } },
+    { "@type": "Question", "name": "Which port should I choose — Poti or Batumi?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We serve both ports; the choice depends on your location and the shipping line's schedule." } }
+  ]
+}
+</script>
+
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="footer-brand">
+        <img src="https://st0ckitch.github.io/vga-auto/public/img/VG-logo1.png" alt="VG Auto Export logo">
+        <p>Importing cars from the USA to Georgia. Buying cars at US auctions, shipping, customs clearance, and auto parts — a full service from one company.</p>
+      </div>
+
+      <nav aria-label="Navigation">
+        <h3>Navigation</h3>
+        <ul>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/">Home</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/transport/">Shipping</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/cars/">Cars</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/parts/">Auto Parts</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/blog/">Blog</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/partners/">Partners</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Services">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/calculator/">Calculator</a></li>
+          <li><button data-open="#dlg-track">Container Tracking</button></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/video/">Video Tutorials</a></li>
+          <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">Dealer Portal</a></li>
+          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Customs Calculator</a></li>
+        </ul>
+      </nav>
+
+      <div>
+                <h3>Newsletter</h3>
+                <form class="footer-news" data-news-form>
+          <label class="u-hidden" for="footer-email">Email</label>
+          <input id="footer-email" type="email" placeholder="Email" autocomplete="email">
+          <button class="btn btn--primary" type="submit" aria-label="Subscribe">→</button>
+        </form>
+        <p class="form-msg" role="status"></p>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>© 2026 VG AUTO EXPORT LLC — All rights reserved</span>
+      <div class="social-row">
+        <a href="https://www.facebook.com/113606630441191" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.6V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.6H7.6V14h2.7v8h3.2z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/results?search_query=vg+auto+export" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.5s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.4-1C16.6 4 12 4 12 4s-4.6 0-7.7.2c-.5.1-1.5.1-2.4 1-.7.7-.9 2.3-.9 2.3S1 9.4 1 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.9.2 7.4.2 7.4.2s4.6 0 7.7-.2c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 15.1V8.9l6 3.1-6 3.1z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=7" defer></script>
+</body>
+</html>

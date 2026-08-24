@@ -7,7 +7,11 @@
 <title>ავტონაწილების კატალოგი | VG Auto Export</title>
 <meta name="description" content="ავტონაწილების კატალოგი მოდელის მიხედვით: ფასები, კოდები, მარაგის სტატუსი და თავსებადი მოდელები.">
 <link rel="canonical" href="https://st0ckitch.github.io/vga-auto/partlist/">
-<meta name="robots" content="noindex, follow"><meta name="theme-color" content="#171314">
+<meta name="robots" content="noindex, follow"><link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/partlist/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/partlist/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/partlist/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/partlist/">
+<meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
 <meta property="og:site_name" content="VG Auto Export">
@@ -23,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=12">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=13">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/partlist.css?v=3">
 
 <script type="application/ld+json">
@@ -39,6 +43,26 @@
 <script>
   var class_name = 'PartList';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
+  var langQ = '';
+  var VG_T = {
+    themeToggle: 'თემის შეცვლა',
+    themeDark: 'მუქი თემა',
+    themeLight: 'ღია თემა',
+    newsOk: 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.',
+    newsErr: 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.',
+    navOpen: 'მენიუს გახსნა',
+    navClose: 'მენიუს დახურვა',
+    cbBadPhone: 'შეიყვანეთ სწორი ტელეფონის ნომერი.',
+    cbOk: 'მადლობა! ჩვენი მენეჯერი უახლოეს დროში დაგიკავშირდებათ.',
+    cbFail: 'ონლაინ განაცხადი დროებით მიუწვდომელია — დაგვირეკეთ: ',
+    lotSearching: 'მიმდინარეობს ლოტის მონაცემების მოძიება…',
+    lotUnavailable: 'ლოტის ავტომატური შემოწმება ამ ეტაპზე მიუწვდომელია. გამოიყენეთ სტანდარტული კალკულატორი, ან დაგვიკავშირდით — ზუსტ ტარიფს სწრაფად დაგითვლით.',
+    lotCalc: 'კალკულატორი',
+    lotLand: 'სახმელეთო გადაზიდვა აშშ-ში',
+    lotOcean: 'საზღვაო გადაზიდვა',
+    lotTotal: 'ტრანსპორტირება სულ',
+    lotLot: 'ლოტი '
+  };
 </script>
 </head>
 <body class="page-partlist">
@@ -62,6 +86,12 @@
     </div>
 
     <nav class="nav" aria-label="მთავარი ნავიგაცია">
+
+      <nav class="lang-switch" aria-label="ენის არჩევა">
+        <a href="https://st0ckitch.github.io/vga-auto/partlist/" class="is-active" aria-current="true" hreflang="ka">KA</a>
+        <a href="https://st0ckitch.github.io/vga-auto/en/partlist/"  hreflang="en">EN</a>
+        <a href="https://st0ckitch.github.io/vga-auto/ru/partlist/"  hreflang="ru">RU</a>
+      </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a>
       <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a>
@@ -254,8 +284,7 @@
                       </ol>
     </nav>
     <h1>ავტონაწილები</h1>
-    <p class="lead">არჩეული მოდელის ხელმისაწვდომი ნაწილები — ფოტო, კოდი, ფასი და მარაგის სტატუსი.
-      ფოტოზე დაჭერით იხილავთ გადიდებულ სურათს.</p>
+    <p class="lead">არჩეული მოდელის ხელმისაწვდომი ნაწილები — ფოტო, კოდი, ფასი და მარაგის სტატუსი. ფოტოზე დაჭერით იხილავთ გადიდებულ სურათს.</p>
   </div>
 </section>
 
@@ -286,7 +315,7 @@
         <p>ავტომობილების იმპორტი ამერიკიდან საქართველოში. ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება, განბაჟება და ავტონაწილები — სრული სერვისი ერთ კომპანიაში.</p>
       </div>
 
-      <nav aria-label="ფუტერის ნავიგაცია">
+      <nav aria-label="ნავიგაცია">
         <h3>ნავიგაცია</h3>
         <ul>
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
@@ -337,6 +366,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=6" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=7" defer></script>
 </body>
 </html>

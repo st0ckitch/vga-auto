@@ -26,7 +26,7 @@
     var btn = document.querySelector('.theme-toggle');
     if (btn) {
       btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
-      btn.setAttribute('title', t === 'light' ? 'მუქი თემა' : 'ღია თემა');
+      btn.setAttribute('title', t === 'light' ? ((window.VG_T||{}).themeDark||'Dark theme') : ((window.VG_T||{}).themeLight||'Light theme'));
     }
   };
   var headerActions = document.querySelector('.header-actions') || document.querySelector('.site-header__in');
@@ -34,7 +34,7 @@
     var toggle = document.createElement('button');
     toggle.className = 'theme-toggle';
     toggle.type = 'button';
-    toggle.setAttribute('aria-label', 'თემის შეცვლა');
+    toggle.setAttribute('aria-label', (window.VG_T||{}).themeToggle||'Toggle theme');
     toggle.innerHTML =
       '<svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>' +
       '<svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
@@ -57,6 +57,10 @@
     onScroll();
   }
 
+  /* Localised UI strings; each page defines window.VG_T for its language. */
+  var T = window.VG_T || {};
+  var tr = function (key, fallback) { return T[key] || fallback; };
+
   /* ---------- Navigation drawer (all breakpoints) ---------- */
   var burger = document.querySelector('.burger');
   var navEl = document.querySelector('.nav');
@@ -74,7 +78,7 @@
     var setNav = function (open) {
       document.body.classList.toggle('nav-open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      burger.setAttribute('aria-label', open ? 'მენიუს დახურვა' : 'მენიუს გახსნა');
+      burger.setAttribute('aria-label', open ? tr('navClose', 'Close menu') : tr('navOpen', 'Open menu'));
       navEl.setAttribute('aria-hidden', open ? 'false' : 'true');
     };
     setNav(false);
@@ -174,7 +178,7 @@
       if (!vin) { input.focus(); return; }
       var base = form.getAttribute('action') || ((window.siteUrl || '/') + 'index.php');
       var sep = base.indexOf('?') >= 0 ? '&' : '?';
-      window.location.href = base + sep + 'class=Search&vin=' + encodeURIComponent(vin);
+      window.location.href = base + sep + 'class=Search&vin=' + encodeURIComponent(vin) + (window.langQ||'');
     });
   });
 
@@ -212,12 +216,12 @@
           try { ok = JSON.parse(t).error === 0; } catch (err) { ok = false; }
           if (msg) {
             msg.className = ok ? 'form-msg form-msg--ok' : 'form-msg form-msg--err';
-            msg.textContent = ok ? 'გმადლობთ! თქვენ გამოიწერეთ სიახლეები.' : 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.';
+            msg.textContent = ok ? ((window.VG_T||{}).newsOk||'Subscribed!') : ((window.VG_T||{}).newsErr||'Subscription failed.');
           }
           if (ok) input.value = '';
         })
         .catch(function () {
-          if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = 'გამოწერა ვერ მოხერხდა — სცადეთ მოგვიანებით.'; }
+          if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = (window.VG_T||{}).newsErr||'Subscription failed.'; }
         });
     });
   }
@@ -409,7 +413,7 @@
       var phone = (phoneEl.value || '').trim();
       if (!name) { nameEl.focus(); return; }
       if (phone.replace(/[^0-9]/g, '').length < 9) {
-        if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = 'შეიყვანეთ სწორი ტელეფონის ნომერი.'; }
+        if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = tr('cbBadPhone', 'Please enter a valid phone number.'); }
         phoneEl.focus();
         return;
       }
@@ -418,7 +422,7 @@
       var fallback = function () {
         if (!msg) return;
         msg.className = 'form-msg form-msg--err';
-        msg.innerHTML = 'ონლაინ განაცხადი დროებით მიუწვდომელია — დაგვირეკეთ: ' +
+        msg.innerHTML = tr('cbFail', 'Requests are temporarily unavailable — please call: ') +
           '<a href="tel:+995322500504">0322 50 05 04</a>';
       };
       fetch((window.siteUrl || '/') + 'index.php?class=Action&method=callback_request' +
@@ -430,7 +434,7 @@
           var ok = false;
           try { ok = JSON.parse(t).error === 0; } catch (err) { ok = false; }
           if (ok) {
-            if (msg) { msg.className = 'form-msg form-msg--ok'; msg.textContent = 'მადლობა! ჩვენი მენეჯერი უახლოეს დროში დაგიკავშირდებათ.'; }
+            if (msg) { msg.className = 'form-msg form-msg--ok'; msg.textContent = tr('cbOk', 'Thank you! Our manager will call you back shortly.'); }
             form.reset();
           } else {
             fallback();
@@ -466,16 +470,17 @@
       if (btn) btn.disabled = true;
       if (box) {
         box.classList.add('is-visible');
-        box.innerHTML = '<p class="form-note u-mb-0">მიმდინარეობს ლოტის მონაცემების მოძიება…</p>';
+        box.innerHTML = '<p class="form-note u-mb-0">' + tr('lotSearching', 'Looking up the lot…') + '</p>';
       }
       var unavailable = function () {
         if (!box) return;
         box.classList.add('is-visible');
         box.innerHTML =
-          '<p class="form-note u-mb-16">ლოტის ავტომატური შემოწმება ამ ეტაპზე მიუწვდომელია. ' +
-          'გამოიყენეთ სტანდარტული კალკულატორი, ან დაგვიკავშირდით — ზუსტ ტარიფს სწრაფად დაგითვლით.</p>' +
+          '<p class="form-note u-mb-16">' +
+          tr('lotUnavailable', 'Automatic lot lookup is not available yet — please use the calculator or contact us.') +
+          '</p>' +
           '<div class="u-flex u-flex-wrap">' +
-          '<button class="btn btn--primary btn--sm" type="button" data-open="#dlg-calc">კალკულატორი</button>' +
+          '<button class="btn btn--primary btn--sm" type="button" data-open="#dlg-calc">' + tr('lotCalc', 'Calculator') + '</button>' +
           '<a class="btn btn--ghost btn--sm" href="tel:+995322500504">0322 50 05 04</a>' +
           '</div>';
       };
@@ -491,16 +496,16 @@
           if (!d || d.error !== 0 || !box) { unavailable(); return; }
           var cur = d.currency || 'USD';
           var rows = '';
-          if (money(d.us_transport, cur)) rows += '<div class="lot-result__row"><span>სახმელეთო გადაზიდვა აშშ-ში</span><b>' + money(d.us_transport, cur) + '</b></div>';
-          if (money(d.ocean, cur)) rows += '<div class="lot-result__row"><span>საზღვაო გადაზიდვა</span><b>' + money(d.ocean, cur) + '</b></div>';
+          if (money(d.us_transport, cur)) rows += '<div class="lot-result__row"><span>' + tr('lotLand', 'Road transport in the USA') + '</span><b>' + money(d.us_transport, cur) + '</b></div>';
+          if (money(d.ocean, cur)) rows += '<div class="lot-result__row"><span>' + tr('lotOcean', 'Ocean freight') + '</span><b>' + money(d.ocean, cur) + '</b></div>';
           box.innerHTML =
             '<div class="card"><div class="card__body">' +
             '<div class="lot-result__head">' +
-            '<span class="lot-result__lot">ლოტი ' + esc(d.lot || lot) + '</span>' +
+            '<span class="lot-result__lot">' + tr('lotLot', 'Lot ') + esc(d.lot || lot) + '</span>' +
             '<span class="lot-result__place">' + esc([d.location, d.city, d.state].filter(Boolean).join(', ')) + '</span>' +
             '</div>' +
             '<div class="lot-result__rows">' + rows + '</div>' +
-            '<div class="calc-total"><span>ტრანსპორტირება სულ</span><b>' + (money(d.total, cur) || '—') + '</b></div>' +
+            '<div class="calc-total"><span>' + tr('lotTotal', 'Shipping total') + '</span><b>' + (money(d.total, cur) || '—') + '</b></div>' +
             '</div></div>';
         })
         .catch(unavailable)

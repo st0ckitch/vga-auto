@@ -1376,6 +1376,28 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
   [data-theme="light"] .section--dark { background: #241F20; }
 }
 
+/* ---------- Language switcher ---------- */
+/* Language switcher — lives at the top of the navigation drawer so the
+   header bar itself stays down to logo + dealer cabinet + theme toggle. */
+.lang-switch {
+  display: flex; gap: 4px; flex: none;
+  margin: 0 16px 14px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.lang-switch a {
+  padding: 7px 13px; border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  font-family: var(--font-display); font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.06em; color: var(--c-muted); transition: all 0.15s ease;
+}
+.lang-switch a:hover { color: var(--c-ink); background: rgba(255, 255, 255, 0.07); }
+.lang-switch a.is-active {
+  color: var(--c-primary-deep);
+  background: var(--c-primary-soft); border-color: rgba(255, 128, 57, 0.3);
+}
+[data-theme="light"] .lang-switch { border-bottom-color: rgba(36, 31, 32, 0.12); }
+[data-theme="light"] .lang-switch a:hover { background: rgba(36, 31, 32, 0.06); }
+
 /* ---------- Utilities ---------- */
 .u-center { text-align: center; }
 .u-mt-0 { margin-top: 0; } .u-mt-16 { margin-top: 16px; } .u-mt-24 { margin-top: 24px; }
