@@ -23,7 +23,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=8">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=11">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/car.css?v=3">
 
 <script type="application/ld+json">
@@ -52,9 +52,14 @@
       <img class="brand__logo" src="https://st0ckitch.github.io/vga-auto/public/img/VG-logo1.png" alt="VG Auto Export ლოგო" width="98" height="58">
     </a>
 
-    <button class="burger" aria-label="მენიუს გახსნა" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-actions">
+      <a class="btn header-dealer" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">
+        <span class="is-full">დილერის კაბინეტი</span><span class="is-short">დილერი</span>
+      </a>
+      <button class="burger" aria-label="მენიუს გახსნა" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
     <nav class="nav" aria-label="მთავარი ნავიგაცია">
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
@@ -65,6 +70,7 @@
         <button class="nav__link nav__toggle" aria-expanded="false">კალკულაცია</button>
         <div class="nav__menu">
           <a href="https://st0ckitch.github.io/vga-auto/calculator/">კალკულატორი</a>
+          <button data-open="#dlg-lot">ლოტის ნომრით დათვლა</button>
           <button data-open="#dlg-track">კონტეინერის ძებნა</button>
           <a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a>
           <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">განბაჟების კალკულატორი</a>
@@ -72,11 +78,11 @@
       </div>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/blog/">ბლოგი</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
-      <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+      <div class="nav__cta">
+        <button class="btn btn--primary" type="button" data-open="#dlg-callback">მოითხოვე ზარი</button>
+      </div>
     </nav>
-
-    <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
   </div>
 </header>
 
@@ -153,6 +159,79 @@
       </div>
       <button class="btn btn--primary btn--lg" type="submit" style="width:100%;">ძებნა</button>
     </form>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="dlg-callback" aria-labelledby="dlg-callback-title">
+  <div class="dlg__head">
+    <h2 id="dlg-callback-title">დაუკავშირდით გაყიდვების მენეჯერს</h2>
+    <button class="dlg__close" data-close aria-label="დახურვა">✕</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">დატოვეთ ნომერი — მენეჯერი დაგიკავშირდებათ და გიპასუხებთ ავტომობილის შერჩევაზე, ფასსა და ვადებზე.</p>
+    <form data-callback-form>
+      <div class="form-grid u-mb-24">
+        <div class="field">
+          <label for="cb-name">სახელი</label>
+          <input class="input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="თქვენი სახელი">
+        </div>
+        <div class="field">
+          <label for="cb-phone">ტელეფონი</label>
+          <input class="input" id="cb-phone" name="phone" type="tel" autocomplete="tel" placeholder="5XX XX XX XX">
+        </div>
+        <div class="field field--full">
+          <label for="cb-note">კომენტარი — არასავალდებულო</label>
+          <input class="input" id="cb-note" name="note" type="text" placeholder="მაგ: მაინტერესებს Toyota Camry 2019">
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg" type="submit" style="width:100%;">გამოგზავნა</button>
+      <p class="form-msg" role="status"></p>
+    </form>
+    <p class="form-note u-mt-16 u-mb-0">ან დაგვირეკეთ პირდაპირ: <a href="tel:+995322500504">0322 50 05 04</a></p>
+  </div>
+</dialog>
+
+<dialog class="dlg dlg--wide" id="dlg-lot" aria-labelledby="dlg-lot-title">
+  <div class="dlg__head">
+    <h2 id="dlg-lot-title">ლოტის ნომრით დათვლა</h2>
+    <button class="dlg__close" data-close aria-label="დახურვა">✕</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">შეიყვანეთ აუქციონის ლოტის ნომერი — სისტემა მოძებნის ავტომობილის ადგილმდებარეობას და დაითვლის ტრანსპორტირების ღირებულებას საქართველომდე.</p>
+    <form class="lot-form" data-lot-form data-lot-result="#lot-result-dlg">
+      <div class="form-grid">
+        <div class="field">
+          <label for="lot-auction">აუქციონი</label>
+          <select class="select" id="lot-auction" name="auction">
+            <option value="Copart">Copart</option>
+            <option value="IAAI">IAAI</option>
+            <option value="Manheim">Manheim</option>
+            <option value="Adesa">Adesa</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lot-number">ლოტის ნომერი</label>
+          <input class="input" id="lot-number" name="lot" type="text" inputmode="numeric" placeholder="მაგ: 58412345" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="lot-vehicle">ავტომობილის ტიპი</label>
+          <select class="select" id="lot-vehicle" name="vehicle">
+            <option value="1">CAR</option>
+            <option value="2">MOTO</option>
+            <option value="3">VAN</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lot-port">პორტი საქართველოში</label>
+          <select class="select" id="lot-port" name="port">
+            <option value="poti">ფოთი</option>
+            <option value="batumi">ბათუმი</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg u-mt-24" type="submit" style="width:100%;">დათვლა</button>
+    </form>
+    <div class="lot-result" id="lot-result-dlg"></div>
   </div>
 </dialog>
 
@@ -255,6 +334,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=4" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=6" defer></script>
 </body>
 </html>

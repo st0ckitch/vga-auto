@@ -78,6 +78,80 @@ function init(host) {
   let carRig = null;        /* { shell, wheels, lines } */
   const WHEEL_SPEED = 0.26; /* rad/frame */
 
+  /* ---------- Exploded view ----------
+     The car arrives as one welded shell plus wheels, so the "parts" are
+     found geometrically: union-find over the triangle graph splits the
+     body into its ~118 connected pieces (bumpers, lights, grille, trim,
+     seats…). Each vertex then carries the offset its own piece should
+     travel, and a single uniform slides every piece out and back — one
+     draw call, no per-part meshes. */
+  const explodeU = { value: 1 };
+
+  const buildExplodeOffsets = (geometry, localCenter) => {
+    const pos = geometry.attributes.position;
+    const count = pos.count;
+    const offsets = new Float32Array(count * 3);
+    const index = geometry.index;
+
+    /* piece id per vertex */
+    const parent = new Int32Array(count);
+    for (let i = 0; i < count; i++) parent[i] = i;
+    const find = (x) => {
+      let r = x;
+      while (parent[r] !== r) r = parent[r];
+      while (parent[x] !== r) { const nx = parent[x]; parent[x] = r; x = nx; }
+      return r;
+    };
+    const union = (a, b) => { const ra = find(a), rb = find(b); if (ra !== rb) parent[ra] = rb; };
+    if (index) {
+      const arr = index.array;
+      for (let t = 0; t < arr.length; t += 3) { union(arr[t], arr[t + 1]); union(arr[t + 1], arr[t + 2]); }
+    }
+
+    /* centroid of every piece */
+    const sums = new Map();
+    for (let i = 0; i < count; i++) {
+      const r = find(i);
+      let s = sums.get(r);
+      if (!s) { s = { x: 0, y: 0, z: 0, n: 0 }; sums.set(r, s); }
+      s.x += pos.getX(i); s.y += pos.getY(i); s.z += pos.getZ(i); s.n++;
+    }
+
+    /* direction + distance from the shared centre, so outer trim travels
+       further than pieces near the core; the core itself stays put */
+    let maxDist = 1e-6;
+    sums.forEach((s) => {
+      s.cx = s.x / s.n - localCenter.x;
+      s.cy = s.y / s.n - localCenter.y;
+      s.cz = s.z / s.n - localCenter.z;
+      s.d = Math.hypot(s.cx, s.cy, s.cz);
+      if (s.d > maxDist) maxDist = s.d;
+    });
+    sums.forEach((s, root) => {
+      if (s.d < 1e-4 || s.n > count * 0.25) { s.ox = s.oy = s.oz = 0; return; } /* main shell = core */
+      const mag = 0.16 + 0.40 * (s.d / maxDist);
+      s.ox = (s.cx / s.d) * mag;
+      s.oy = (s.cy / s.d) * mag;
+      s.oz = (s.cz / s.d) * mag;
+    });
+    for (let i = 0; i < count; i++) {
+      const s = sums.get(find(i));
+      offsets[i * 3] = s.ox; offsets[i * 3 + 1] = s.oy; offsets[i * 3 + 2] = s.oz;
+    }
+    geometry.setAttribute('aOffset', new THREE.BufferAttribute(offsets, 3));
+  };
+
+  const patchExplode = (material) => {
+    material.onBeforeCompile = (shader) => {
+      shader.uniforms.uExplode = explodeU;
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nattribute vec3 aOffset;\nuniform float uExplode;')
+        .replace('#include <begin_vertex>', '#include <begin_vertex>\ntransformed += aOffset * uExplode;');
+    };
+    material.customProgramCacheKey = () => 'vg-explode';
+    material.needsUpdate = true;
+  };
+
   const loader = new GLTFLoader();
   const modelUrl = new URL('../models/car.glb?v=3', import.meta.url).href;
   loader.load(
@@ -104,6 +178,32 @@ function init(host) {
       const center = box.getCenter(new THREE.Vector3());
       car.position.sub(center);
 
+      /* split the body into pieces and remember where each wheel rests */
+      patchExplode(glassMat);
+      patchExplode(wheelMat);
+      car.updateMatrixWorld(true);
+      const worldCentre = new THREE.Vector3();
+      new THREE.Box3().setFromObject(car).getCenter(worldCentre);
+      car.traverse((o) => {
+        if (!o.isMesh) return;
+        const isWheelPart = wheels.some((w) => w === o || o.parent === w);
+        if (isWheelPart) {
+          /* wheels travel as whole assemblies on their node, not per vertex */
+          if (!o.geometry.getAttribute('aOffset')) {
+            o.geometry.setAttribute('aOffset',
+              new THREE.BufferAttribute(new Float32Array(o.geometry.attributes.position.count * 3), 3));
+          }
+          return;
+        }
+        const localCentre = o.worldToLocal(worldCentre.clone());
+        buildExplodeOffsets(o.geometry, localCentre);
+      });
+      wheels.forEach((w) => {
+        w.userData.restX = w.position.x;
+        /* pull each wheel out along its own axle */
+        w.userData.outX = (w.name.slice(-1) === 'l' ? 1 : -1) * 0.62;
+      });
+
       const shell = new THREE.Group();
       shell.add(car);
 
@@ -129,7 +229,7 @@ function init(host) {
       shell.rotation.x = 0.26;          /* slight top-down view */
       shell.rotation.y = -0.7;          /* three-quarter start pose */
       turntable.add(shell);
-      carRig = { shell, car, wheels, lines: lines.children };
+      carRig = { shell, car, wheels, lines: lines.children, lineMat };
       renderer.render(scene, camera);   /* first frame + reduced-motion frame */
     },
     undefined,
@@ -163,7 +263,7 @@ function init(host) {
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
   else window.addEventListener('resize', resize);
 
-  if (reduced) return; /* still frame is rendered when the model arrives */
+  if (reduced) { explodeU.value = 0; return; } /* still frame: the assembled car */
 
   /* Cursor parallax (lerped) */
   let targetX = 0, targetY = 0;
@@ -181,27 +281,59 @@ function init(host) {
     new IntersectionObserver((en) => { visible = en[0].isIntersecting; }, { threshold: 0.02 }).observe(host);
   }
 
+  /* Apart → together → apart, on a loop. Phases are [seconds, from, to]. */
+  const CYCLE = [
+    [1.4, 1, 1],   /* hold in pieces  */
+    [2.6, 1, 0],   /* assemble        */
+    [4.6, 0, 0],   /* drive           */
+    [2.2, 0, 1],   /* come apart      */
+  ];
+  const CYCLE_LEN = CYCLE.reduce((a, p) => a + p[0], 0);
+  const easeInOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const explodeAt = (time) => {
+    let u = time % CYCLE_LEN;
+    for (const [dur, from, to] of CYCLE) {
+      if (u < dur) return from + (to - from) * easeInOut(u / dur);
+      u -= dur;
+    }
+    return 0;
+  };
+
+  /* Wall-clock driven: the same speed on a 60Hz laptop, a 120Hz phone and a
+     slow GPU. Per-frame constants below stay tuned for 60fps via `step`. */
+  const clock = new THREE.Clock();
   let t = 0;
   renderer.setAnimationLoop(() => {
+    const dt = Math.min(clock.getDelta(), 0.1);
     if (!visible || document.hidden || (!spin && !carRig)) return;
-    t += 1 / 60;
+    t += dt;
+    const step = dt * 60;
     if (carRig) {
-      /* rolling wheels */
-      for (const w of carRig.wheels) w.rotation.x += WHEEL_SPEED;
-      /* suspension: micro bob + faint pitch, plus a slow pose sway */
-      carRig.car.position.y = Math.sin(t * 9.0) * 0.018 + Math.sin(t * 23.0) * 0.006;
-      carRig.car.rotation.x = Math.sin(t * 3.1) * 0.006;
+      const e = explodeAt(t);
+      explodeU.value = e;
+      const solid = 1 - e; /* 1 while the car is whole */
+
+      /* rolling wheels, pulled out along their axles as the car comes apart */
+      for (const w of carRig.wheels) {
+        w.rotation.x += WHEEL_SPEED * step;
+        w.position.x = w.userData.restX + w.userData.outX * e;
+      }
+      /* suspension: micro bob + faint pitch — only while it is a car */
+      carRig.car.position.y = (Math.sin(t * 9.0) * 0.018 + Math.sin(t * 23.0) * 0.006) * solid;
+      carRig.car.rotation.x = Math.sin(t * 3.1) * 0.006 * solid;
       carRig.shell.rotation.y = -0.7 + Math.sin(t * 0.35) * 0.12;
-      /* air streaking backwards past the body */
+      /* air streaks only make sense around a car that is driving */
+      carRig.lineMat.opacity = 0.35 * solid;
       for (const m of carRig.lines) {
-        m.position.z -= m.userData.speed;
+        m.position.z -= m.userData.speed * solid * step;
         if (m.position.z < -4.5) m.position.z += 9;
       }
     } else if (spin) {
-      spin.rotation.y += 0.004; /* fallback knot turntable */
+      spin.rotation.y += 0.004 * step; /* fallback knot turntable */
     }
-    group.rotation.x += (targetX - group.rotation.x) * 0.06;
-    group.rotation.y += (targetY - group.rotation.y) * 0.06;
+    const lerp = Math.min(1, 0.06 * step);
+    group.rotation.x += (targetX - group.rotation.x) * lerp;
+    group.rotation.y += (targetY - group.rotation.y) * lerp;
     renderer.render(scene, camera);
   });
 }

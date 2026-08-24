@@ -29,8 +29,8 @@
       btn.setAttribute('title', t === 'light' ? 'მუქი თემა' : 'ღია თემა');
     }
   };
-  var headerIn = document.querySelector('.site-header__in');
-  if (headerIn) {
+  var headerActions = document.querySelector('.header-actions') || document.querySelector('.site-header__in');
+  if (headerActions) {
     var toggle = document.createElement('button');
     toggle.className = 'theme-toggle';
     toggle.type = 'button';
@@ -38,7 +38,7 @@
     toggle.innerHTML =
       '<svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>' +
       '<svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-    headerIn.insertBefore(toggle, headerIn.querySelector('.header-cta'));
+    headerActions.insertBefore(toggle, headerActions.querySelector('.burger'));
     toggle.addEventListener('click', function () {
       theme = theme === 'light' ? 'dark' : 'light';
       try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
@@ -57,12 +57,38 @@
     onScroll();
   }
 
-  /* ---------- Mobile burger ---------- */
+  /* ---------- Navigation drawer (all breakpoints) ---------- */
   var burger = document.querySelector('.burger');
-  if (burger) {
-    burger.addEventListener('click', function () {
-      var open = document.body.classList.toggle('nav-open');
+  var navEl = document.querySelector('.nav');
+  if (burger && navEl) {
+    /* The header carries backdrop-filter, which makes it the containing block
+       for fixed children — the drawer must live at the body root to size
+       against the viewport. */
+    document.body.appendChild(navEl);
+
+    var scrim = document.createElement('div');
+    scrim.className = 'nav-scrim';
+    scrim.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(scrim, navEl);
+
+    var setNav = function (open) {
+      document.body.classList.toggle('nav-open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'მენიუს დახურვა' : 'მენიუს გახსნა');
+      navEl.setAttribute('aria-hidden', open ? 'false' : 'true');
+    };
+    setNav(false);
+
+    burger.addEventListener('click', function () {
+      setNav(!document.body.classList.contains('nav-open'));
+    });
+    scrim.addEventListener('click', function () { setNav(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) setNav(false);
+    });
+    /* a link inside the drawer navigates away — close it behind them */
+    navEl.addEventListener('click', function (e) {
+      if (e.target.closest('a, [data-open]')) setNav(false);
     });
   }
 
@@ -283,6 +309,204 @@
       if (wm) wm.style.transform = 'translateY(' + y * -0.12 + 'px)';
     }, { passive: true });
   }
+
+  /* ---------- World clocks (.clock[data-clock="<IANA zone>"]) ---------- */
+  var clocks = document.querySelectorAll('.clock[data-clock]');
+  if (clocks.length) {
+    var timeFmt = {};
+    var zoneFmt = {};
+    var fmtFor = function (zone, store, opts) {
+      if (!(zone in store)) {
+        try { store[zone] = new Intl.DateTimeFormat(store === zoneFmt ? 'en-US' : 'en-GB', opts(zone)); } catch (e) { store[zone] = null; }
+      }
+      return store[zone];
+    };
+    var tickClocks = function () {
+      var now = new Date();
+      clocks.forEach(function (el) {
+        var zone = el.getAttribute('data-clock');
+        var out = el.querySelector('.clock__time');
+        if (!out) return;
+        var tf = fmtFor(zone, timeFmt, function (z) {
+          return { timeZone: z, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        });
+        if (!tf) { out.textContent = '—'; return; }
+        var abbr = el.getAttribute('data-clock-abbr');
+        if (abbr === null) {
+          var zf = fmtFor(zone, zoneFmt, function (z) {
+            return { timeZone: z, timeZoneName: 'short', hour: '2-digit' };
+          });
+          abbr = '';
+          if (zf && zf.formatToParts) {
+            zf.formatToParts(now).forEach(function (p) { if (p.type === 'timeZoneName') abbr = p.value; });
+          }
+          el.setAttribute('data-clock-abbr', abbr);
+        }
+        out.innerHTML = tf.format(now) + (abbr ? ' <small>' + abbr + '</small>' : '');
+      });
+    };
+    tickClocks();
+    setInterval(tickClocks, 1000);
+    /* DST shifts the abbreviation — re-derive it hourly rather than every tick */
+    setInterval(function () {
+      clocks.forEach(function (el) { el.removeAttribute('data-clock-abbr'); });
+    }, 3600000);
+  }
+
+  /* ---------- Full-bleed video band: play while on screen ---------- */
+  document.querySelectorAll('[data-video-band]').forEach(function (band) {
+    var video = band.querySelector('video');
+    if (!video) return;
+    var soundBtn = band.querySelector('[data-video-sound]');
+    var playBtn = band.querySelector('[data-video-play]');
+    var wantsPlay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var syncPlayBtn = function () { if (playBtn) playBtn.classList.toggle('is-active', !video.paused); };
+    var tryPlay = function () {
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { /* autoplay refused — the controls stay */ });
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && wantsPlay) tryPlay();
+          else video.pause();
+          syncPlayBtn();
+        });
+      }, { threshold: 0.35 }).observe(band);
+    } else if (wantsPlay) {
+      tryPlay();
+    }
+
+    if (soundBtn) {
+      soundBtn.addEventListener('click', function () {
+        video.muted = !video.muted;
+        soundBtn.classList.toggle('is-active', !video.muted);
+        soundBtn.setAttribute('aria-label', video.muted ? 'ხმის ჩართვა' : 'ხმის გამორთვა');
+        if (!video.muted) { wantsPlay = true; tryPlay(); }
+      });
+    }
+    if (playBtn) {
+      playBtn.addEventListener('click', function () {
+        if (video.paused) { wantsPlay = true; tryPlay(); } else { wantsPlay = false; video.pause(); }
+        syncPlayBtn();
+      });
+    }
+    video.addEventListener('play', syncPlayBtn);
+    video.addEventListener('pause', syncPlayBtn);
+  });
+
+  /* ---------- Call-back request (any form[data-callback-form]) ---------- */
+  document.querySelectorAll('form[data-callback-form]').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = form.querySelector('.form-msg');
+      var nameEl = form.querySelector('[name="name"]');
+      var phoneEl = form.querySelector('[name="phone"]');
+      var noteEl = form.querySelector('[name="note"]');
+      var name = (nameEl.value || '').trim();
+      var phone = (phoneEl.value || '').trim();
+      if (!name) { nameEl.focus(); return; }
+      if (phone.replace(/[^0-9]/g, '').length < 9) {
+        if (msg) { msg.className = 'form-msg form-msg--err'; msg.textContent = 'შეიყვანეთ სწორი ტელეფონის ნომერი.'; }
+        phoneEl.focus();
+        return;
+      }
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      var fallback = function () {
+        if (!msg) return;
+        msg.className = 'form-msg form-msg--err';
+        msg.innerHTML = 'ონლაინ განაცხადი დროებით მიუწვდომელია — დაგვირეკეთ: ' +
+          '<a href="tel:+995322500504">0322 50 05 04</a>';
+      };
+      fetch((window.siteUrl || '/') + 'index.php?class=Action&method=callback_request' +
+        '&name=' + encodeURIComponent(name) +
+        '&phone=' + encodeURIComponent(phone) +
+        '&note=' + encodeURIComponent(noteEl ? noteEl.value || '' : ''))
+        .then(function (r) { return r.text(); })
+        .then(function (t) {
+          var ok = false;
+          try { ok = JSON.parse(t).error === 0; } catch (err) { ok = false; }
+          if (ok) {
+            if (msg) { msg.className = 'form-msg form-msg--ok'; msg.textContent = 'მადლობა! ჩვენი მენეჯერი უახლოეს დროში დაგიკავშირდებათ.'; }
+            form.reset();
+          } else {
+            fallback();
+          }
+        })
+        .catch(fallback)
+        .then(function () { if (btn) btn.disabled = false; });
+    });
+  });
+
+  /* ---------- Transport price by auction lot number ----------
+     Backend contract (docs/lot-price-api.md):
+       GET index.php?class=Action&method=lot_price&auction=&lot=&port=&type=
+       -> {"error":0,"lot":"","location":"","city":"","state":"",
+           "us_transport":0,"ocean":0,"total":0,"currency":"USD"}
+     Any other shape counts as "unavailable": the user is sent to the manual
+     calculator rather than shown an invented number. */
+  document.querySelectorAll('form[data-lot-form]').forEach(function (form) {
+    var box = document.querySelector(form.getAttribute('data-lot-result') || '#lot-result');
+    var esc = function (s) { return String(s == null ? '' : s).replace(/[<>&"]/g, ''); };
+    var money = function (v, cur) {
+      var n = parseFloat(v);
+      if (!isFinite(n) || n <= 0) return null;
+      return (cur === 'GEL' ? '₾' : '$') + Math.round(n).toLocaleString('en-US');
+    };
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var lotEl = form.querySelector('[name="lot"]');
+      var lot = (lotEl.value || '').trim();
+      if (!lot) { lotEl.focus(); return; }
+      var pick = function (n, d) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value : d; };
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      if (box) {
+        box.classList.add('is-visible');
+        box.innerHTML = '<p class="form-note u-mb-0">მიმდინარეობს ლოტის მონაცემების მოძიება…</p>';
+      }
+      var unavailable = function () {
+        if (!box) return;
+        box.classList.add('is-visible');
+        box.innerHTML =
+          '<p class="form-note u-mb-16">ლოტის ავტომატური შემოწმება ამ ეტაპზე მიუწვდომელია. ' +
+          'გამოიყენეთ სტანდარტული კალკულატორი, ან დაგვიკავშირდით — ზუსტ ტარიფს სწრაფად დაგითვლით.</p>' +
+          '<div class="u-flex u-flex-wrap">' +
+          '<button class="btn btn--primary btn--sm" type="button" data-open="#dlg-calc">კალკულატორი</button>' +
+          '<a class="btn btn--ghost btn--sm" href="tel:+995322500504">0322 50 05 04</a>' +
+          '</div>';
+      };
+      fetch((window.siteUrl || '/') + 'index.php?class=Action&method=lot_price' +
+        '&auction=' + encodeURIComponent(pick('auction', 'Copart')) +
+        '&lot=' + encodeURIComponent(lot) +
+        '&port=' + encodeURIComponent(pick('port', 'poti')) +
+        '&type=' + encodeURIComponent(pick('vehicle', '1')))
+        .then(function (r) { return r.text(); })
+        .then(function (t) {
+          var d = null;
+          try { d = JSON.parse(t); } catch (err) { d = null; }
+          if (!d || d.error !== 0 || !box) { unavailable(); return; }
+          var cur = d.currency || 'USD';
+          var rows = '';
+          if (money(d.us_transport, cur)) rows += '<div class="lot-result__row"><span>სახმელეთო გადაზიდვა აშშ-ში</span><b>' + money(d.us_transport, cur) + '</b></div>';
+          if (money(d.ocean, cur)) rows += '<div class="lot-result__row"><span>საზღვაო გადაზიდვა</span><b>' + money(d.ocean, cur) + '</b></div>';
+          box.innerHTML =
+            '<div class="card"><div class="card__body">' +
+            '<div class="lot-result__head">' +
+            '<span class="lot-result__lot">ლოტი ' + esc(d.lot || lot) + '</span>' +
+            '<span class="lot-result__place">' + esc([d.location, d.city, d.state].filter(Boolean).join(', ')) + '</span>' +
+            '</div>' +
+            '<div class="lot-result__rows">' + rows + '</div>' +
+            '<div class="calc-total"><span>ტრანსპორტირება სულ</span><b>' + (money(d.total, cur) || '—') + '</b></div>' +
+            '</div></div>';
+        })
+        .catch(unavailable)
+        .then(function () { if (btn) btn.disabled = false; });
+    });
+  });
 
   /* ---------- Transport-cost calculator ----------
      Wires any [data-calc] container: .js-calc-auction select drives the

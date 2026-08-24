@@ -23,7 +23,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=8">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=11">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -52,9 +52,14 @@
       <img class="brand__logo" src="https://st0ckitch.github.io/vga-auto/public/img/VG-logo1.png" alt="VG Auto Export ლოგო" width="98" height="58">
     </a>
 
-    <button class="burger" aria-label="მენიუს გახსნა" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-actions">
+      <a class="btn header-dealer" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">
+        <span class="is-full">დილერის კაბინეტი</span><span class="is-short">დილერი</span>
+      </a>
+      <button class="burger" aria-label="მენიუს გახსნა" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
     <nav class="nav" aria-label="მთავარი ნავიგაცია">
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
@@ -65,6 +70,7 @@
         <button class="nav__link nav__toggle" aria-expanded="false">კალკულაცია</button>
         <div class="nav__menu">
           <a href="https://st0ckitch.github.io/vga-auto/calculator/">კალკულატორი</a>
+          <button data-open="#dlg-lot">ლოტის ნომრით დათვლა</button>
           <button data-open="#dlg-track">კონტეინერის ძებნა</button>
           <a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a>
           <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">განბაჟების კალკულატორი</a>
@@ -72,11 +78,11 @@
       </div>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/blog/">ბლოგი</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
-      <a class="nav__link" href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერი</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
+      <div class="nav__cta">
+        <button class="btn btn--primary" type="button" data-open="#dlg-callback">მოითხოვე ზარი</button>
+      </div>
     </nav>
-
-    <button class="btn btn--primary header-cta" data-open="#dlg-calc">კალკულატორი</button>
   </div>
 </header>
 
@@ -156,6 +162,79 @@
   </div>
 </dialog>
 
+<dialog class="dlg" id="dlg-callback" aria-labelledby="dlg-callback-title">
+  <div class="dlg__head">
+    <h2 id="dlg-callback-title">დაუკავშირდით გაყიდვების მენეჯერს</h2>
+    <button class="dlg__close" data-close aria-label="დახურვა">✕</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">დატოვეთ ნომერი — მენეჯერი დაგიკავშირდებათ და გიპასუხებთ ავტომობილის შერჩევაზე, ფასსა და ვადებზე.</p>
+    <form data-callback-form>
+      <div class="form-grid u-mb-24">
+        <div class="field">
+          <label for="cb-name">სახელი</label>
+          <input class="input" id="cb-name" name="name" type="text" autocomplete="name" placeholder="თქვენი სახელი">
+        </div>
+        <div class="field">
+          <label for="cb-phone">ტელეფონი</label>
+          <input class="input" id="cb-phone" name="phone" type="tel" autocomplete="tel" placeholder="5XX XX XX XX">
+        </div>
+        <div class="field field--full">
+          <label for="cb-note">კომენტარი — არასავალდებულო</label>
+          <input class="input" id="cb-note" name="note" type="text" placeholder="მაგ: მაინტერესებს Toyota Camry 2019">
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg" type="submit" style="width:100%;">გამოგზავნა</button>
+      <p class="form-msg" role="status"></p>
+    </form>
+    <p class="form-note u-mt-16 u-mb-0">ან დაგვირეკეთ პირდაპირ: <a href="tel:+995322500504">0322 50 05 04</a></p>
+  </div>
+</dialog>
+
+<dialog class="dlg dlg--wide" id="dlg-lot" aria-labelledby="dlg-lot-title">
+  <div class="dlg__head">
+    <h2 id="dlg-lot-title">ლოტის ნომრით დათვლა</h2>
+    <button class="dlg__close" data-close aria-label="დახურვა">✕</button>
+  </div>
+  <div class="dlg__body">
+    <p class="form-note u-mb-16">შეიყვანეთ აუქციონის ლოტის ნომერი — სისტემა მოძებნის ავტომობილის ადგილმდებარეობას და დაითვლის ტრანსპორტირების ღირებულებას საქართველომდე.</p>
+    <form class="lot-form" data-lot-form data-lot-result="#lot-result-dlg">
+      <div class="form-grid">
+        <div class="field">
+          <label for="lot-auction">აუქციონი</label>
+          <select class="select" id="lot-auction" name="auction">
+            <option value="Copart">Copart</option>
+            <option value="IAAI">IAAI</option>
+            <option value="Manheim">Manheim</option>
+            <option value="Adesa">Adesa</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lot-number">ლოტის ნომერი</label>
+          <input class="input" id="lot-number" name="lot" type="text" inputmode="numeric" placeholder="მაგ: 58412345" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="lot-vehicle">ავტომობილის ტიპი</label>
+          <select class="select" id="lot-vehicle" name="vehicle">
+            <option value="1">CAR</option>
+            <option value="2">MOTO</option>
+            <option value="3">VAN</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lot-port">პორტი საქართველოში</label>
+          <select class="select" id="lot-port" name="port">
+            <option value="poti">ფოთი</option>
+            <option value="batumi">ბათუმი</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg u-mt-24" type="submit" style="width:100%;">დათვლა</button>
+    </form>
+    <div class="lot-result" id="lot-result-dlg"></div>
+  </div>
+</dialog>
+
 <dialog class="lightbox" id="vg-lightbox" aria-label="ფოტოს გადიდება">
   <button class="lightbox__nav lightbox__nav--prev" aria-label="წინა ფოტო">‹</button>
   <figure style="margin:0;">
@@ -170,7 +249,10 @@
     <div class="hero-v2__grid">
 
       <div>
-        <p class="hero-pill"><i aria-hidden="true"></i>ავტოიმპორტი ამერიკიდან — მიმდინარე შეკვეთები ღიაა</p>
+        <button class="hero-pill" type="button" data-open="#dlg-callback">
+          <i aria-hidden="true"></i>მოითხოვე ზარი
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </button>
         <h1 class="hero-v2__title">
           <span class="w" style="--d:0s;">საუკეთესო</span>
           <span class="w" style="--d:0.08s;">გზა</span>
@@ -186,12 +268,20 @@
           <button class="btn btn--primary" type="submit">ძებნა</button>
         </form>
 
-        <nav class="hero-links" aria-label="ძირითადი სერვისები">
-          <a href="https://st0ckitch.github.io/vga-auto/import/">ავტომობილის ჩამოყვანა</a>
-          <button type="button" data-open="#dlg-calc">კალკულატორი</button>
-          <button type="button" data-open="#dlg-track">კონტეინერის ძებნა</button>
-          <a href="https://st0ckitch.github.io/vga-auto/parts/">ავტონაწილები</a>
-        </nav>
+        <div class="hero-clocks" aria-label="მიმდინარე დრო">
+          <div class="clock" data-clock="Asia/Tbilisi">
+            <span class="clock__label">საქართველო</span>
+            <span class="clock__time">—</span>
+          </div>
+          <div class="clock" data-clock="America/New_York">
+            <span class="clock__label">ნიუ-იორკი</span>
+            <span class="clock__time">—</span>
+          </div>
+          <div class="clock" data-clock="America/Los_Angeles">
+            <span class="clock__label">ლოს-ანჯელესი</span>
+            <span class="clock__time">—</span>
+          </div>
+        </div>
 
         <div class="hero-v2__stats">
           <div class="stat-row stat-row--divided">
@@ -206,16 +296,41 @@
         <div class="hero-3d__glow" aria-hidden="true"></div>
         <div class="hero-3d__ring" aria-hidden="true"></div>
         <canvas class="hero-3d__canvas" aria-hidden="true"></canvas>
-        <div class="hero-badge hero-badge--tr">
+        <a class="hero-badge hero-badge--tr" href="https://st0ckitch.github.io/vga-auto/search/">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           4 ეტაპის ფოტო-რეპორტი
-        </div>
-        <div class="hero-badge hero-badge--bl">
+        </a>
+        <a class="hero-badge hero-badge--bl" href="https://st0ckitch.github.io/vga-auto/transport/">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
           ფოთი და ბათუმის პორტები
-        </div>
+        </a>
       </div>
 
+    </div>
+  </div>
+</section>
+
+
+<section class="video-band" data-video-band aria-label="VG ავტო ექსპორტი — კომპანიის ვიდეო">
+  <video class="video-band__media" muted loop playsinline preload="metadata" poster="https://st0ckitch.github.io/vga-auto/public/img/slider/light/banner1.jpg">
+    <source src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
+  </video>
+  <div class="video-band__veil" aria-hidden="true"></div>
+  <div class="container container--wide video-band__in">
+    <div class="video-band__controls">
+      <button class="video-band__btn" type="button" data-video-play aria-label="დაკვრა ან პაუზა">
+        <svg class="is-on" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="is-off" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+      <button class="video-band__btn" type="button" data-video-sound aria-label="ხმის ჩართვა">
+        <svg class="is-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <svg class="is-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      </button>
+    </div>
+    <div class="video-band__copy">
+      <p class="eyebrow">გაიცანით VG ავტო ექსპორტი</p>
+      <h2>აუქციონიდან ფოთამდე — სრული პროცესი ერთ ვიდეოში</h2>
+      <p>ავტომობილის მიღება, ტერმინალზე დატვირთვა, კონტეინერში ჩადება და ფოთის პორტში გადმოტვირთვა — ყოველი ეტაპი, რომელსაც ჩვენი გუნდი ყოველდღიურად ასრულებს.</p>
     </div>
   </div>
 </section>
@@ -239,52 +354,52 @@
     </div>
     <div class="grid grid--3">
 
+      <a class="feature" href="https://st0ckitch.github.io/vga-auto/cars/">
+        <div class="feature__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><line x1="21" y1="21" x2="16" y2="16"/><path d="M6.8 12.4h7.4M8.2 12.4l.8-2.4h3.4l.8 2.4"/></svg>
+        </div>
+        <h3>ავტომობილების მოძიება</h3>
+        <p>სასურველ ავტომობილს მოგიძიებთ Copart-სა და IAAI-ზე — ისტორიის, მდგომარეობისა და რეალური ფასის შეფასებით.</p>
+      </a>
+
       <a class="feature" href="https://st0ckitch.github.io/vga-auto/transport/">
         <div class="feature__icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         </div>
-        <h3>ტრანსპორტირება</h3>
-        <p>ავტომობილის გადაზიდვა ამერიკის ნებისმიერი შტატიდან ფოთისა და ბათუმის პორტებამდე.</p>
+        <h3>გადაზიდვა ამერიკაში</h3>
+        <p>აუქციონიდან უახლოეს პორტამდე ავტომობილს გამოცდილი მძღოლების ქსელით გადავზიდავთ.</p>
       </a>
 
-      <button class="feature" type="button" data-open="#dlg-calc">
+      <a class="feature" href="https://st0ckitch.github.io/vga-auto/transport/">
         <div class="feature__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/><line x1="8" y1="19" x2="16" y2="19"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17.5c1.5 0 1.5 1.2 3 1.2s1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2"/><path d="M4 15.5 5.5 9h13L20 15.5"/><path d="M12 9V4H8"/></svg>
         </div>
-        <h3>განბაჟების კალკულატორი</h3>
-        <p>წინასწარ გამოთვალეთ ტრანსპორტირებისა და განბაჟების სავარაუდო ღირებულება.</p>
-      </button>
+        <h3>საზღვაო გადაზიდვა</h3>
+        <p>კონტეინერში ჩატვირთვა და გადაზიდვა წამყვანი საკონტეინერო ხაზებით ფოთისა და ბათუმის პორტებამდე.</p>
+      </a>
 
       <button class="feature" type="button" data-open="#dlg-track">
         <div class="feature__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="1"/><line x1="7" y1="6" x2="7" y2="18"/><line x1="12" y1="6" x2="12" y2="18"/><line x1="17" y1="6" x2="17" y2="18"/></svg>
         </div>
-        <h3>კონტეინერის თვალთვალი</h3>
-        <p>ადევნეთ თვალი თქვენი კონტეინერის მდებარეობას VIN კოდით ან კონტეინერის ნომრით.</p>
+        <h3>კონტეინერის და ავტომობილის მიღება</h3>
+        <p>კონტეინერის განბლოკვა, ავტომობილის მიღება პორტში და ყველა საჭირო დოკუმენტის მომზადება.</p>
       </button>
 
       <a class="feature" href="https://st0ckitch.github.io/vga-auto/parts/">
         <div class="feature__icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         </div>
-        <h3>ავტონაწილები</h3>
-        <p>ორიგინალი ავტონაწილების მოძიება და შეკვეთა ამერიკიდან თქვენი ავტომობილისთვის.</p>
+        <h3>ავტომობილის შეკეთება</h3>
+        <p>საჭიროების შემთხვევაში — აღდგენა და შეკეთება სანდო სერვის-ცენტრებში, ორიგინალი ავტონაწილებით.</p>
       </a>
 
-      <a class="feature" href="https://st0ckitch.github.io/vga-auto/export/">
+      <a class="feature" href="https://st0ckitch.github.io/vga-auto/contact/">
         <div class="feature__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12 20 3l1.5 1.5-1.5 1.5 1.5 1.5-2 2-1.5-1.5-2 2"/></svg>
         </div>
-        <h3>საექსპორტო დოკუმენტაცია</h3>
-        <p>საჭირო დოკუმენტების სრული ჩამონათვალი ამერიკის ყველა შტატისთვის.</p>
-      </a>
-
-      <a class="feature" href="https://st0ckitch.github.io/vga-auto/video/">
-        <div class="feature__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-        </div>
-        <h3>ვიდეო გაკვეთილები</h3>
-        <p>პრაქტიკული ვიდეო ინსტრუქციები აუქციონზე შეძენისა და იმპორტის პროცესის შესახებ.</p>
+        <h3>ავტომობილის ჩაბარება</h3>
+        <p>მზა ავტომობილს მფლობელს შეთანხმებულ ადგილას და ვადაში ჩავაბარებთ.</p>
       </a>
 
     </div>
@@ -369,20 +484,6 @@
 </section>
 
 
-<section class="section section--dark reveal home-video" id="video">
-  <div class="container">
-    <div class="section-head section-head--center">
-      <p class="eyebrow">ვიდეო პრეზენტაცია</p>
-      <h2>გაიცანით VG ავტო ექსპორტი</h2>
-    </div>
-    <div class="video-shell">
-      <video controls preload="metadata">
-        <source src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
-        თქვენი ბრაუზერი მხარს არ უჭერს ვიდეოს დაკვრას.
-      </video>
-    </div>
-  </div>
-</section>
 
 <section class="section reveal" id="partners">
   <div class="container">
@@ -501,7 +602,7 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=4" defer></script>
-<script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=7"></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=6" defer></script>
+<script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=9"></script>
 </body>
 </html>
