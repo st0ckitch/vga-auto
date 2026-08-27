@@ -157,13 +157,15 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
   <span class="hint" id="whoami"></span>
   <span class="sp"></span>
   <a class="iconbtn" href="https://st0ckitch.github.io/vga-auto/" target="_blank" rel="noopener">საიტის ნახვა ↗</a>
+  <button class="iconbtn" id="go-login" hidden>ავტორიზაცია</button>
   <button class="iconbtn" id="logout" hidden>გასვლა</button>
 </div>
 
 <!-- ============ LOGIN ============ -->
 <div class="content" id="login-view" style="max-width:640px;margin:0 auto;">
-  <h1>შესვლა</h1>
-  <p class="sub">ადმინ პანელი ცვლილებებს ინახავს პირდაპირ საიტის GitHub საცავში. შესასვლელად საჭიროა GitHub-ის წვდომის ტოკენი (ინახება მხოლოდ თქვენს ბრაუზერში).</p>
+  <h1>ავტორიზაცია</h1>
+  <p class="sub">ცვლილებების <b>შესანახად</b> საჭიროა GitHub-ის წვდომის ტოკენი (ინახება მხოლოდ თქვენს ბრაუზერში). პანელის დათვალიერება და რედაქტირება ტოკენის გარეშეც შეგიძლიათ — ტოკენს მხოლოდ შენახვის ღილაკი ითხოვს.</p>
+  <p><a href="#" id="login-back">← უკან, პანელზე დაბრუნება</a></p>
   <div class="help">
     <b>როგორ ავიღო ტოკენი (ერთხელ):</b>
     <ol>
@@ -195,6 +197,11 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
   </nav>
 
   <div class="content">
+
+    <div class="help hidden" id="anon-banner">
+      სანახავი რეჟიმი — ყველაფრის ნახვა და შევსება შეგიძლიათ, მაგრამ <b>შენახვას</b> სჭირდება ერთჯერადი
+      <a href="#" id="anon-login">ავტორიზაცია</a>. შევსებული ველები არ დაიკარგება.
+    </div>
 
     <!-- ===== CARS ===== -->
     <section id="view-cars">
@@ -420,6 +427,10 @@ function getFile(path, branch) {
   });
 }
 function putFile(path, contentB64, message, branch) {
+  if (!state.token) {
+    requireLogin();
+    return Promise.reject(new Error('შესანახად გაიარეთ ავტორიზაცია — შევსებული ველები არ დაიკარგება'));
+  }
   var body = { message: message, content: contentB64, branch: branch };
   var sha = state.shas[path + '@' + branch];
   if (sha) body.sha = sha;
@@ -459,27 +470,64 @@ function saveJson(path, obj, message, statusEl) {
   return writeBoth(path, b64encode(JSON.stringify(obj, null, 2)), message, statusEl);
 }
 
-/* ---------- login ---------- */
+/* ---------- login / anonymous access ---------- */
+function showApp() {
+  $('login-view').classList.add('hidden');
+  $('app').classList.remove('hidden');
+}
+function showLoginView() {
+  $('app').classList.add('hidden');
+  $('login-view').classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+function requireLogin() {
+  state.fromApp = true;
+  showLoginView();
+}
+function enterAnon() {
+  var SITE = 'https://st0ckitch.github.io/vga-auto/';
+  Promise.all([
+    fetch(SITE + 'public/data/site.json?t=' + Date.now()).then(function (r) { return r.json(); }),
+    fetch(SITE + 'public/data/cars.json?t=' + Date.now()).then(function (r) { return r.json(); })
+  ]).then(function (res) {
+    state.site = res[0];
+    state.cars = res[1];
+    showApp();
+    $('anon-banner').classList.remove('hidden');
+    $('go-login').hidden = false;
+    $('whoami').textContent = 'სანახავი რეჟიმი';
+    renderAll();
+  }).catch(function () {
+    $('login-status').textContent = '✗ მონაცემები ვერ ჩაიტვირთა — სცადეთ ავტორიზაცია';
+    showLoginView();
+  });
+}
 function tryLogin(token, silent) {
   state.token = token;
   $('login-status').textContent = silent ? '' : 'მოწმდება…';
   return gh('').then(function (r) {
     if (!r.ok) throw new Error('საცავზე წვდომა ვერ დადასტურდა (' + r.status + ')');
-    return loadData();
+    return loadData(!state.fromApp);
   }).then(function () {
     localStorage.setItem('vg-admin-token', token);
-    $('login-view').classList.add('hidden');
-    $('app').classList.remove('hidden');
+    showApp();
     $('logout').hidden = false;
+    $('go-login').hidden = true;
+    $('anon-banner').classList.add('hidden');
     $('whoami').textContent = REPO;
-    renderAll();
+    if (state.fromApp) {
+      state.fromApp = false;
+      toast('✓ ავტორიზებულია — ახლა თავიდან დააჭირეთ შენახვას', 'ok');
+    } else {
+      renderAll();
+    }
   }).catch(function (e) {
     state.token = '';
     if (!silent) $('login-status').textContent = '✗ ' + e.message;
-    else { $('login-view').classList.remove('hidden'); }
+    else enterAnon();
   });
 }
-function loadData() {
+function loadData(overwrite) {
   return Promise.all([
     getFile('public/data/site.json', BRANCH_LIVE),
     getFile('public/data/cars.json', BRANCH_LIVE),
@@ -487,8 +535,8 @@ function loadData() {
     getFile('public/data/cars.json', BRANCH_SRC)
   ]).then(function (res) {
     if (!res[0].text || !res[1].text) throw new Error('მონაცემების ფაილები ვერ მოიძებნა');
-    state.site = JSON.parse(res[0].text);
-    state.cars = JSON.parse(res[1].text);
+    if (overwrite !== false || !state.site) state.site = JSON.parse(res[0].text);
+    if (overwrite !== false || !state.cars) state.cars = JSON.parse(res[1].text);
   });
 }
 $('login-btn').addEventListener('click', function () {
@@ -861,10 +909,20 @@ function renderAll() {
   fillSection('marquee');
   fillContacts();
 }
+$('go-login').addEventListener('click', requireLogin);
+$('anon-login').addEventListener('click', function (e) { e.preventDefault(); requireLogin(); });
+$('login-back').addEventListener('click', function (e) {
+  e.preventDefault();
+  if (state.site) showApp(); else location.reload();
+});
+
 var saved = localStorage.getItem('vg-admin-token');
 if (saved) {
   $('login-view').classList.add('hidden');
   tryLogin(saved, true);
+} else {
+  $('login-view').classList.add('hidden');
+  enterAnon();
 }
 })();
 </script>
