@@ -10,14 +10,14 @@
 @font-face { font-family: "FiraGO"; src: url("../public/fonts/firago/FiraGO-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
 @font-face { font-family: "FiraGO"; src: url("../public/fonts/firago/FiraGO-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 :root {
-  --bg: #171314; --panel: #1e191a; --glass: rgba(255,255,255,.05); --glass2: rgba(255,255,255,.085);
-  --line: rgba(255,255,255,.12); --line2: rgba(255,255,255,.22);
-  --ink: #F5EFEA; --dim: rgba(245,239,234,.6); --faint: rgba(245,239,234,.35);
-  --acc: #FF8039; --acc-deep: #FFA26B; --acc-soft: rgba(255,128,57,.14); --acc-line: rgba(255,128,57,.45);
-  --ok: #4CC38A; --bad: #E5484D;
+  --bg: #FAF7F4; --panel: #FFFFFF; --glass: rgba(36,31,32,.035); --glass2: rgba(36,31,32,.06);
+  --line: rgba(36,31,32,.12); --line2: rgba(36,31,32,.22);
+  --ink: #241F20; --dim: rgba(36,31,32,.62); --faint: rgba(36,31,32,.38);
+  --acc: #FF8039; --acc-deep: #C24E00; --acc-soft: rgba(255,128,57,.1); --acc-line: rgba(255,128,57,.5);
+  --ok: #1E9E63; --bad: #CE2C31;
   --mono: ui-monospace, "SF Mono", Consolas, monospace;
   --spring: linear(0,.0086 1.03%,.0349 2.13%,.1412 4.61%,.5292 10.19%,.6798 12.67%,.8064 15.25%,.9048 17.85%,.9755 20.52%,1.0208 23.32%,1.0446 26.36%,1.0492 30.32%,1.0161 42.7%,1.0007 51.63%,.9942 62.52%,1 100%);
-  color-scheme: dark;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 body {
@@ -25,13 +25,13 @@ body {
   font: 400 15px/1.55 "FiraGO", system-ui, sans-serif; -webkit-font-smoothing: antialiased;
 }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1;
-  background: radial-gradient(800px 500px at 90% -10%, rgba(255,128,57,.08), transparent 60%); }
+  background: radial-gradient(800px 500px at 90% -10%, rgba(255,128,57,.05), transparent 60%); }
 a { color: var(--acc-deep); }
 button { font: inherit; }
 
 .topbar {
   position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 14px;
-  padding: 14px 22px; background: rgba(23,19,20,.8); backdrop-filter: blur(18px);
+  padding: 14px 22px; background: rgba(250,247,244,.85); backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--line);
 }
 .topbar .logo { font-weight: 700; font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
@@ -63,13 +63,13 @@ h1 { font-size: 1.5rem; margin: 0 0 4px; }
 h2 { font-size: 1.05rem; margin: 26px 0 12px; }
 .sub { color: var(--dim); font-size: .9rem; margin: 0 0 22px; max-width: 70ch; }
 .card {
-  background: var(--glass); border: 1px solid var(--line); border-radius: 16px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
   padding: 20px 22px; margin-bottom: 18px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  box-shadow: 0 8px 28px -18px rgba(36,31,32,.25);
 }
 label { display: block; font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin: 0 0 6px; }
 input[type=text], input[type=number], input[type=password], textarea, select {
-  width: 100%; background: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 10px;
+  width: 100%; background: #FFFFFF; border: 1px solid var(--line); border-radius: 10px;
   color: var(--ink); padding: 11px 13px; font: inherit; font-size: .92rem;
 }
 textarea { min-height: 84px; resize: vertical; }
@@ -89,8 +89,8 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .btn:hover { transform: translateY(-1px) scale(1.03); }
 .btn:active { transform: scale(.96); }
 .btn[disabled] { opacity: .5; pointer-events: none; }
-.btn--ghost { background: var(--glass2); color: var(--ink); box-shadow: none; border: 1px solid var(--line2); }
-.btn--danger { background: none; border: 1px solid rgba(229,72,77,.5); color: #ff9a9d; box-shadow: none; }
+.btn--ghost { background: #FFFFFF; color: var(--ink); box-shadow: none; border: 1px solid var(--line2); }
+.btn--danger { background: none; border: 1px solid rgba(206,44,49,.45); color: #CE2C31; box-shadow: none; }
 .btn--sm { padding: 8px 14px; font-size: .8rem; }
 
 .langtabs { display: flex; gap: 6px; margin-bottom: 18px; }
@@ -102,9 +102,9 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 
 .toast {
   position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(140%);
-  background: #241d1e; border: 1px solid var(--line2); border-radius: 12px;
+  background: #FFFFFF; border: 1px solid var(--line2); border-radius: 12px;
   padding: 13px 20px; font-size: .88rem; z-index: 100; max-width: min(480px, 90vw);
-  box-shadow: 0 18px 50px rgba(0,0,0,.6); transition: transform .55s var(--spring);
+  box-shadow: 0 18px 50px rgba(36,31,32,.28); transition: transform .55s var(--spring);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 .toast.ok { border-color: rgba(76,195,138,.5); }
@@ -113,15 +113,16 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .carlist { display: grid; gap: 12px; }
 .carrow {
   display: grid; grid-template-columns: 92px 1fr auto; gap: 16px; align-items: center;
-  background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px 12px 12px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px 12px 12px;
+  box-shadow: 0 6px 20px -16px rgba(36,31,32,.3);
 }
-.carrow img { width: 92px; height: 64px; object-fit: cover; border-radius: 9px; background: #000; }
-.carrow .noimg { width: 92px; height: 64px; border-radius: 9px; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; color: var(--faint); font-size: .7rem; }
+.carrow img { width: 92px; height: 64px; object-fit: cover; border-radius: 9px; background: #EDE8E4; }
+.carrow .noimg { width: 92px; height: 64px; border-radius: 9px; background: var(--glass2); display: flex; align-items: center; justify-content: center; color: var(--faint); font-size: .7rem; }
 .carrow b { display: block; font-size: .98rem; }
 .carrow .meta { font-family: var(--mono); font-size: .7rem; color: var(--dim); }
 .carrow .tags { margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap; }
 .tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; padding: 3px 7px; border-radius: 5px; border: 1px solid var(--line); color: var(--dim); }
-.tag.sold { border-color: rgba(229,72,77,.5); color: #ff9a9d; }
+.tag.sold { border-color: rgba(206,44,49,.4); color: #CE2C31; }
 .tag.feat { border-color: var(--acc-line); color: var(--acc-deep); }
 .carrow .acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 @media (max-width: 640px) { .carrow { grid-template-columns: 72px 1fr; } .carrow .acts { grid-column: 1 / -1; justify-content: flex-start; } }
@@ -153,7 +154,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 }
 .rt-bar button:hover { border-color: var(--acc-line); color: var(--acc-deep); }
 .rt-editor {
-  min-height: 280px; background: rgba(0,0,0,.28); border: 1px solid var(--line);
+  min-height: 280px; background: #FFFFFF; border: 1px solid var(--line);
   border-radius: 12px; padding: 20px 22px; font-size: .95rem; line-height: 1.65; outline: none;
 }
 .rt-editor:focus { border-color: var(--acc-line); }
@@ -180,9 +181,11 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .pg-field label { display: flex; gap: 8px; align-items: baseline; }
 .pg-field label i { font-style: normal; color: var(--acc); }
 .pg-field textarea { min-height: 44px; }
+.lencount { font-family: var(--mono); font-size: .64rem; letter-spacing: .06em; color: var(--faint); margin-top: 4px; }
+.lencount.over { color: var(--bad); }
 
 .svc-item, .jr-item, .stat-item { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
-.warn { color: #ffb86b; font-size: .82rem; }
+.warn { color: #B4540A; font-size: .82rem; }
 </style>
 </head>
 <body>
@@ -413,8 +416,8 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
         <input type="file" id="p-img-file" accept="image/*" hidden>
         <h2>SEO (ამ ენისთვის)</h2>
         <div class="row row--2">
-          <div><label>SEO სათაური — ბრაუზერის ტაბი და Google</label><input type="text" id="p-seoTitle" placeholder="სათაური | VG Auto Export"></div>
-          <div><label>SEO აღწერა — Google-ის სნიპეტი</label><textarea id="p-seoDesc" style="min-height:64px"></textarea></div>
+          <div><label>SEO სათაური — ბრაუზერის ტაბი და Google</label><input type="text" id="p-seoTitle" placeholder="სათაური | VG Auto Export"><div class="lencount" data-len-for="p-seoTitle" data-len-max="60"></div></div>
+          <div><label>SEO აღწერა — Google-ის სნიპეტი</label><textarea id="p-seoDesc" style="min-height:64px"></textarea><div class="lencount" data-len-for="p-seoDesc" data-len-max="155"></div></div>
         </div>
         <div class="statusline" id="post-status"></div>
         <p style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0">
@@ -1231,7 +1234,9 @@ $('postlist').addEventListener('click', function (e) {
         });
       });
     });
-    chain.then(function () { toast('✓ სტატია წაიშალა', 'ok'); renderPostList(); })
+    chain.then(function () { return updateListings(null); })
+      .then(function () { return updateSitemap(null); })
+      .then(function () { toast('✓ სტატია წაიშალა', 'ok'); renderPostList(); })
       .catch(function (err) { toast('✗ ' + err.message, 'bad'); });
   }
 });
@@ -1278,9 +1283,15 @@ $('p-img-file').addEventListener('change', function () {
   var f = this.files && this.files[0];
   this.value = '';
   if (!f) return;
+  var alt = prompt('სურათის აღწერა (alt — Google-ისთვის და უსინათლოთათვის):') || '';
   resizeImage(f, 1400, 0.82).then(function (dataUrl) {
-    $('p-editor').focus();
-    document.execCommand('insertHTML', false, '<img src="' + dataUrl + '" alt="">');
+    var probe = new Image();
+    probe.onload = function () {
+      $('p-editor').focus();
+      document.execCommand('insertHTML', false,
+        '<img src="' + dataUrl + '" alt="' + escAttr(alt) + '" loading="lazy" width="' + probe.naturalWidth + '" height="' + probe.naturalHeight + '">');
+    };
+    probe.src = dataUrl;
   }).catch(function () { toast('✗ სურათი ვერ წაიკითხა', 'bad'); });
 });
 $('p-cover-file').addEventListener('change', function () {
@@ -1384,7 +1395,9 @@ $('post-save').addEventListener('click', function () {
   chain.then(function () {
     /* blog.json entry */
     var id = d.id || state.blog.nextId || 1;
-    var entry = { id: id, slug: d.slug, published: d.published, date: d.date, cover: d.cover ? d.cover.path : '' };
+    var today = new Date();
+    var todayIso = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    var entry = { id: id, slug: d.slug, published: d.published, date: d.date, updated: todayIso, cover: d.cover ? d.cover.path : '' };
     ['ka', 'en', 'ru'].forEach(function (l) {
       var L = d.langs[l] || {};
       entry[l] = {
@@ -1413,9 +1426,14 @@ $('post-save').addEventListener('click', function () {
           var cover = entry.cover ? siteImg(entry.cover) : SITE_URL + 'images/logo400.png';
           var ld = JSON.stringify({
             '@context': 'https://schema.org', '@type': 'BlogPosting',
-            headline: L.title, description: L.seoDesc, datePublished: entry.date,
-            image: cover, mainEntityOfPage: url,
-            author: { '@type': 'Organization', name: 'VG Auto Export' }
+            headline: L.title, description: L.seoDesc,
+            datePublished: entry.date, dateModified: entry.updated || entry.date,
+            image: [cover], mainEntityOfPage: url, inLanguage: lang,
+            author: { '@type': 'Organization', name: 'VG Auto Export', url: SITE_URL },
+            publisher: {
+              '@type': 'Organization', name: 'VG Auto Export',
+              logo: { '@type': 'ImageObject', url: SITE_URL + 'images/logo400.png' }
+            }
           });
           var html = tpl
             .replace(/\{\{SLUG\}\}/g, entry.slug)
@@ -1423,6 +1441,7 @@ $('post-save').addEventListener('click', function () {
             .replace(/\{\{SEO_DESC\}\}/g, escAttr(L.seoDesc))
             .replace(/\{\{TITLE\}\}/g, escHtml(L.title))
             .replace(/\{\{DATE_ISO\}\}/g, entry.date)
+            .replace(/\{\{DATE_MOD\}\}/g, entry.updated || entry.date)
             .replace(/\{\{DATE_TXT\}\}/g, fmtDateTxt(entry.date))
             .replace(/\{\{COVER\}\}/g, cover)
             .replace(/\{\{JSONLD\}\}/g, ld)
@@ -1445,6 +1464,10 @@ $('post-save').addEventListener('click', function () {
     }
     return chain2;
   }).then(function () {
+    return updateListings(st);
+  }).then(function () {
+    return updateSitemap(st);
+  }).then(function () {
     st.textContent = '';
     toast('✓ სტატია გამოქვეყნდა — საიტზე გამოჩნდება ~1 წუთში', 'ok');
     $('post-form').classList.add('hidden');
@@ -1454,6 +1477,76 @@ $('post-save').addEventListener('click', function () {
     toast('✗ ' + e.message, 'bad');
   }).then(function () { btn.disabled = false; });
 });
+
+/* ---------- blog SEO side effects: baked listings + sitemap ---------- */
+function bakeListingCards(lang, pfx) {
+  var posts = (state.blog.posts || []).filter(function (p) {
+    return p.published !== false && p[lang] && p[lang].title;
+  }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+  return posts.map(function (p) {
+    var url = SITE_URL + pfx + 'blog/' + p.slug + '/';
+    return '<article class="card card--hover"><a href="' + url + '">' +
+      '<div class="card__media"><img src="' + escAttr(siteImg(p.cover || '')) + '" alt="' + escAttr(p[lang].title) + '" loading="lazy"></div>' +
+      '<div class="card__body"><time class="muted" datetime="' + escAttr(p.date || '') + '" style="font-size:0.82rem;">' + fmtDateTxt(p.date) + '</time>' +
+      '<h2 class="card__title" style="font-size:1.05rem; margin-top:6px;">' + escHtml(p[lang].title) + '</h2>' +
+      '<p style="font-size:0.9rem; margin:0;">' + escHtml(p[lang].excerpt || '') + '</p></div></a></article>';
+  }).join('\n');
+}
+function updateListings(statusEl) {
+  var chain = Promise.resolve();
+  BLOG_LANGS.forEach(function (lp) {
+    var lang = lp[0], pfx = lp[1], path = pfx + 'blog/index.html';
+    chain = chain.then(function () {
+      if (statusEl) statusEl.textContent = 'ახლდება ბლოგის სია (' + lang.toUpperCase() + ')…';
+      return getFile(path, BRANCH_LIVE).then(function (f) {
+        if (f.text == null) return;
+        var cards = '<!--BLOG-->\n' + bakeListingCards(lang, pfx) + '\n<!--/BLOG-->';
+        var html = f.text;
+        if (html.indexOf('<!--BLOG-->') > -1) {
+          html = html.replace(/<!--BLOG-->[\s\S]*?<!--\/BLOG-->/, cards);
+        } else {
+          html = html.replace('<div class="grid grid--3" data-blog-list></div>',
+            '<div class="grid grid--3" data-blog-list>' + cards + '</div>');
+        }
+        if (html === f.text && html.indexOf('<!--BLOG-->') === -1) return; /* container not found */
+        return writeBoth(path, b64encode(html), 'admin: refresh blog listing (' + lang + ')', null);
+      });
+    });
+  });
+  return chain;
+}
+function sitemapEntry(pfx, slug, lastmod, langs) {
+  var base = SITE_URL;
+  var loc = base + pfx + 'blog/' + slug + '/';
+  var alts = '';
+  BLOG_LANGS.forEach(function (lp) {
+    if (langs.indexOf(lp[0]) === -1) return;
+    alts += '<xhtml:link rel="alternate" hreflang="' + lp[0] + '" href="' + base + lp[1] + 'blog/' + slug + '/"/>';
+  });
+  alts += '<xhtml:link rel="alternate" hreflang="x-default" href="' + base + 'blog/' + slug + '/"/>';
+  return '  <url><loc>' + loc + '</loc><lastmod>' + lastmod + '</lastmod>' + alts + '</url>';
+}
+function updateSitemap(statusEl) {
+  if (statusEl) statusEl.textContent = 'ახლდება sitemap.xml…';
+  return getFile('sitemap.xml', BRANCH_LIVE).then(function (f) {
+    if (f.text == null) return;
+    /* strip every blog-post entry (the /blog/ listings themselves stay) */
+    var xml = f.text.replace(/[ \t]*<url><loc>https:\/\/st0ckitch\.github\.io\/vga-auto\/(?:en\/|ru\/)?blog\/[A-Za-z0-9-]+\/<\/loc>[\s\S]*?<\/url>\r?\n?/g, '');
+    var lines = [];
+    (state.blog.posts || []).forEach(function (p) {
+      if (p.published === false) return;
+      var langs = ['ka', 'en', 'ru'].filter(function (l) { return p[l] && p[l].title && p[l].html; });
+      if (!langs.length) return;
+      var lastmod = p.updated || p.date || '';
+      BLOG_LANGS.forEach(function (lp) {
+        if (langs.indexOf(lp[0]) === -1) return;
+        lines.push(sitemapEntry(lp[1], p.slug, lastmod, langs));
+      });
+    });
+    xml = xml.replace('</urlset>', lines.join('\n') + '\n</urlset>');
+    return writeBoth('sitemap.xml', b64encode(xml), 'admin: refresh sitemap (blog)', null);
+  });
+}
 
 /* ---------- pages editor ---------- */
 var INLINE_TAGS = { A: 1, B: 1, I: 1, EM: 1, STRONG: 1, SPAN: 1, BR: 1, SMALL: 1, U: 1, TIME: 1, SUP: 1, SUB: 1, MARK: 1 };
@@ -1542,6 +1635,21 @@ $('pg-save').addEventListener('click', function () {
     .then(function () { st.textContent = '✓ ' + pg.path; toast('✓ შენახულია — გამოჩნდება ~1 წუთში', 'ok'); })
     .catch(function (e) { st.textContent = ''; toast('✗ ' + e.message, 'bad'); })
     .then(function () { btn.disabled = false; });
+});
+
+/* ---------- SEO length counters ---------- */
+document.querySelectorAll('.lencount').forEach(function (el) {
+  var inp = $(el.dataset.lenFor), max = +el.dataset.lenMax;
+  if (!inp) return;
+  var upd = function () {
+    var n = inp.value.length;
+    el.textContent = n + ' / ' + max + (n > max ? ' — Google-ში შეიკვეცება' : '');
+    el.classList.toggle('over', n > max);
+  };
+  inp.addEventListener('input', upd);
+  new MutationObserver(upd).observe(inp, { attributes: true, attributeFilter: ['value'] });
+  setInterval(upd, 800);
+  upd();
 });
 
 /* ---------- boot ---------- */
