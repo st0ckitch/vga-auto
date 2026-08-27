@@ -1468,9 +1468,6 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
 }
 [data-theme="light"] .ghost { -webkit-text-stroke-color: rgba(36, 31, 32, 0.38); }
 
-/* ---------- Ambient cursor trail ---------- */
-.fx-trail { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-
 /* ---------- Journey: route map + shipment tracker ---------- */
 .journey {
   display: grid; grid-template-columns: 1.05fr 1fr;
