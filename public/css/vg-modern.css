@@ -1630,18 +1630,27 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
 }
 
 
-/* ---------- Partner name marquee (reference style) ---------- */
+/* ---------- Full-bleed helper for in-container marquees ---------- */
 .bleed { width: 100vw; margin-left: calc(50% - 50vw); }
-.marquee--names { padding: 22px 0; }
-.marquee--names .marquee__track { animation-duration: 38s; }
-.marquee--names .marquee__track span {
-  color: var(--c-ink); -webkit-text-stroke: 0;
-  font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 800;
-  letter-spacing: 0.02em; text-transform: uppercase;
+
+/* ---------- Wordmark + typographic brand tiles (ghost style, matches the top marquee) ---------- */
+.wordmark {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: 0.05em;
+  text-transform: uppercase; white-space: nowrap;
+  color: transparent; -webkit-text-stroke: 1px rgba(245, 239, 234, 0.4);
 }
-.marquee--names .marquee__track span:nth-child(3n) { color: var(--c-ink); -webkit-text-stroke: 0; }
-.marquee--names .marquee__track span.nm-acc {
-  font-style: italic; font-weight: 300; letter-spacing: 0;
-  color: var(--c-primary-deep); text-transform: none;
+.wordmark em { font-style: normal; color: var(--c-body); -webkit-text-stroke: 0; }
+[data-theme="light"] .wordmark { -webkit-text-stroke-color: rgba(36, 31, 32, 0.38); }
+.brand-card { display: flex; align-items: center; justify-content: center; min-height: 110px; }
+.brand-card .card__body { padding: 26px 18px; text-align: center; }
+.brand-card .card__title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem); letter-spacing: 0.05em; text-transform: uppercase;
+  color: transparent; -webkit-text-stroke: 1px rgba(245, 239, 234, 0.34);
+  transition: color 0.25s ease;
 }
-.marquee--names .marquee__track span::after { content: "✦"; color: var(--c-primary); font-size: 0.5em; }
+.brand-card:nth-child(3n) .card__title { color: var(--c-body); -webkit-text-stroke: 0; }
+.brand-card:hover .card__title { color: var(--c-ink); -webkit-text-stroke: 0; }
+[data-theme="light"] .brand-card .card__title { -webkit-text-stroke-color: rgba(36, 31, 32, 0.34); }
+[data-theme="light"] .brand-card:nth-child(3n) .card__title { -webkit-text-stroke: 0; }
