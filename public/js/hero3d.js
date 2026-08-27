@@ -5,11 +5,16 @@
    no WebGL -> static glow; reduced motion -> still frame. */
 const host = document.querySelector('[data-hero-3d]');
 if (host) {
-  /* three.js and the car model are heavy; fetch them only once the page has
-     finished loading and the main thread is idle, so first paint and
-     interactivity never wait on the 3D scene. */
-  const idle = window.requestIdleCallback ? (fn) => window.requestIdleCallback(fn, { timeout: 1500 }) : (fn) => setTimeout(fn, 250);
-  const boot = () => idle(async () => {
+  /* three.js and the car model are heavy; fetch them only when the visitor
+     first interacts (touch, scroll, cursor, key) or, failing that, a few
+     seconds after the page has fully loaded - first paint and interactivity
+     never wait on the 3D scene. */
+  const EVENTS = ['pointerdown', 'pointermove', 'touchstart', 'wheel', 'scroll', 'keydown'];
+  let booted = false;
+  const boot = async () => {
+    if (booted) return;
+    booted = true;
+    EVENTS.forEach((t) => window.removeEventListener(t, boot));
     try {
       const [THREE, { GLTFLoader }] = await Promise.all([
         import('./three.module.min.js?v=160'),
@@ -19,9 +24,11 @@ if (host) {
     } catch (e) {
       host.classList.add('no-webgl');
     }
-  });
-  if (document.readyState === 'complete') boot();
-  else window.addEventListener('load', boot, { once: true });
+  };
+  EVENTS.forEach((t) => window.addEventListener(t, boot, { once: true, passive: true }));
+  const armTimer = () => setTimeout(boot, 6000);
+  if (document.readyState === 'complete') armTimer();
+  else window.addEventListener('load', armTimer, { once: true });
 }
 
 function init(host, THREE, GLTFLoader) {
