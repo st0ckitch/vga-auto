@@ -157,6 +157,8 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
   border-radius: 12px; padding: 20px 22px; font-size: .95rem; line-height: 1.65; outline: none;
 }
 .rt-editor:focus { border-color: var(--acc-line); }
+.rt-editor p, .rt-editor div { font-size: .95rem; margin: 0 0 12px; }
+.rt-editor h1 { font-size: 1.55rem; margin: 24px 0 10px; }
 .rt-editor h2 { font-size: 1.25rem; margin: 22px 0 8px; }
 .rt-editor h3 { font-size: 1.05rem; margin: 18px 0 6px; }
 .rt-editor a { color: var(--acc-deep); }
@@ -169,7 +171,8 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .pv-article h1 { font-size: clamp(1.6rem, 3.4vw, 2.5rem); line-height: 1.25; margin: 10px 0 6px; }
 .pv-article .pv-cover { width: 100%; aspect-ratio: 16/8; object-fit: cover; border-radius: 16px; margin: 22px 0 26px; }
 .pv-body { font-size: 1rem; line-height: 1.7; color: var(--dim); }
-.pv-body h2, .pv-body h3 { color: var(--ink); }
+.pv-body h1, .pv-body h2, .pv-body h3 { color: var(--ink); }
+.pv-body h1 { font-size: 1.7rem; }
 .pv-body a { color: var(--acc-deep); }
 .pv-body img { max-width: 100%; border-radius: 12px; }
 .pv-body blockquote { border-left: 3px solid var(--acc); margin: 16px 0; padding: 4px 0 4px 18px; }
@@ -395,6 +398,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
         <div class="rt-bar" id="p-toolbar">
           <button type="button" data-cmd="bold"><b>B</b></button>
           <button type="button" data-cmd="italic"><i>I</i></button>
+          <button type="button" data-block="h1">H1</button>
           <button type="button" data-block="h2">H2</button>
           <button type="button" data-block="h3">H3</button>
           <button type="button" data-block="p">¶</button>
@@ -1233,12 +1237,37 @@ $('postlist').addEventListener('click', function (e) {
 });
 
 /* toolbar */
+try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch (err) {}
+function setBlock(tag) {
+  var ed = $('p-editor');
+  ed.focus();
+  /* both spellings — browsers disagree on the angle-bracket form */
+  document.execCommand('formatBlock', false, tag);
+  document.execCommand('formatBlock', false, '<' + tag + '>');
+  /* verify; if the block refused to change (common when leaving headings), rebuild it manually */
+  var sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  var node = sel.anchorNode;
+  if (node && node.nodeType === 3) node = node.parentNode;
+  while (node && node !== ed && node.parentNode !== ed) node = node.parentNode;
+  if (!node || node === ed) return;
+  if (node.tagName && node.tagName.toLowerCase() !== tag) {
+    var repl = document.createElement(tag);
+    while (node.firstChild) repl.appendChild(node.firstChild);
+    node.parentNode.replaceChild(repl, node);
+    var r = document.createRange();
+    r.selectNodeContents(repl);
+    r.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(r);
+  }
+}
 $('p-toolbar').addEventListener('click', function (e) {
   var b = e.target.closest('button');
   if (!b) return;
   $('p-editor').focus();
   if (b.dataset.cmd) document.execCommand(b.dataset.cmd, false, null);
-  if (b.dataset.block) document.execCommand('formatBlock', false, b.dataset.block);
+  if (b.dataset.block) setBlock(b.dataset.block);
 });
 $('rt-link').addEventListener('click', function () {
   var url = prompt('ბმულის მისამართი (https://…):');
