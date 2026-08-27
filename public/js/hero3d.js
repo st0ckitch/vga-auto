@@ -3,19 +3,28 @@
    as brand-orange glass and slowly turntabling, rendered with self-hosted
    three.js. Degrades gracefully: model load error -> glass torus knot;
    no WebGL -> static glow; reduced motion -> still frame. */
-import * as THREE from './three.module.min.js?v=160';
-import { GLTFLoader } from './GLTFLoader.js?v=160';
-
 const host = document.querySelector('[data-hero-3d]');
 if (host) {
-  try {
-    init(host);
-  } catch (e) {
-    host.classList.add('no-webgl');
-  }
+  /* three.js and the car model are heavy; fetch them only once the page has
+     finished loading and the main thread is idle, so first paint and
+     interactivity never wait on the 3D scene. */
+  const idle = window.requestIdleCallback ? (fn) => window.requestIdleCallback(fn, { timeout: 1500 }) : (fn) => setTimeout(fn, 250);
+  const boot = () => idle(async () => {
+    try {
+      const [THREE, { GLTFLoader }] = await Promise.all([
+        import('./three.module.min.js?v=160'),
+        import('./GLTFLoader.js?v=160'),
+      ]);
+      init(host, THREE, GLTFLoader);
+    } catch (e) {
+      host.classList.add('no-webgl');
+    }
+  });
+  if (document.readyState === 'complete') boot();
+  else window.addEventListener('load', boot, { once: true });
 }
 
-function init(host) {
+function init(host, THREE, GLTFLoader) {
   const canvas = host.querySelector('.hero-3d__canvas');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

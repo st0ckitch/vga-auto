@@ -604,9 +604,15 @@
       var L = site[lang];
       if (!L || !document.body.classList.contains('page-home')) return;
 
+      /* write only when the JSON differs from the baked markup - identical
+         rewrites would repaint the hero and push LCP later for no reason */
+      var setText = function (el, v) {
+        if (el && v != null && el.textContent !== String(v)) el.textContent = v;
+      };
+
       /* hero */
       var h1 = document.querySelector('.hero-v2__title');
-      if (h1 && L.heroTitle) {
+      if (h1 && L.heroTitle && h1.textContent.replace(/\s+/g, ' ').trim() !== L.heroTitle.replace(/\*/g, '').replace(/\s+/g, ' ').trim()) {
         h1.innerHTML = L.heroTitle.trim().split(/\s+/).map(function (w, i) {
           var acc = /^\*.*\*$/.test(w);
           if (acc) w = w.slice(1, -1);
@@ -615,7 +621,7 @@
         }).join(' ');
       }
       var sub = document.querySelector('.hero-v2__sub');
-      if (sub && L.heroSub) sub.textContent = L.heroSub;
+      if (sub && L.heroSub) setText(sub, L.heroSub);
 
       /* stats */
       if (L.stats && L.stats.length) {
@@ -624,8 +630,8 @@
           var el = stats[i];
           if (!el) return;
           var b = el.querySelector('b'), sp = el.querySelector('span');
-          if (b && s.v != null) { b.textContent = s.v; b.removeAttribute('data-count'); }
-          if (sp && s.label) sp.textContent = s.label;
+          if (b && s.v != null && b.textContent !== String(s.v)) { b.textContent = s.v; b.removeAttribute('data-count'); }
+          if (sp && s.label) setText(sp, s.label);
         });
       }
 
@@ -633,9 +639,9 @@
       var vc = document.querySelector('.video-band__copy');
       if (vc && L.video) {
         var ve = vc.querySelector('.eyebrow'), vt = vc.querySelector('h2'), vp = vc.querySelector('h2 + p');
-        if (ve && L.video.eyebrow) ve.textContent = L.video.eyebrow;
-        if (vt && L.video.title) vt.textContent = L.video.title;
-        if (vp && L.video.text) vp.textContent = L.video.text;
+        if (ve && L.video.eyebrow) setText(ve, L.video.eyebrow);
+        if (vt && L.video.title) setText(vt, L.video.title);
+        if (vp && L.video.text) setText(vp, L.video.text);
       }
 
       /* services */
@@ -645,8 +651,8 @@
           var f = feats[i];
           if (!f) return;
           var h = f.querySelector('h3'), p = f.querySelector('p');
-          if (h && s.title) h.textContent = s.title;
-          if (p && s.text) p.textContent = s.text;
+          if (h && s.title) setText(h, s.title);
+          if (p && s.text) setText(p, s.text);
         });
       }
 
@@ -657,8 +663,8 @@
           var li = lis[i];
           if (!li) return;
           var b = li.querySelector('b'), sp = li.querySelector('span');
-          if (b && j.t) b.textContent = j.t;
-          if (sp && j.s) sp.textContent = j.s;
+          if (b && j.t) setText(b, j.t);
+          if (sp && j.s) setText(sp, j.s);
         });
       }
 
@@ -669,9 +675,35 @@
           var spans = L.marquee.concat(L.marquee).map(function (w) {
             return '<span>' + String(w).replace(/[&<>]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]; }) + '</span>';
           }).join('');
-          track.innerHTML = spans;
+          var live = Array.prototype.map.call(track.children, function (el) { return el.textContent; }).join('|');
+          var want = L.marquee.concat(L.marquee).map(String).join('|');
+          if (live !== want) track.innerHTML = spans;
         }
       }
     })
     .catch(function () {});
+})();
+
+/* ---------- Lazy video: fetch and play band videos only near the viewport ---------- */
+(function () {
+  var vids = document.querySelectorAll('video[data-lazy-video]');
+  if (!vids.length) return;
+  var start = function (v) {
+    if (v.dataset.lazyDone) return;
+    v.dataset.lazyDone = '1';
+    Array.prototype.forEach.call(v.querySelectorAll('source[data-src]'), function (s) { s.src = s.getAttribute('data-src'); });
+    v.load();
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  };
+  if (!('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(vids, start);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { start(e.target); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '400px 0px' });
+  Array.prototype.forEach.call(vids, function (v) { io.observe(v); });
 })();
