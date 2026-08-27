@@ -1,0 +1,277 @@
+{
+  "contacts": {
+    "phone": "0322 50 05 04",
+    "phoneIntl": "+995322500504",
+    "email": "",
+    "dealerUrl": "http://vgae.com.ge/dlr/",
+    "facebook": "",
+    "instagram": "",
+    "addressKa": "",
+    "addressEn": "",
+    "addressRu": ""
+  },
+  "ka": {
+    "heroTitle": "საუკეთესო გზა *ამერიკული* *ავტომობილისთვის*",
+    "heroSub": "აუქციონზე შეძენიდან ფოთის პორტამდე — ტრანსპორტირება, განბაჟება და სრული ფოტო-რეპორტი ერთ სივრცეში.",
+    "stats": [
+      {
+        "v": "7+",
+        "label": "ავტოაუქციონი"
+      },
+      {
+        "v": "5",
+        "label": "საკონტეინერო ხაზი"
+      },
+      {
+        "v": "50",
+        "label": "შტატიდან ექსპორტი"
+      }
+    ],
+    "video": {
+      "eyebrow": "გაიცანით VG ავტო ექსპორტი",
+      "title": "აუქციონიდან ფოთამდე — სრული პროცესი ერთ ვიდეოში",
+      "text": "ავტომობილის მიღება, ტერმინალზე დატვირთვა, კონტეინერში ჩადება და ფოთის პორტში გადმოტვირთვა — ყოველი ეტაპი, რომელსაც ჩვენი გუნდი ყოველდღიურად ასრულებს."
+    },
+    "services": [
+      {
+        "title": "ავტომობილების მოძიება",
+        "text": "სასურველ ავტომობილს მოგიძიებთ Copart-სა და IAAI-ზე — ისტორიის, მდგომარეობისა და რეალური ფასის შეფასებით."
+      },
+      {
+        "title": "გადაზიდვა ამერიკაში",
+        "text": "აუქციონიდან უახლოეს პორტამდე ავტომობილს გამოცდილი მძღოლების ქსელით გადავზიდავთ."
+      },
+      {
+        "title": "საზღვაო გადაზიდვა",
+        "text": "კონტეინერში ჩატვირთვა და გადაზიდვა წამყვანი საკონტეინერო ხაზებით ფოთისა და ბათუმის პორტებამდე."
+      },
+      {
+        "title": "კონტეინერის და ავტომობილის მიღება",
+        "text": "კონტეინერის განბლოკვა, ავტომობილის მიღება პორტში და ყველა საჭირო დოკუმენტის მომზადება."
+      },
+      {
+        "title": "ავტომობილის შეკეთება",
+        "text": "საჭიროების შემთხვევაში — აღდგენა და შეკეთება სანდო სერვის-ცენტრებში, ორიგინალი ავტონაწილებით."
+      },
+      {
+        "title": "ავტომობილის ჩაბარება",
+        "text": "მზა ავტომობილს მფლობელს შეთანხმებულ ადგილას და ვადაში ჩავაბარებთ."
+      }
+    ],
+    "journey": [
+      {
+        "t": "მოგებული აუქციონზე",
+        "s": "COPART · IAAI · ლოტი შენს სახელზე"
+      },
+      {
+        "t": "ეზოდან გატანა",
+        "s": "სახმელეთო გადაზიდვა პორტამდე"
+      },
+      {
+        "t": "კონტეინერში ჩატვირთვა",
+        "s": "ფოტო-რეპორტი ჩატვირთვისას"
+      },
+      {
+        "t": "საზღვაო გადაზიდვა",
+        "s": "~40–50 დღე ატლანტიკის გავლით"
+      },
+      {
+        "t": "ფოთი / ბათუმი",
+        "s": "პორტში მიღება და დათვალიერება"
+      },
+      {
+        "t": "განბაჟება და ჩაბარება",
+        "s": "გასაღები შენს ხელში ✓"
+      }
+    ],
+    "marquee": [
+      "Copart",
+      "IAAI",
+      "Manheim",
+      "Adesa",
+      "Maersk",
+      "MSC",
+      "COSCO",
+      "ZIM",
+      "Hapag-Lloyd",
+      "ფოთი",
+      "ბათუმი"
+    ]
+  },
+  "en": {
+    "heroTitle": "The Easiest Way to Get *Your American* *Car*",
+    "heroSub": "From auction purchase to the port of Poti — shipping, customs clearance, and a full photo report, all in one place.",
+    "stats": [
+      {
+        "v": "7+",
+        "label": "auto auctions"
+      },
+      {
+        "v": "5",
+        "label": "shipping lines"
+      },
+      {
+        "v": "50",
+        "label": "states we ship from"
+      }
+    ],
+    "video": {
+      "eyebrow": "Meet VG Auto Export",
+      "title": "From the auction to Poti — the whole process in one film",
+      "text": "Receiving the car, loading at the terminal, securing it inside the container and unloading in Poti — every stage our team runs daily."
+    },
+    "services": [
+      {
+        "title": "Car sourcing",
+        "text": "We find the car you want on Copart and IAAI — with its history, condition and real price assessed."
+      },
+      {
+        "title": "Transport across the USA",
+        "text": "From the auction to the nearest port, moved by our own network of experienced drivers."
+      },
+      {
+        "title": "Ocean freight",
+        "text": "Loading into the container and shipping with the major container lines to Poti and Batumi."
+      },
+      {
+        "title": "Container and vehicle handover",
+        "text": "Container release, receiving the car at the port and preparing every required document."
+      },
+      {
+        "title": "Vehicle repair",
+        "text": "Where it is needed — restoration and repair at trusted service centres, with original parts."
+      },
+      {
+        "title": "Vehicle delivery",
+        "text": "The finished car handed to its owner, at the agreed place and within the agreed time."
+      }
+    ],
+    "journey": [
+      {
+        "t": "Won at auction",
+        "s": "COPART · IAAI · the lot in your name"
+      },
+      {
+        "t": "Yard pickup",
+        "s": "inland trucking to the port"
+      },
+      {
+        "t": "Loaded into a container",
+        "s": "photo report at loading"
+      },
+      {
+        "t": "Ocean freight",
+        "s": "~40–50 days across the Atlantic"
+      },
+      {
+        "t": "Poti / Batumi",
+        "s": "port arrival and inspection"
+      },
+      {
+        "t": "Customs & handover",
+        "s": "keys in your hand ✓"
+      }
+    ],
+    "marquee": [
+      "Copart",
+      "IAAI",
+      "Manheim",
+      "Adesa",
+      "Maersk",
+      "MSC",
+      "COSCO",
+      "ZIM",
+      "Hapag-Lloyd",
+      "Poti",
+      "Batumi"
+    ]
+  },
+  "ru": {
+    "heroTitle": "Лучший путь к *американскому* *автомобилю*",
+    "heroSub": "От покупки на аукционе до порта Поти — доставка, растаможка и полный фотоотчёт в одном месте.",
+    "stats": [
+      {
+        "v": "7+",
+        "label": "автоаукционов"
+      },
+      {
+        "v": "5",
+        "label": "контейнерных линий"
+      },
+      {
+        "v": "50",
+        "label": "штатов отправки"
+      }
+    ],
+    "video": {
+      "eyebrow": "Знакомьтесь: VG Auto Export",
+      "title": "От аукциона до Поти — весь процесс в одном видео",
+      "text": "Приёмка автомобиля, погрузка на терминале, крепление в контейнере и выгрузка в Поти — каждый этап, который наша команда выполняет ежедневно."
+    },
+    "services": [
+      {
+        "title": "Подбор автомобилей",
+        "text": "Подберём нужный автомобиль на Copart и IAAI — с оценкой истории, состояния и реальной цены."
+      },
+      {
+        "title": "Перевозка по США",
+        "text": "От аукциона до ближайшего порта — сетью опытных водителей."
+      },
+      {
+        "title": "Морская перевозка",
+        "text": "Погрузка в контейнер и доставка ведущими контейнерными линиями до портов Поти и Батуми."
+      },
+      {
+        "title": "Приёмка контейнера и автомобиля",
+        "text": "Раскредитация контейнера, приёмка автомобиля в порту и подготовка всех необходимых документов."
+      },
+      {
+        "title": "Ремонт автомобиля",
+        "text": "При необходимости — восстановление и ремонт в проверенных сервисах, с оригинальными запчастями."
+      },
+      {
+        "title": "Выдача автомобиля",
+        "text": "Готовый автомобиль передаём владельцу в согласованном месте и в срок."
+      }
+    ],
+    "journey": [
+      {
+        "t": "Куплен на аукционе",
+        "s": "COPART · IAAI · лот на ваше имя"
+      },
+      {
+        "t": "Вывоз со стоянки",
+        "s": "наземная доставка до порта"
+      },
+      {
+        "t": "Погрузка в контейнер",
+        "s": "фотоотчёт при погрузке"
+      },
+      {
+        "t": "Морская перевозка",
+        "s": "~40–50 дней через Атлантику"
+      },
+      {
+        "t": "Поти / Батуми",
+        "s": "прибытие в порт и осмотр"
+      },
+      {
+        "t": "Растаможка и передача",
+        "s": "ключи у вас в руках ✓"
+      }
+    ],
+    "marquee": [
+      "Copart",
+      "IAAI",
+      "Manheim",
+      "Adesa",
+      "Maersk",
+      "MSC",
+      "COSCO",
+      "ZIM",
+      "Hapag-Lloyd",
+      "Поти",
+      "Батуми"
+    ]
+  }
+}

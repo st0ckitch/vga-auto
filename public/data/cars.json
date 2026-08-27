@@ -1,0 +1,74 @@
+{
+  "nextId": 4,
+  "cars": [
+    {
+      "id": 1,
+      "make": "Kia",
+      "model": "Optima",
+      "year": 2014,
+      "engine": "2.4",
+      "transmission": "automatic",
+      "fuel": "petrol",
+      "steering": "left",
+      "location": "tbilisi",
+      "customs": "cleared",
+      "category": "sedan",
+      "mileage": 100000,
+      "vin": "",
+      "priceGel": 15791,
+      "priceUsd": 5100,
+      "images": [
+        "public/img/mycar/car6.jpg"
+      ],
+      "sold": false,
+      "featured": true,
+      "note": ""
+    },
+    {
+      "id": 2,
+      "make": "BMW",
+      "model": "328i",
+      "year": 2014,
+      "engine": "2.0",
+      "transmission": "automatic",
+      "fuel": "diesel",
+      "steering": "left",
+      "location": "tbilisi",
+      "customs": "cleared",
+      "category": "sedan",
+      "mileage": 100000,
+      "vin": "WBA3D5C52EKX98578",
+      "priceGel": 34987,
+      "priceUsd": 11300,
+      "images": [
+        "public/img/mycar/car7.jpg"
+      ],
+      "sold": false,
+      "featured": true,
+      "note": ""
+    },
+    {
+      "id": 3,
+      "make": "Toyota",
+      "model": "Camry",
+      "year": 2019,
+      "engine": "2.5",
+      "transmission": "automatic",
+      "fuel": "hybrid",
+      "steering": "left",
+      "location": "poti",
+      "customs": "in_progress",
+      "category": "sedan",
+      "mileage": 64000,
+      "vin": "",
+      "priceGel": 42000,
+      "priceUsd": 15500,
+      "images": [
+        "public/img/mycar/car8.jpg"
+      ],
+      "sold": false,
+      "featured": true,
+      "note": ""
+    }
+  ]
+}

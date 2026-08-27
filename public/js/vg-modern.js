@@ -571,3 +571,107 @@
   window.addEventListener('resize', req);
   upd();
 })();
+
+/* ---------- Content hydration from the admin-managed site.json ---------- */
+(function () {
+  if (!window.fetch) return;
+  var lang = (document.documentElement.getAttribute('lang') || 'ka').slice(0, 2);
+
+  fetch('https://st0ckitch.github.io/vga-auto/public/data/site.json?t=' + Date.now())
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (site) {
+      if (!site) return;
+      var c = site.contacts || {};
+
+      /* contacts, site-wide */
+      if (c.phoneIntl) {
+        document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
+          if (a.hasAttribute('data-cd-tel')) return;
+          a.href = 'tel:' + c.phoneIntl;
+          if (/\d{4,}/.test(a.textContent.replace(/\s/g, ''))) a.textContent = c.phone || c.phoneIntl;
+        });
+      }
+      if (c.email) {
+        document.querySelectorAll('a[href^="mailto:"]').forEach(function (a) {
+          a.href = 'mailto:' + c.email;
+          if (a.textContent.indexOf('@') > -1) a.textContent = c.email;
+        });
+      }
+      if (c.dealerUrl) {
+        document.querySelectorAll('a.header-dealer').forEach(function (a) { a.href = c.dealerUrl; });
+      }
+
+      var L = site[lang];
+      if (!L || !document.body.classList.contains('page-home')) return;
+
+      /* hero */
+      var h1 = document.querySelector('.hero-v2__title');
+      if (h1 && L.heroTitle) {
+        h1.innerHTML = L.heroTitle.trim().split(/\s+/).map(function (w, i) {
+          var acc = /^\*.*\*$/.test(w);
+          if (acc) w = w.slice(1, -1);
+          return '<span class="w' + (acc ? ' accent' : '') + '" style="--d:' + (i * 0.08).toFixed(2) + 's;">' +
+            w.replace(/[&<>]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]; }) + '</span>';
+        }).join(' ');
+      }
+      var sub = document.querySelector('.hero-v2__sub');
+      if (sub && L.heroSub) sub.textContent = L.heroSub;
+
+      /* stats */
+      if (L.stats && L.stats.length) {
+        var stats = document.querySelectorAll('.hero-v2__stats .stat');
+        L.stats.forEach(function (s, i) {
+          var el = stats[i];
+          if (!el) return;
+          var b = el.querySelector('b'), sp = el.querySelector('span');
+          if (b && s.v != null) { b.textContent = s.v; b.removeAttribute('data-count'); }
+          if (sp && s.label) sp.textContent = s.label;
+        });
+      }
+
+      /* video band copy */
+      var vc = document.querySelector('.video-band__copy');
+      if (vc && L.video) {
+        var ve = vc.querySelector('.eyebrow'), vt = vc.querySelector('h2'), vp = vc.querySelector('h2 + p');
+        if (ve && L.video.eyebrow) ve.textContent = L.video.eyebrow;
+        if (vt && L.video.title) vt.textContent = L.video.title;
+        if (vp && L.video.text) vp.textContent = L.video.text;
+      }
+
+      /* services */
+      if (L.services && L.services.length) {
+        var feats = document.querySelectorAll('#services .grid .feature');
+        L.services.forEach(function (s, i) {
+          var f = feats[i];
+          if (!f) return;
+          var h = f.querySelector('h3'), p = f.querySelector('p');
+          if (h && s.title) h.textContent = s.title;
+          if (p && s.text) p.textContent = s.text;
+        });
+      }
+
+      /* journey */
+      if (L.journey && L.journey.length) {
+        var lis = document.querySelectorAll('.jtl li');
+        L.journey.forEach(function (j, i) {
+          var li = lis[i];
+          if (!li) return;
+          var b = li.querySelector('b'), sp = li.querySelector('span');
+          if (b && j.t) b.textContent = j.t;
+          if (sp && j.s) sp.textContent = j.s;
+        });
+      }
+
+      /* marquee */
+      if (L.marquee && L.marquee.length) {
+        var track = document.querySelector('.marquee__track');
+        if (track) {
+          var spans = L.marquee.concat(L.marquee).map(function (w) {
+            return '<span>' + String(w).replace(/[&<>]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]; }) + '</span>';
+          }).join('');
+          track.innerHTML = spans;
+        }
+      }
+    })
+    .catch(function () {});
+})();

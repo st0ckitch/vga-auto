@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=15">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=16">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -512,12 +512,12 @@
       <h2>ავტომობილის ტიპი</h2>
     </div>
     <div class="home-filters">
-      <button class="chip" type="button" data-car-order="price">ფასის მიხედვით</button>
-      <button class="chip" type="button" data-car-category="3">ჰიბრიდი</button>
-      <button class="chip" type="button" data-car-category="1">სედანი</button>
-      <button class="chip" type="button" data-car-category="2">ჯიპი</button>
-      <button class="chip" type="button" data-car-category="4">ჰეჩბექი</button>
-      <button class="chip" type="button" data-car-order="views">პოპულარული</button>
+      <a class="chip" href="https://st0ckitch.github.io/vga-auto/cars/?sort=price-asc">ფასის მიხედვით</a>
+      <a class="chip" href="https://st0ckitch.github.io/vga-auto/cars/?cat=hybrid">ჰიბრიდი</a>
+      <a class="chip" href="https://st0ckitch.github.io/vga-auto/cars/?cat=sedan">სედანი</a>
+      <a class="chip" href="https://st0ckitch.github.io/vga-auto/cars/?cat=suv">ჯიპი</a>
+      <a class="chip" href="https://st0ckitch.github.io/vga-auto/cars/?cat=hatchback">ჰეჩბექი</a>
+      <a class="chip" href="https://st0ckitch.github.io/vga-auto/cars/">პოპულარული</a>
     </div>
   </div>
 </section>
@@ -557,30 +557,6 @@
   </div>
 </section>
 
-<script>
-
-(function () {
-  var carsUrl = siteUrl + 'index.php?class=Cars' + (window.langQ || '');
-  function goCars() { window.location.href = carsUrl; }
-
-  document.querySelectorAll('[data-car-category]').forEach(function (el) {
-    el.addEventListener('click', function () {
-      var url = siteUrl + 'index.php?class=Action&method=car_category&category=' +
-        encodeURIComponent(el.getAttribute('data-car-category'));
-      fetch(url, { method: 'POST' }).then(goCars).catch(goCars);
-    });
-  });
-
-  document.querySelectorAll('[data-car-order]').forEach(function (el) {
-    el.addEventListener('click', function () {
-      var url = siteUrl + 'index.php?class=Action&method=car_order&order=' +
-        encodeURIComponent(el.getAttribute('data-car-order'));
-      fetch(url, { method: 'POST' }).then(goCars).catch(goCars);
-    });
-  });
-})();
-
-</script>
 
 <script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=7"></script>
 </main>
@@ -643,7 +619,7 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=9" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=10" defer></script>
 <script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=9"></script>
 </body>
 </html>

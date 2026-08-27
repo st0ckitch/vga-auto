@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=15">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=16">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/car.css?v=3">
 
 <script type="application/ld+json">
@@ -274,36 +274,41 @@
   <button class="lightbox__nav lightbox__nav--next" aria-label="შემდეგი ფოტო">›</button>
 </dialog>
 <main id="main">
-  
-<section class="page-hero">
+<section class="section" data-car-detail>
   <div class="container">
-    <nav aria-label="ნავიგაციის ჯაჭვი">
-      <ol class="breadcrumbs">
-        <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
-        <li><a href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a></li>
-        <li aria-current="page">ვერ მოიძებნა</li>
-      </ol>
-    </nav>
-    <h1>ავტომობილი ვერ მოიძებნა</h1>
-  </div>
-</section>
-
-<section class="section" aria-label="ავტომობილი ვერ მოიძებნა">
-  <div class="container">
-    <div class="empty-state">
-      <div class="empty-state__icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M21 21l-4.35-4.35"></path>
-        </svg>
+    <div data-car-missing hidden>
+      <div class="section-head"><p class="eyebrow">404</p><h1>ავტომობილი ვერ მოიძებნა</h1></div>
+      <p class="lead">ბმული შესაძლოა მოძველდა ან ავტომობილი გაიყიდა.</p>
+      <p><a class="btn btn--primary" href="https://st0ckitch.github.io/vga-auto/cars/">← კატალოგში დაბრუნება</a></p>
+    </div>
+    <div data-car-view hidden>
+      <nav aria-label="breadcrumbs">
+        <ol class="breadcrumbs">
+          <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a></li>
+          <li aria-current="page" data-cd-title></li>
+        </ol>
+      </nav>
+      <h1 class="cd-title" data-cd-title></h1>
+      <div class="cd-layout">
+        <div class="cd-gallery">
+          <img class="cd-photo" data-cd-photo src="" alt="">
+          <div class="cd-thumbs" data-cd-thumbs></div>
+          <p class="cd-note callout" data-cd-note hidden></p>
+        </div>
+        <div class="cd-side">
+          <aside class="cd-aside card">
+            <div class="cd-price" data-cd-price></div>
+            <a class="btn btn--primary cd-btn" data-cd-tel href="#" hidden>დაგვირეკეთ: <span></span></a>
+            <button class="btn btn--ghost cd-btn" type="button" data-open="#dlg-callback">მოითხოვე ზარი</button>
+          </aside>
+          <dl class="cd-specs" data-cd-specs></dl>
+        </div>
       </div>
-      <h2 class="car-notfound__title">ავტომობილი ვერ მოიძებნა</h2>
-      <p>მოთხოვნილი ავტომობილი კატალოგში აღარ არის ან ბმული მცდარია. იხილეთ ჩვენი განახლებული კატალოგი.</p>
-      <a class="btn btn--primary" href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a>
+      <p class="u-mt-24"><a href="https://st0ckitch.github.io/vga-auto/cars/">← კატალოგში დაბრუნება</a></p>
     </div>
   </div>
 </section>
-
 </main>
 <footer class="site-footer">
   <div class="container">
@@ -364,6 +369,8 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=9" defer></script>
+<script>window.VG_CARS_T = {"carPage": "https://st0ckitch.github.io/vga-auto/car/", "carsPage": "https://st0ckitch.github.io/vga-auto/cars/", "h1": "ავტომობილები", "lead": "აშშ-ის აუქციონებიდან იმპორტირებული ავტომობილების კატალოგი — გაფილტრეთ მწარმოებლის, წლის, ფასისა და კატეგორიის მიხედვით.", "home": "მთავარი", "search": "ძებნა", "reset": "გასუფთავება", "found": "ნაპოვნია", "all": "ყველა", "empty": "ამ ფილტრებით ავტომობილები ვერ მოიძებნა", "loadFail": "კატალოგი დროებით მიუწვდომელია", "sold": "გაყიდულია", "priceAsk": "ფასი შეთანხმებით", "back": "← კატალოგში დაბრუნება", "call": "დაგვირეკეთ", "callback": "მოითხოვე ზარი", "notFound": "ავტომობილი ვერ მოიძებნა", "notFoundText": "ბმული შესაძლოა მოძველდა ან ავტომობილი გაიყიდა.", "sortNew": "ახალი დამატებული", "sortPriceAsc": "ფასი: ზრდადი", "sortPriceDesc": "ფასი: კლებადი", "sortYear": "წელი", "fMake": "მწარმოებელი", "fModel": "მოდელი", "fYearFrom": "წლიდან", "fYearTo": "წლამდე", "fPriceTo": "ფასამდე", "fCat": "კატეგორია", "fSort": "დალაგება", "fields": {"make": "მწარმოებელი", "model": "მოდელი", "year": "გამოშვების წელი", "engine": "ძრავი", "transmission": "ტრანსმისია", "fuel": "საწვავი", "steering": "საჭე", "location": "მდებარეობა", "customs": "განბაჟება", "category": "კატეგორია", "mileage": "გარბენი", "vin": "VIN"}, "transmission": {"automatic": "ავტომატიკა", "manual": "მექანიკა", "variator": "ვარიატორი"}, "fuel": {"petrol": "ბენზინი", "diesel": "დიზელი", "hybrid": "ჰიბრიდი", "electric": "ელექტრო", "gas": "გაზი"}, "steering": {"left": "მარცხენა", "right": "მარჯვენა"}, "customs": {"cleared": "განბაჟებული", "in_progress": "განბაჟების პროცესში", "not_cleared": "განუბაჟებელი"}, "category": {"sedan": "სედანი", "suv": "ჯიპი", "hatchback": "ჰეჩბექი", "coupe": "კუპე", "pickup": "პიკაპი", "minivan": "მინივენი", "hybrid": "ჰიბრიდი", "moto": "მოტო"}, "location": {"tbilisi": "თბილისი", "poti": "ფოთი", "batumi": "ბათუმი", "kutaisi": "ქუთაისი", "usa": "აშშ", "transit": "გზაშია"}};</script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-cars.js?v=1" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=10" defer></script>
 </body>
 </html>

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>VG ადმინი</title>
+<style>
+@font-face { font-family: "FiraGO"; src: url("../public/fonts/firago/FiraGO-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "FiraGO"; src: url("../public/fonts/firago/FiraGO-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "FiraGO"; src: url("../public/fonts/firago/FiraGO-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+:root {
+  --bg: #171314; --panel: #1e191a; --glass: rgba(255,255,255,.05); --glass2: rgba(255,255,255,.085);
+  --line: rgba(255,255,255,.12); --line2: rgba(255,255,255,.22);
+  --ink: #F5EFEA; --dim: rgba(245,239,234,.6); --faint: rgba(245,239,234,.35);
+  --acc: #FF8039; --acc-deep: #FFA26B; --acc-soft: rgba(255,128,57,.14); --acc-line: rgba(255,128,57,.45);
+  --ok: #4CC38A; --bad: #E5484D;
+  --mono: ui-monospace, "SF Mono", Consolas, monospace;
+  --spring: linear(0,.0086 1.03%,.0349 2.13%,.1412 4.61%,.5292 10.19%,.6798 12.67%,.8064 15.25%,.9048 17.85%,.9755 20.52%,1.0208 23.32%,1.0446 26.36%,1.0492 30.32%,1.0161 42.7%,1.0007 51.63%,.9942 62.52%,1 100%);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 15px/1.55 "FiraGO", system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0; z-index: -1;
+  background: radial-gradient(800px 500px at 90% -10%, rgba(255,128,57,.08), transparent 60%); }
+a { color: var(--acc-deep); }
+button { font: inherit; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 14px;
+  padding: 14px 22px; background: rgba(23,19,20,.8); backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .logo { font-weight: 700; font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
+.topbar .logo b { background: var(--acc); color: #241F20; border-radius: 7px; padding: 4px 8px; font-size: .85rem; }
+.topbar .hint { font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; color: var(--faint); }
+.topbar .sp { flex: 1; }
+.iconbtn { background: var(--glass); border: 1px solid var(--line); color: var(--dim); border-radius: 8px; padding: 8px 13px; cursor: pointer; font-size: .82rem; }
+.iconbtn:hover { border-color: var(--acc-line); color: var(--ink); }
+
+.shell { display: grid; grid-template-columns: 210px 1fr; gap: 0; max-width: 1280px; margin: 0 auto; min-height: calc(100vh - 62px); }
+.rail { border-right: 1px solid var(--line); padding: 22px 12px; display: flex; flex-direction: column; gap: 4px; }
+.rail button {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: none; border: none; color: var(--dim); cursor: pointer;
+  padding: 11px 14px; border-radius: 10px; font-size: .92rem; font-weight: 600;
+  transition: background .2s, color .2s;
+}
+.rail button:hover { background: var(--glass); color: var(--ink); }
+.rail button.on { background: var(--acc-soft); color: var(--acc-deep); }
+.rail .num { font-family: var(--mono); font-size: .62rem; color: var(--acc); width: 16px; }
+.content { padding: 28px clamp(18px, 3.5vw, 44px) 80px; min-width: 0; }
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 10px 14px; }
+  .rail button { white-space: nowrap; width: auto; }
+}
+
+h1 { font-size: 1.5rem; margin: 0 0 4px; }
+h2 { font-size: 1.05rem; margin: 26px 0 12px; }
+.sub { color: var(--dim); font-size: .9rem; margin: 0 0 22px; max-width: 70ch; }
+.card {
+  background: var(--glass); border: 1px solid var(--line); border-radius: 16px;
+  padding: 20px 22px; margin-bottom: 18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+label { display: block; font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin: 0 0 6px; }
+input[type=text], input[type=number], input[type=password], textarea, select {
+  width: 100%; background: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 10px;
+  color: var(--ink); padding: 11px 13px; font: inherit; font-size: .92rem;
+}
+textarea { min-height: 84px; resize: vertical; }
+textarea.code { font-family: var(--mono); font-size: .78rem; min-height: 420px; white-space: pre; }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--acc-line); box-shadow: 0 0 0 3px rgba(255,128,57,.12); }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.row--2 { grid-template-columns: 1fr 1fr; }
+@media (max-width: 640px) { .row--2 { grid-template-columns: 1fr; } }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  background: linear-gradient(160deg, #FFB380, #FF8039 55%, #f06a1d); color: #241F20;
+  border: none; border-radius: 999px; padding: 12px 24px; font-weight: 700; font-size: .92rem;
+  box-shadow: 0 8px 24px -10px rgba(255,128,57,.55);
+  transition: transform .5s var(--spring), box-shadow .3s;
+}
+.btn:hover { transform: translateY(-1px) scale(1.03); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .5; pointer-events: none; }
+.btn--ghost { background: var(--glass2); color: var(--ink); box-shadow: none; border: 1px solid var(--line2); }
+.btn--danger { background: none; border: 1px solid rgba(229,72,77,.5); color: #ff9a9d; box-shadow: none; }
+.btn--sm { padding: 8px 14px; font-size: .8rem; }
+
+.langtabs { display: flex; gap: 6px; margin-bottom: 18px; }
+.langtabs button {
+  background: var(--glass); border: 1px solid var(--line); color: var(--dim);
+  border-radius: 999px; padding: 8px 18px; cursor: pointer; font-weight: 700; font-size: .8rem; letter-spacing: .08em;
+}
+.langtabs button.on { background: var(--acc-soft); border-color: var(--acc-line); color: var(--acc-deep); }
+
+.toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(140%);
+  background: #241d1e; border: 1px solid var(--line2); border-radius: 12px;
+  padding: 13px 20px; font-size: .88rem; z-index: 100; max-width: min(480px, 90vw);
+  box-shadow: 0 18px 50px rgba(0,0,0,.6); transition: transform .55s var(--spring);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.ok { border-color: rgba(76,195,138,.5); }
+.toast.bad { border-color: rgba(229,72,77,.6); }
+
+.carlist { display: grid; gap: 12px; }
+.carrow {
+  display: grid; grid-template-columns: 92px 1fr auto; gap: 16px; align-items: center;
+  background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px 12px 12px;
+}
+.carrow img { width: 92px; height: 64px; object-fit: cover; border-radius: 9px; background: #000; }
+.carrow .noimg { width: 92px; height: 64px; border-radius: 9px; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; color: var(--faint); font-size: .7rem; }
+.carrow b { display: block; font-size: .98rem; }
+.carrow .meta { font-family: var(--mono); font-size: .7rem; color: var(--dim); }
+.carrow .tags { margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; padding: 3px 7px; border-radius: 5px; border: 1px solid var(--line); color: var(--dim); }
+.tag.sold { border-color: rgba(229,72,77,.5); color: #ff9a9d; }
+.tag.feat { border-color: var(--acc-line); color: var(--acc-deep); }
+.carrow .acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 640px) { .carrow { grid-template-columns: 72px 1fr; } .carrow .acts { grid-column: 1 / -1; justify-content: flex-start; } }
+
+.photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-top: 8px; }
+.photo { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+.photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.photo .x {
+  position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,.65); color: #fff;
+  border: none; border-radius: 7px; width: 26px; height: 26px; cursor: pointer; font-size: .8rem;
+}
+.photo .new { position: absolute; left: 6px; bottom: 6px; font-family: var(--mono); font-size: .58rem; background: var(--acc); color: #241F20; border-radius: 5px; padding: 2px 6px; font-weight: 700; }
+.addphoto {
+  display: flex; align-items: center; justify-content: center; aspect-ratio: 4/3;
+  border: 1.5px dashed var(--line2); border-radius: 10px; color: var(--dim); cursor: pointer; font-size: .8rem;
+}
+.addphoto:hover { border-color: var(--acc-line); color: var(--acc-deep); }
+
+.help { background: var(--acc-soft); border: 1px solid var(--acc-line); border-radius: 12px; padding: 14px 18px; font-size: .85rem; margin-bottom: 18px; }
+.help ol { margin: 8px 0 0; padding-left: 20px; }
+.help li { margin-bottom: 4px; }
+.kv { font-family: var(--mono); font-size: .72rem; color: var(--dim); }
+.statusline { font-family: var(--mono); font-size: .72rem; color: var(--dim); margin-top: 10px; min-height: 1em; }
+.hidden { display: none !important; }
+.svc-item, .jr-item, .stat-item { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
+.warn { color: #ffb86b; font-size: .82rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><b>VG</b> ადმინ პანელი</span>
+  <span class="hint" id="whoami"></span>
+  <span class="sp"></span>
+  <a class="iconbtn" href="https://st0ckitch.github.io/vga-auto/" target="_blank" rel="noopener">საიტის ნახვა ↗</a>
+  <button class="iconbtn" id="logout" hidden>გასვლა</button>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div class="content" id="login-view" style="max-width:640px;margin:0 auto;">
+  <h1>შესვლა</h1>
+  <p class="sub">ადმინ პანელი ცვლილებებს ინახავს პირდაპირ საიტის GitHub საცავში. შესასვლელად საჭიროა GitHub-ის წვდომის ტოკენი (ინახება მხოლოდ თქვენს ბრაუზერში).</p>
+  <div class="help">
+    <b>როგორ ავიღო ტოკენი (ერთხელ):</b>
+    <ol>
+      <li>გახსენით <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Fine-grained token</a></li>
+      <li>Token name: <span class="kv">VG Admin</span> · Expiration: <span class="kv">1 year</span></li>
+      <li>Repository access → Only select repositories → <span class="kv">st0ckitch/vga-auto</span></li>
+      <li>Permissions → Repository permissions → <span class="kv">Contents: Read and write</span></li>
+      <li>Generate token → დააკოპირეთ და ჩასვით ქვემოთ</li>
+    </ol>
+  </div>
+  <div class="card">
+    <label for="token">GitHub Token</label>
+    <input type="password" id="token" placeholder="github_pat_...">
+    <div class="statusline" id="login-status"></div>
+    <p style="margin:14px 0 0"><button class="btn" id="login-btn">შესვლა</button></p>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div class="shell hidden" id="app">
+  <nav class="rail" id="rail">
+    <button data-view="cars" class="on"><span class="num">01</span>მანქანები</button>
+    <button data-view="home"><span class="num">02</span>მთავარი გვერდი</button>
+    <button data-view="services"><span class="num">03</span>სერვისები</button>
+    <button data-view="journey"><span class="num">04</span>პროცესი</button>
+    <button data-view="marquee"><span class="num">05</span>ბრენდების ლენტა</button>
+    <button data-view="contacts"><span class="num">06</span>კონტაქტები</button>
+    <button data-view="files"><span class="num">07</span>ფაილები (Pro)</button>
+  </nav>
+
+  <div class="content">
+
+    <!-- ===== CARS ===== -->
+    <section id="view-cars">
+      <h1>მანქანები</h1>
+      <p class="sub">კატალოგში დამატებული ავტომობილები ჩანს საიტის „ავტომობილები“ გვერდზე სამივე ენაზე. ცვლილება საიტზე გამოჩნდება გამოქვეყნებიდან ~1 წუთში.</p>
+      <p><button class="btn" id="car-add">+ მანქანის დამატება</button></p>
+      <div class="carlist" id="carlist"></div>
+
+      <div class="card hidden" id="car-form">
+        <h2 id="car-form-title" style="margin-top:0">მანქანის დამატება</h2>
+        <div class="row">
+          <div><label>მწარმოებელი *</label><input type="text" id="c-make" placeholder="BMW"></div>
+          <div><label>მოდელი *</label><input type="text" id="c-model" placeholder="328i"></div>
+          <div><label>გამოშვების წელი</label><input type="number" id="c-year" placeholder="2014"></div>
+          <div><label>ძრავი</label><input type="text" id="c-engine" placeholder="2.0"></div>
+        </div>
+        <div class="row">
+          <div><label>ტრანსმისია</label><select id="c-transmission"></select></div>
+          <div><label>საწვავი</label><select id="c-fuel"></select></div>
+          <div><label>საჭე</label><select id="c-steering"></select></div>
+          <div><label>კატეგორია</label><select id="c-category"></select></div>
+        </div>
+        <div class="row">
+          <div><label>მდებარეობა</label><select id="c-location"></select></div>
+          <div><label>განბაჟება</label><select id="c-customs"></select></div>
+          <div><label>გარბენი (km)</label><input type="number" id="c-mileage" placeholder="100000"></div>
+          <div><label>VIN</label><input type="text" id="c-vin" placeholder="WBA..."></div>
+        </div>
+        <div class="row row--2">
+          <div><label>ფასი ლარში (₾)</label><input type="number" id="c-priceGel" placeholder="34987"></div>
+          <div><label>ფასი დოლარში ($)</label><input type="number" id="c-priceUsd" placeholder="11300"></div>
+        </div>
+        <div class="row row--2">
+          <div><label><input type="checkbox" id="c-sold" style="width:auto;margin-right:8px">გაყიდულია</label></div>
+          <div><label><input type="checkbox" id="c-featured" style="width:auto;margin-right:8px" checked>გამორჩეული</label></div>
+        </div>
+        <div><label>შენიშვნა (გამოჩნდება გვერდზე)</label><textarea id="c-note"></textarea></div>
+        <h2>ფოტოები</h2>
+        <p class="sub" style="margin-bottom:8px">პირველი ფოტო არის მთავარი. ფოტოები ავტომატურად პატარავდება ატვირთვისას.</p>
+        <div class="photos" id="c-photos"></div>
+        <input type="file" id="c-file" accept="image/*" multiple hidden>
+        <div class="statusline" id="car-status"></div>
+        <p style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0">
+          <button class="btn" id="car-save">შენახვა და გამოქვეყნება</button>
+          <button class="btn btn--ghost" id="car-cancel">გაუქმება</button>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== HOME ===== -->
+    <section id="view-home" class="hidden">
+      <h1>მთავარი გვერდი</h1>
+      <p class="sub">გმირის ტექსტები, სტატისტიკა და ვიდეოს წარწერები. სიტყვა ვარსკვლავებში — <span class="kv">*სიტყვა*</span> — სათაურში ნარინჯისფრად გამოჩნდება.</p>
+      <div class="langtabs" data-langtabs="home"></div>
+      <div class="card">
+        <div><label>მთავარი სათაური</label><input type="text" id="h-heroTitle"></div>
+        <div style="margin-top:14px"><label>ქვესათაური</label><textarea id="h-heroSub"></textarea></div>
+        <h2>სტატისტიკა (3)</h2>
+        <div id="h-stats"></div>
+        <h2>ვიდეო სექცია</h2>
+        <div class="row">
+          <div><label>ზედა წარწერა</label><input type="text" id="h-videoEyebrow"></div>
+        </div>
+        <div><label>სათაური</label><input type="text" id="h-videoTitle"></div>
+        <div style="margin-top:14px"><label>ტექსტი</label><textarea id="h-videoText"></textarea></div>
+        <div class="statusline" id="home-status"></div>
+        <p style="margin:16px 0 0"><button class="btn" data-save="home">შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="view-services" class="hidden">
+      <h1>სერვისები</h1>
+      <p class="sub">მთავარი გვერდის ექვსი სერვისის სათაურები და აღწერები.</p>
+      <div class="langtabs" data-langtabs="services"></div>
+      <div class="card">
+        <div id="svc-list"></div>
+        <div class="statusline" id="services-status"></div>
+        <p style="margin:16px 0 0"><button class="btn" data-save="services">შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+    <!-- ===== JOURNEY ===== -->
+    <section id="view-journey" class="hidden">
+      <h1>პროცესი (გზა ამერიკიდან)</h1>
+      <p class="sub">მთავარი გვერდის მარშრუტის ექვსი ეტაპი.</p>
+      <div class="langtabs" data-langtabs="journey"></div>
+      <div class="card">
+        <div id="jr-list"></div>
+        <div class="statusline" id="journey-status"></div>
+        <p style="margin:16px 0 0"><button class="btn" data-save="journey">შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+    <!-- ===== MARQUEE ===== -->
+    <section id="view-marquee" class="hidden">
+      <h1>ბრენდების ლენტა</h1>
+      <p class="sub">მოძრავი ლენტის სიტყვები — თითო ხაზზე თითო სიტყვა.</p>
+      <div class="langtabs" data-langtabs="marquee"></div>
+      <div class="card">
+        <label>სიტყვები</label>
+        <textarea id="mq-list" style="min-height:220px"></textarea>
+        <div class="statusline" id="marquee-status"></div>
+        <p style="margin:16px 0 0"><button class="btn" data-save="marquee">შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+    <!-- ===== CONTACTS ===== -->
+    <section id="view-contacts" class="hidden">
+      <h1>კონტაქტები</h1>
+      <p class="sub">ტელეფონი და ელ-ფოსტა ავტომატურად განახლდება საიტის ყველა გვერდზე.</p>
+      <div class="card">
+        <div class="row row--2">
+          <div><label>ტელეფონი (როგორც ჩანს)</label><input type="text" id="ct-phone" placeholder="0322 50 05 04"></div>
+          <div><label>ტელეფონი (საერთაშორისო, დასარეკად)</label><input type="text" id="ct-phoneIntl" placeholder="+995322500504"></div>
+        </div>
+        <div class="row row--2">
+          <div><label>ელ-ფოსტა</label><input type="text" id="ct-email" placeholder="info@..."></div>
+          <div><label>დილერის კაბინეტის ბმული</label><input type="text" id="ct-dealerUrl"></div>
+        </div>
+        <div class="row row--2">
+          <div><label>Facebook</label><input type="text" id="ct-facebook" placeholder="https://facebook.com/..."></div>
+          <div><label>Instagram</label><input type="text" id="ct-instagram" placeholder="https://instagram.com/..."></div>
+        </div>
+        <div class="statusline" id="contacts-status"></div>
+        <p style="margin:16px 0 0"><button class="btn" data-save="contacts">შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+    <!-- ===== FILES ===== -->
+    <section id="view-files" class="hidden">
+      <h1>ფაილები <span class="warn">(მხოლოდ გამოცდილთათვის)</span></h1>
+      <p class="sub">საიტის ნებისმიერი ფაილის პირდაპირი რედაქტირება. შეცდომამ შეიძლება გვერდი გააფუჭოს — შეინახეთ მხოლოდ თუ ზუსტად იცით რას ცვლით.</p>
+      <div class="card">
+        <div class="row" style="grid-template-columns: 1fr auto; align-items:end">
+          <div><label>ფაილის მისამართი</label><input type="text" id="f-path" placeholder="index.html" list="f-known">
+            <datalist id="f-known">
+              <option value="index.html"><option value="en/index.html"><option value="ru/index.html">
+              <option value="contact/index.html"><option value="about/index.html"><option value="service/index.html">
+              <option value="public/css/vg-modern.css"><option value="public/data/site.json"><option value="public/data/cars.json">
+            </datalist>
+          </div>
+          <div><button class="btn btn--ghost" id="f-load">ჩატვირთვა</button></div>
+        </div>
+        <textarea class="code" id="f-content" placeholder="აირჩიეთ ფაილი…"></textarea>
+        <div class="statusline" id="files-status"></div>
+        <p style="margin:16px 0 0"><button class="btn" id="f-save" disabled>შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+'use strict';
+
+var REPO = 'st0ckitch/vga-auto';
+var BRANCH_LIVE = 'gh-pages';
+var BRANCH_SRC = 'main';
+var API = 'https://api.github.com/repos/' + REPO;
+
+var OPTS = {
+  transmission: { '': '—', automatic: 'ავტომატიკა', manual: 'მექანიკა', variator: 'ვარიატორი' },
+  fuel: { '': '—', petrol: 'ბენზინი', diesel: 'დიზელი', hybrid: 'ჰიბრიდი', electric: 'ელექტრო', gas: 'გაზი' },
+  steering: { '': '—', left: 'მარცხენა', right: 'მარჯვენა' },
+  category: { '': '—', sedan: 'სედანი', suv: 'ჯიპი', hatchback: 'ჰეჩბექი', coupe: 'კუპე', pickup: 'პიკაპი', minivan: 'მინივენი', hybrid: 'ჰიბრიდი', moto: 'მოტო' },
+  location: { '': '—', tbilisi: 'თბილისი', poti: 'ფოთი', batumi: 'ბათუმი', kutaisi: 'ქუთაისი', usa: 'აშშ', transit: 'გზაშია' },
+  customs: { '': '—', cleared: 'განბაჟებული', in_progress: 'განბაჟების პროცესში', not_cleared: 'განუბაჟებელი' }
+};
+var LANG_NAMES = { ka: 'ქართული', en: 'English', ru: 'Русский' };
+
+var $ = function (id) { return document.getElementById(id); };
+var state = {
+  token: '',
+  site: null, cars: null,
+  shas: {},              /* path@branch -> sha */
+  lang: { home: 'ka', services: 'ka', journey: 'ka', marquee: 'ka' },
+  editingId: null,
+  photos: [],            /* [{path} existing | {dataUrl, b64} pending] */
+  filePath: ''
+};
+
+/* ---------- toast ---------- */
+var toastTimer;
+function toast(msg, kind) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (kind ? ' ' + kind : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.className = 'toast'; }, 4200);
+}
+
+/* ---------- github api ---------- */
+function gh(path, opts) {
+  opts = opts || {};
+  opts.headers = Object.assign({
+    'Authorization': 'Bearer ' + state.token,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }, opts.headers || {});
+  return fetch(API + path, opts).then(function (r) {
+    if (r.status === 401) { throw new Error('ტოკენი არასწორია ან ვადაგასულია'); }
+    return r;
+  });
+}
+function b64encode(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64decode(b64) {
+  return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+}
+function getFile(path, branch) {
+  return gh('/contents/' + path + '?ref=' + branch).then(function (r) {
+    if (r.status === 404) return { sha: null, text: null };
+    if (!r.ok) throw new Error('წაკითხვა ვერ მოხერხდა: ' + path + ' (' + r.status + ')');
+    return r.json().then(function (j) {
+      state.shas[path + '@' + branch] = j.sha;
+      return { sha: j.sha, text: j.content ? b64decode(j.content) : null };
+    });
+  });
+}
+function putFile(path, contentB64, message, branch) {
+  var body = { message: message, content: contentB64, branch: branch };
+  var sha = state.shas[path + '@' + branch];
+  if (sha) body.sha = sha;
+  return gh('/contents/' + path, { method: 'PUT', body: JSON.stringify(body) })
+    .then(function (r) {
+      if (r.status === 409 || r.status === 422) {
+        /* stale sha — refetch and retry once */
+        return getFile(path, branch).then(function () {
+          var b2 = { message: message, content: contentB64, branch: branch };
+          if (state.shas[path + '@' + branch]) b2.sha = state.shas[path + '@' + branch];
+          return gh('/contents/' + path, { method: 'PUT', body: JSON.stringify(b2) });
+        });
+      }
+      return r;
+    })
+    .then(function (r) {
+      if (!r.ok) return r.json().catch(function () { return {}; }).then(function (j) {
+        throw new Error('შენახვა ვერ მოხერხდა: ' + path + ' — ' + (j.message || r.status));
+      });
+      return r.json().then(function (j) {
+        state.shas[path + '@' + branch] = j.content && j.content.sha;
+        return j;
+      });
+    });
+}
+function writeBoth(path, contentB64, message, statusEl) {
+  if (statusEl) statusEl.textContent = 'ინახება ლაივ ვერსიაზე…';
+  return putFile(path, contentB64, message, BRANCH_LIVE).then(function () {
+    if (statusEl) statusEl.textContent = 'სინქრონდება source ვერსიაზე…';
+    return putFile(path, contentB64, message, BRANCH_SRC).catch(function (e) {
+      console.warn('main sync failed', e);
+      toast('ლაივზე შენახულია, მაგრამ main ვერსიის სინქრონი ვერ მოხერხდა', 'bad');
+    });
+  });
+}
+function saveJson(path, obj, message, statusEl) {
+  return writeBoth(path, b64encode(JSON.stringify(obj, null, 2)), message, statusEl);
+}
+
+/* ---------- login ---------- */
+function tryLogin(token, silent) {
+  state.token = token;
+  $('login-status').textContent = silent ? '' : 'მოწმდება…';
+  return gh('').then(function (r) {
+    if (!r.ok) throw new Error('საცავზე წვდომა ვერ დადასტურდა (' + r.status + ')');
+    return loadData();
+  }).then(function () {
+    localStorage.setItem('vg-admin-token', token);
+    $('login-view').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    $('logout').hidden = false;
+    $('whoami').textContent = REPO;
+    renderAll();
+  }).catch(function (e) {
+    state.token = '';
+    if (!silent) $('login-status').textContent = '✗ ' + e.message;
+    else { $('login-view').classList.remove('hidden'); }
+  });
+}
+function loadData() {
+  return Promise.all([
+    getFile('public/data/site.json', BRANCH_LIVE),
+    getFile('public/data/cars.json', BRANCH_LIVE),
+    getFile('public/data/site.json', BRANCH_SRC),
+    getFile('public/data/cars.json', BRANCH_SRC)
+  ]).then(function (res) {
+    if (!res[0].text || !res[1].text) throw new Error('მონაცემების ფაილები ვერ მოიძებნა');
+    state.site = JSON.parse(res[0].text);
+    state.cars = JSON.parse(res[1].text);
+  });
+}
+$('login-btn').addEventListener('click', function () {
+  var t = $('token').value.trim();
+  if (!t) { $('login-status').textContent = 'ჩასვით ტოკენი'; return; }
+  tryLogin(t, false);
+});
+$('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('login-btn').click(); });
+$('logout').addEventListener('click', function () {
+  localStorage.removeItem('vg-admin-token');
+  location.reload();
+});
+
+/* ---------- nav ---------- */
+$('rail').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-view]');
+  if (!b) return;
+  document.querySelectorAll('#rail button').forEach(function (x) { x.classList.toggle('on', x === b); });
+  document.querySelectorAll('.content > section').forEach(function (s) {
+    s.classList.toggle('hidden', s.id !== 'view-' + b.dataset.view);
+  });
+});
+
+/* ---------- lang tabs ---------- */
+function buildLangTabs() {
+  document.querySelectorAll('[data-langtabs]').forEach(function (wrap) {
+    var section = wrap.dataset.langtabs;
+    wrap.innerHTML = '';
+    ['ka', 'en', 'ru'].forEach(function (l) {
+      var b = document.createElement('button');
+      b.textContent = LANG_NAMES[l];
+      b.className = state.lang[section] === l ? 'on' : '';
+      b.addEventListener('click', function () {
+        state.lang[section] = l;
+        wrap.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        fillSection(section);
+      });
+      wrap.appendChild(b);
+    });
+  });
+}
+
+/* ---------- content editors ---------- */
+function fillSection(section) {
+  var L = state.site[state.lang[section]] || {};
+  if (section === 'home') {
+    $('h-heroTitle').value = L.heroTitle || '';
+    $('h-heroSub').value = L.heroSub || '';
+    var box = $('h-stats');
+    box.innerHTML = '';
+    for (var i = 0; i < 3; i++) {
+      var s = (L.stats || [])[i] || { v: '', label: '' };
+      box.insertAdjacentHTML('beforeend',
+        '<div class="row row--2 stat-item">' +
+        '<div><label>რიცხვი ' + (i + 1) + '</label><input type="text" data-stat-v="' + i + '" value="' + escAttr(s.v) + '"></div>' +
+        '<div><label>წარწერა</label><input type="text" data-stat-l="' + i + '" value="' + escAttr(s.label) + '"></div></div>');
+    }
+    var v = L.video || {};
+    $('h-videoEyebrow').value = v.eyebrow || '';
+    $('h-videoTitle').value = v.title || '';
+    $('h-videoText').value = v.text || '';
+  }
+  if (section === 'services') {
+    var sl = $('svc-list');
+    sl.innerHTML = '';
+    (L.services || []).forEach(function (s, i) {
+      sl.insertAdjacentHTML('beforeend',
+        '<div class="svc-item"><label>სერვისი ' + (i + 1) + ' — სათაური</label>' +
+        '<input type="text" data-svc-t="' + i + '" value="' + escAttr(s.title) + '">' +
+        '<div style="margin-top:10px"><label>აღწერა</label><textarea data-svc-x="' + i + '">' + escHtml(s.text) + '</textarea></div></div>');
+    });
+  }
+  if (section === 'journey') {
+    var jl = $('jr-list');
+    jl.innerHTML = '';
+    (L.journey || []).forEach(function (j, i) {
+      jl.insertAdjacentHTML('beforeend',
+        '<div class="jr-item row row--2"><div><label>ეტაპი ' + (i + 1) + '</label>' +
+        '<input type="text" data-jr-t="' + i + '" value="' + escAttr(j.t) + '"></div>' +
+        '<div><label>ქვეწარწერა</label><input type="text" data-jr-s="' + i + '" value="' + escAttr(j.s) + '"></div></div>');
+    });
+  }
+  if (section === 'marquee') {
+    $('mq-list').value = (L.marquee || []).join('\n');
+  }
+}
+function fillContacts() {
+  var c = state.site.contacts || {};
+  ['phone', 'phoneIntl', 'email', 'dealerUrl', 'facebook', 'instagram'].forEach(function (k) {
+    $('ct-' + k).value = c[k] || '';
+  });
+}
+function escAttr(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+document.querySelectorAll('[data-save]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var section = btn.dataset.save;
+    var statusEl = $(section + '-status');
+    btn.disabled = true;
+    collect(section);
+    saveJson('public/data/site.json', state.site, 'admin: update site content (' + section + ')', statusEl)
+      .then(function () {
+        statusEl.textContent = '';
+        toast('✓ შენახულია — საიტზე გამოჩნდება ~1 წუთში', 'ok');
+      })
+      .catch(function (e) { statusEl.textContent = ''; toast('✗ ' + e.message, 'bad'); })
+      .then(function () { btn.disabled = false; });
+  });
+});
+function collect(section) {
+  if (section === 'contacts') {
+    var c = state.site.contacts = state.site.contacts || {};
+    ['phone', 'phoneIntl', 'email', 'dealerUrl', 'facebook', 'instagram'].forEach(function (k) {
+      c[k] = $('ct-' + k).value.trim();
+    });
+    return;
+  }
+  var L = state.site[state.lang[section]] = state.site[state.lang[section]] || {};
+  if (section === 'home') {
+    L.heroTitle = $('h-heroTitle').value.trim();
+    L.heroSub = $('h-heroSub').value.trim();
+    L.stats = [0, 1, 2].map(function (i) {
+      return {
+        v: (document.querySelector('[data-stat-v="' + i + '"]') || {}).value || '',
+        label: (document.querySelector('[data-stat-l="' + i + '"]') || {}).value || ''
+      };
+    });
+    L.video = {
+      eyebrow: $('h-videoEyebrow').value.trim(),
+      title: $('h-videoTitle').value.trim(),
+      text: $('h-videoText').value.trim()
+    };
+  }
+  if (section === 'services') {
+    L.services = (L.services || []).map(function (s, i) {
+      return {
+        title: (document.querySelector('[data-svc-t="' + i + '"]') || {}).value || s.title,
+        text: (document.querySelector('[data-svc-x="' + i + '"]') || {}).value || s.text
+      };
+    });
+  }
+  if (section === 'journey') {
+    L.journey = (L.journey || []).map(function (j, i) {
+      return {
+        t: (document.querySelector('[data-jr-t="' + i + '"]') || {}).value || j.t,
+        s: (document.querySelector('[data-jr-s="' + i + '"]') || {}).value || j.s
+      };
+    });
+  }
+  if (section === 'marquee') {
+    L.marquee = $('mq-list').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+  }
+}
+
+/* ---------- cars ---------- */
+function siteImg(p) { return /^https?:/.test(p) ? p : 'https://st0ckitch.github.io/vga-auto/' + p; }
+
+function renderCarList() {
+  var box = $('carlist');
+  var cars = (state.cars.cars || []).slice().sort(function (a, b) { return b.id - a.id; });
+  box.innerHTML = cars.map(function (c) {
+    var img = c.images && c.images[0];
+    return '<div class="carrow" data-id="' + c.id + '">' +
+      (img ? '<img src="' + escAttr(siteImg(img)) + '" alt="">' : '<div class="noimg">ფოტო არაა</div>') +
+      '<div><b>' + escHtml(c.make + ' ' + c.model) + ' · ' + (c.year || '—') + '</b>' +
+      '<span class="meta">' + (c.priceGel ? c.priceGel + ' ₾' : '—') + (c.priceUsd ? ' / $' + c.priceUsd : '') +
+      (c.mileage ? ' · ' + c.mileage + ' km' : '') + '</span>' +
+      '<span class="tags">' + (c.sold ? '<span class="tag sold">გაყიდულია</span>' : '') +
+      (c.featured ? '<span class="tag feat">გამორჩეული</span>' : '') +
+      (c.vin ? '<span class="tag">VIN</span>' : '') + '</span></div>' +
+      '<div class="acts">' +
+      '<button class="btn btn--ghost btn--sm" data-act="edit">რედაქტირება</button>' +
+      '<button class="btn btn--ghost btn--sm" data-act="sold">' + (c.sold ? 'გასაყიდში დაბრუნება' : 'გაყიდულად მონიშვნა') + '</button>' +
+      '<button class="btn btn--danger btn--sm" data-act="del">წაშლა</button>' +
+      '</div></div>';
+  }).join('') || '<p class="sub">კატალოგი ცარიელია — დაამატეთ პირველი მანქანა.</p>';
+}
+
+$('carlist').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-act]');
+  if (!b) return;
+  var id = +b.closest('.carrow').dataset.id;
+  var car = state.cars.cars.filter(function (c) { return c.id === id; })[0];
+  if (!car) return;
+  if (b.dataset.act === 'edit') openCarForm(car);
+  if (b.dataset.act === 'sold') {
+    car.sold = !car.sold;
+    b.disabled = true;
+    saveJson('public/data/cars.json', state.cars, 'admin: toggle sold #' + id, null)
+      .then(function () { toast('✓ განახლდა', 'ok'); renderCarList(); })
+      .catch(function (err) { car.sold = !car.sold; toast('✗ ' + err.message, 'bad'); b.disabled = false; });
+  }
+  if (b.dataset.act === 'del') {
+    if (!confirm('წაიშალოს ' + car.make + ' ' + car.model + '? ამის დაბრუნება ვერ მოხერხდება.')) return;
+    state.cars.cars = state.cars.cars.filter(function (c) { return c.id !== id; });
+    saveJson('public/data/cars.json', state.cars, 'admin: delete car #' + id, null)
+      .then(function () { toast('✓ წაიშალა', 'ok'); renderCarList(); })
+      .catch(function (err) { state.cars.cars.push(car); toast('✗ ' + err.message, 'bad'); renderCarList(); });
+  }
+});
+
+function fillCarSelects() {
+  Object.keys(OPTS).forEach(function (key) {
+    var el = $('c-' + key);
+    if (!el) return;
+    el.innerHTML = Object.keys(OPTS[key]).map(function (v) {
+      return '<option value="' + v + '">' + OPTS[key][v] + '</option>';
+    }).join('');
+  });
+}
+
+function openCarForm(car) {
+  state.editingId = car ? car.id : null;
+  state.photos = car ? (car.images || []).map(function (p) { return { path: p }; }) : [];
+  $('car-form-title').textContent = car ? 'რედაქტირება — ' + car.make + ' ' + car.model : 'მანქანის დამატება';
+  ['make', 'model', 'engine', 'vin'].forEach(function (k) { $('c-' + k).value = car ? (car[k] || '') : ''; });
+  ['year', 'mileage', 'priceGel', 'priceUsd'].forEach(function (k) { $('c-' + k).value = car && car[k] ? car[k] : ''; });
+  Object.keys(OPTS).forEach(function (k) { var el = $('c-' + k); if (el) el.value = car ? (car[k] || '') : ''; });
+  $('c-sold').checked = !!(car && car.sold);
+  $('c-featured').checked = car ? !!car.featured : true;
+  $('c-note').value = car ? (car.note || '') : '';
+  renderPhotos();
+  $('car-form').classList.remove('hidden');
+  $('car-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+$('car-add').addEventListener('click', function () { openCarForm(null); });
+$('car-cancel').addEventListener('click', function () { $('car-form').classList.add('hidden'); });
+
+function renderPhotos() {
+  var box = $('c-photos');
+  box.innerHTML = state.photos.map(function (p, i) {
+    var src = p.path ? siteImg(p.path) : p.dataUrl;
+    return '<div class="photo"><img src="' + escAttr(src) + '" alt="">' +
+      (i > 0 ? '<button class="x" data-first="' + i + '" title="მთავარ ფოტოდ" style="right:38px">★</button>' : '') +
+      '<button class="x" data-rm="' + i + '" title="წაშლა">✕</button>' +
+      (p.dataUrl ? '<span class="new">ახალი</span>' : '') + '</div>';
+  }).join('') + '<button type="button" class="addphoto" id="c-addphoto">+ ფოტო</button>';
+  $('c-addphoto').addEventListener('click', function () { $('c-file').click(); });
+}
+$('c-photos').addEventListener('click', function (e) {
+  if (e.target.dataset.rm != null) {
+    state.photos.splice(+e.target.dataset.rm, 1);
+    renderPhotos();
+  } else if (e.target.dataset.first != null) {
+    var p = state.photos.splice(+e.target.dataset.first, 1)[0];
+    state.photos.unshift(p);
+    renderPhotos();
+  }
+});
+$('c-file').addEventListener('change', function () {
+  var files = Array.prototype.slice.call(this.files || []);
+  this.value = '';
+  files.forEach(function (f) {
+    resizeImage(f, 1600, 0.82).then(function (dataUrl) {
+      state.photos.push({ dataUrl: dataUrl, b64: dataUrl.split(',')[1] });
+      renderPhotos();
+    }).catch(function () { toast('✗ ფოტოს წაკითხვა ვერ მოხერხდა', 'bad'); });
+  });
+});
+function resizeImage(file, maxDim, q) {
+  return new Promise(function (resolve, reject) {
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function () {
+      var w = img.naturalWidth, h = img.naturalHeight;
+      var k = Math.min(1, maxDim / Math.max(w, h));
+      var cv = document.createElement('canvas');
+      cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      URL.revokeObjectURL(url);
+      resolve(cv.toDataURL('image/jpeg', q));
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+$('car-save').addEventListener('click', function () {
+  var btn = this, st = $('car-status');
+  var make = $('c-make').value.trim(), model = $('c-model').value.trim();
+  if (!make || !model) { toast('შეავსეთ მწარმოებელი და მოდელი', 'bad'); return; }
+  btn.disabled = true;
+
+  var id = state.editingId || state.cars.nextId || (Math.max.apply(null, [0].concat(state.cars.cars.map(function (c) { return c.id; }))) + 1);
+  var pending = state.photos.filter(function (p) { return p.b64; });
+  var done = 0;
+
+  var uploads = Promise.resolve();
+  pending.forEach(function (p) {
+    uploads = uploads.then(function () {
+      done++;
+      st.textContent = 'იტვირთება ფოტო ' + done + '/' + pending.length + '…';
+      var path = 'public/img/cars/c' + id + '-' + Date.now() + '-' + done + '.jpg';
+      return putFile(path, p.b64, 'admin: car photo #' + id, BRANCH_LIVE).then(function () {
+        return putFile(path, p.b64, 'admin: car photo #' + id, BRANCH_SRC).catch(function () {});
+      }).then(function () { p.path = path; delete p.b64; delete p.dataUrl; });
+    });
+  });
+
+  uploads.then(function () {
+    var car = {
+      id: id,
+      make: make, model: model,
+      year: +$('c-year').value || null,
+      engine: $('c-engine').value.trim(),
+      transmission: $('c-transmission').value,
+      fuel: $('c-fuel').value,
+      steering: $('c-steering').value,
+      location: $('c-location').value,
+      customs: $('c-customs').value,
+      category: $('c-category').value,
+      mileage: +$('c-mileage').value || null,
+      vin: $('c-vin').value.trim(),
+      priceGel: +$('c-priceGel').value || null,
+      priceUsd: +$('c-priceUsd').value || null,
+      images: state.photos.map(function (p) { return p.path; }).filter(Boolean),
+      sold: $('c-sold').checked,
+      featured: $('c-featured').checked,
+      note: $('c-note').value.trim()
+    };
+    var idx = state.cars.cars.findIndex(function (c) { return c.id === id; });
+    if (idx > -1) state.cars.cars[idx] = car; else state.cars.cars.push(car);
+    state.cars.nextId = Math.max.apply(null, state.cars.cars.map(function (c) { return c.id; })) + 1;
+    return saveJson('public/data/cars.json', state.cars, 'admin: save car #' + id + ' ' + make + ' ' + model, st);
+  }).then(function () {
+    st.textContent = '';
+    toast('✓ შენახულია — საიტზე გამოჩნდება ~1 წუთში', 'ok');
+    $('car-form').classList.add('hidden');
+    renderCarList();
+  }).catch(function (e) {
+    st.textContent = '';
+    toast('✗ ' + e.message, 'bad');
+  }).then(function () { btn.disabled = false; });
+});
+
+/* ---------- files ---------- */
+$('f-load').addEventListener('click', function () {
+  var path = $('f-path').value.trim().replace(/^\/+/, '');
+  if (!path) return;
+  var st = $('files-status');
+  st.textContent = 'იტვირთება…';
+  getFile(path, BRANCH_LIVE).then(function (f) {
+    if (f.text == null) { st.textContent = '✗ ფაილი ვერ მოიძებნა'; $('f-save').disabled = true; return; }
+    state.filePath = path;
+    $('f-content').value = f.text;
+    $('f-save').disabled = false;
+    st.textContent = '✓ ' + path + ' (' + f.text.length + ' სიმბოლო)';
+  }).catch(function (e) { st.textContent = '✗ ' + e.message; });
+});
+$('f-save').addEventListener('click', function () {
+  var btn = this, st = $('files-status');
+  if (!state.filePath) return;
+  if (!confirm('ნამდვილად შეინახოს ' + state.filePath + '?')) return;
+  btn.disabled = true;
+  writeBoth(state.filePath, b64encode($('f-content').value), 'admin: edit ' + state.filePath, st)
+    .then(function () { st.textContent = ''; toast('✓ შენახულია — გამოჩნდება ~1 წუთში', 'ok'); })
+    .catch(function (e) { st.textContent = ''; toast('✗ ' + e.message, 'bad'); })
+    .then(function () { btn.disabled = false; });
+});
+
+/* ---------- boot ---------- */
+function renderAll() {
+  fillCarSelects();
+  buildLangTabs();
+  renderCarList();
+  fillSection('home');
+  fillSection('services');
+  fillSection('journey');
+  fillSection('marquee');
+  fillContacts();
+}
+var saved = localStorage.getItem('vg-admin-token');
+if (saved) {
+  $('login-view').classList.add('hidden');
+  tryLogin(saved, true);
+}
+})();
+</script>
+</body>
+</html>
