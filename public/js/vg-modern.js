@@ -545,3 +545,120 @@
     });
   });
 })();
+
+/* ---------- Ambient cursor trail (orange heat haze) ---------- */
+(function () {
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  var cv = document.createElement('canvas');
+  cv.className = 'fx-trail';
+  cv.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(cv);
+  var ctx = cv.getContext('2d');
+  if (!ctx) { cv.remove(); return; }
+
+  var W = 0, H = 0;
+  function size() {
+    var d = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * d; cv.height = H * d;
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  size();
+  window.addEventListener('resize', size);
+
+  var ps = [], lx = null, ly = null, t = 0, running = false, calm = 0;
+
+  window.addEventListener('pointermove', function (e) {
+    var x = e.clientX, y = e.clientY;
+    var vx = lx === null ? 0 : (x - lx) * 0.22;
+    var vy = ly === null ? 0 : (y - ly) * 0.22;
+    lx = x; ly = y;
+    var sp = Math.min(Math.sqrt(vx * vx + vy * vy), 9);
+    if (sp < 0.5) return;
+    for (var i = 0; i < 2; i++) {
+      ps.push({
+        x: x, y: y,
+        vx: vx * 0.5 + (Math.random() - 0.5) * 1.1,
+        vy: vy * 0.5 + (Math.random() - 0.5) * 1.1,
+        life: 1, r: 4 + Math.random() * 5 + sp * 0.7
+      });
+    }
+    if (ps.length > 200) ps.splice(0, ps.length - 200);
+    if (!running) { running = true; calm = 0; requestAnimationFrame(loop); }
+  }, { passive: true });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { ps.length = 0; }
+  });
+
+  function loop() {
+    t += 0.02;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 0.085;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalAlpha = 1;
+
+    var light = document.documentElement.getAttribute('data-theme') === 'light';
+    ctx.globalCompositeOperation = light ? 'source-over' : 'lighter';
+
+    for (var i = ps.length - 1; i >= 0; i--) {
+      var p = ps[i];
+      p.vx += Math.sin(p.y * 0.02 + t * 2) * 0.05;
+      p.vy += Math.cos(p.x * 0.02 + t * 2) * 0.05 - 0.035;
+      p.x += p.vx; p.y += p.vy;
+      p.vx *= 0.985; p.vy *= 0.985;
+      p.life -= 0.013; p.r *= 1.02;
+      if (p.life <= 0) { ps.splice(i, 1); continue; }
+      var a = p.life * (light ? 0.1 : 0.12);
+      var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+      if (light) {
+        g.addColorStop(0, 'rgba(228, 101, 10, ' + a + ')');
+        g.addColorStop(0.55, 'rgba(255, 128, 57, ' + (a * 0.5) + ')');
+        g.addColorStop(1, 'rgba(255, 128, 57, 0)');
+      } else {
+        g.addColorStop(0, 'rgba(255, 160, 90, ' + a + ')');
+        g.addColorStop(0.55, 'rgba(255, 128, 57, ' + (a * 0.55) + ')');
+        g.addColorStop(1, 'rgba(255, 128, 57, 0)');
+      }
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 7);
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+
+    if (ps.length) { calm = 0; requestAnimationFrame(loop); }
+    else if (calm++ < 50) { requestAnimationFrame(loop); }
+    else { ctx.clearRect(0, 0, W, H); running = false; }
+  }
+})();
+
+/* ---------- Journey: shipment-tracker timeline ---------- */
+(function () {
+  var sec = document.querySelector('[data-journey]');
+  if (!sec) return;
+  var wrap = sec.querySelector('.jtl');
+  var fill = sec.querySelector('.jtl__fill');
+  var items = Array.prototype.slice.call(sec.querySelectorAll('.jtl li'));
+  if (!wrap || !fill || !items.length) return;
+
+  var ticking = false;
+  function upd() {
+    ticking = false;
+    var focus = window.innerHeight * 0.62;
+    var wr = wrap.getBoundingClientRect();
+    var h = Math.max(0, Math.min(focus - wr.top - 8, wr.height - 16));
+    fill.style.height = h + 'px';
+    items.forEach(function (li) {
+      li.classList.toggle('is-on', li.getBoundingClientRect().top + 12 < focus);
+    });
+  }
+  function req() { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }
+  window.addEventListener('scroll', req, { passive: true });
+  window.addEventListener('resize', req);
+  upd();
+})();

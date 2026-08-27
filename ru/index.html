@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=13">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=14">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -461,28 +461,45 @@
   </div>
 </section>
 
-<section class="section reveal" id="how">
+<section class="section reveal" id="how" data-journey>
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Процесс</p>
-      <h2>Как это <span class="accent">работает</span></h2>
+      <h2>Путь из <span class="accent">Америки</span> <span class="ghost">к вам</span></h2>
     </div>
-    <div class="steps">
-      <div class="step">
-        <h3>Покупка на аукционе</h3>
-        <p>Выберите подходящий автомобиль на ведущих автоаукционах США и купите его с нашей помощью.</p>
+    <div class="journey">
+      <div class="journey__map" aria-hidden="true">
+        <svg viewBox="0 0 640 330" role="img">
+          <defs>
+            <pattern id="jmDots-ru" width="18" height="18" patternUnits="userSpaceOnUse">
+              <circle class="jm-grid" cx="1.5" cy="1.5" r="1.2"/>
+            </pattern>
+          </defs>
+          <rect width="640" height="330" fill="url(#jmDots-ru)"/>
+          <path class="jm-base" d="M70 232 Q 320 34 566 164"/>
+          <path class="jm-arc" d="M70 232 Q 320 34 566 164"/>
+          <circle class="jm-ping" cx="70" cy="232" r="5"/>
+          <circle class="jm-ping" cx="566" cy="164" r="5" style="animation-delay: 1.1s"/>
+          <circle class="jm-dot" cx="70" cy="232" r="5"/>
+          <circle class="jm-dot" cx="566" cy="164" r="5"/>
+          <circle class="jm-vessel" r="5.5">
+            <animateMotion dur="6s" repeatCount="indefinite" path="M70 232 Q 320 34 566 164"/>
+          </circle>
+          <text class="jm-lbl" x="70" y="262" text-anchor="middle">SAVANNAH &#183; USA</text>
+          <text class="jm-lbl" x="252" y="98">&#8776; 14 800 KM &#183; 40&#8211;50 ДНЕЙ</text>
+          <text class="jm-lbl jm-lbl--hot" x="566" y="196" text-anchor="middle">POTI &#183; GEORGIA</text>
+        </svg>
       </div>
-      <div class="step">
-        <h3>Доставка по США</h3>
-        <p>Купленный автомобиль перевозится наземным транспортом из штата до ближайшего порта.</p>
-      </div>
-      <div class="step">
-        <h3>Морская перевозка</h3>
-        <p>Автомобиль загружается в контейнер и отправляется контейнерной линией в Грузию.</p>
-      </div>
-      <div class="step">
-        <h3>Порт Поти и выдача</h3>
-        <p>Прибывший автомобиль проходит растаможку и передаётся владельцу.</p>
+      <div class="jtl">
+        <i class="jtl__fill" aria-hidden="true"></i>
+        <ol>
+          <li><b>Куплен на аукционе</b><span>COPART · IAAI · лот на ваше имя</span></li>
+          <li><b>Вывоз со стоянки</b><span>наземная доставка до порта</span></li>
+          <li><b>Погрузка в контейнер</b><span>фотоотчёт при погрузке</span></li>
+          <li><b>Морская перевозка</b><span>~40–50 дней через Атлантику</span></li>
+          <li><b>Поти / Батуми</b><span>прибытие в порт и осмотр</span></li>
+          <li><b>Растаможка и передача</b><span>ключи у вас в руках ✓</span></li>
+        </ol>
       </div>
     </div>
   </div>
@@ -626,6 +643,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=7" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=8" defer></script>
 </body>
 </html>
