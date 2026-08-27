@@ -4,22 +4,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Как проверить историю автомобиля по VIN-коду | VG Auto Export</title>
-<meta name="description" content="VIN-код — «паспорт» автомобиля: разберёмся, что он расскажет до покупки и как отслеживать уже купленный автомобиль в пути.">
-<link rel="canonical" href="https://st0ckitch.github.io/vga-auto/ru/blog/vin-check/">
-<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/blog/vin-check/">
-<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/blog/vin-check/">
-<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/blog/vin-check/">
-<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/blog/vin-check/">
+<title>{{SEO_TITLE}}</title>
+<meta name="description" content="{{SEO_DESC}}">
+<link rel="canonical" href="https://st0ckitch.github.io/vga-auto/ru/blog/{{SLUG}}/">
+<link rel="alternate" hreflang="ka" href="https://st0ckitch.github.io/vga-auto/blog/{{SLUG}}/">
+<link rel="alternate" hreflang="en" href="https://st0ckitch.github.io/vga-auto/en/blog/{{SLUG}}/">
+<link rel="alternate" hreflang="ru" href="https://st0ckitch.github.io/vga-auto/ru/blog/{{SLUG}}/">
+<link rel="alternate" hreflang="x-default" href="https://st0ckitch.github.io/vga-auto/blog/{{SLUG}}/">
 <meta name="theme-color" content="#171314">
 <script>try{if(localStorage.getItem("vg-theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 
 <meta property="og:site_name" content="VG Auto Export">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Как проверить историю автомобиля по VIN-коду | VG Auto Export">
-<meta property="og:description" content="VIN-код — «паспорт» автомобиля: разберёмся, что он расскажет до покупки и как отслеживать уже купленный автомобиль в пути.">
-<meta property="og:url" content="https://st0ckitch.github.io/vga-auto/ru/blog/vin-check/">
-<meta property="og:image" content="https://st0ckitch.github.io/vga-auto/images/logo400.png">
+<meta property="og:title" content="{{SEO_TITLE}}">
+<meta property="og:description" content="{{SEO_DESC}}">
+<meta property="og:url" content="https://st0ckitch.github.io/vga-auto/ru/blog/{{SLUG}}/">
+<meta property="og:image" content="{{COVER}}">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
 
@@ -30,16 +30,7 @@
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=17">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/post.css?v=3">
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "VG Auto Export",
-  "url": "https://st0ckitch.github.io/vga-auto/",
-  "logo": "https://st0ckitch.github.io/vga-auto/images/logo400.png",
-  "description": "VIN-код — «паспорт» автомобиля: разберёмся, что он расскажет до покупки и как отслеживать уже купленный автомобиль в пути."
-}
-</script>
+<script type="application/ld+json">{{JSONLD}}</script>
 <script>
   var class_name = 'Post';
   var siteUrl = 'https://st0ckitch.github.io/vga-auto/';
@@ -88,9 +79,9 @@
     <nav class="nav" aria-label="Основная навигация">
 
       <nav class="lang-switch" aria-label="Выбор языка">
-        <a href="https://st0ckitch.github.io/vga-auto/blog/vin-check/"  hreflang="ka">KA</a>
-        <a href="https://st0ckitch.github.io/vga-auto/en/blog/vin-check/"  hreflang="en">EN</a>
-        <a href="https://st0ckitch.github.io/vga-auto/ru/blog/vin-check/" class="is-active" aria-current="true" hreflang="ru">RU</a>
+        <a href="https://st0ckitch.github.io/vga-auto/blog/{{SLUG}}/"  hreflang="ka">KA</a>
+        <a href="https://st0ckitch.github.io/vga-auto/en/blog/{{SLUG}}/"  hreflang="en">EN</a>
+        <a href="https://st0ckitch.github.io/vga-auto/ru/blog/{{SLUG}}/" class="is-active" aria-current="true" hreflang="ru">RU</a>
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a>
@@ -279,26 +270,20 @@
     <nav aria-label="Навигационная цепочка"><ol class="breadcrumbs">
       <li><a href="https://st0ckitch.github.io/vga-auto/ru/">Главная</a></li>
       <li><a href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a></li>
-      <li aria-current="page">Как проверить историю автомобиля по...</li>
+      <li aria-current="page">{{TITLE}}</li>
     </ol></nav>
-    <h1 style="font-size:clamp(1.6rem,3vw,2.4rem);">Как проверить историю автомобиля по VIN-коду</h1>
-    <time class="muted" datetime="2026-06-12">12.06.2026</time>
+    <h1 style="font-size:clamp(1.6rem,3vw,2.4rem);">{{TITLE}}</h1>
+    <time class="muted" datetime="{{DATE_ISO}}">{{DATE_TXT}}</time>
   </div>
 </section>
 
 <article class="section section--tight">
   <div class="container" style="max-width:820px;">
     <figure style="margin:0 0 32px;">
-      <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car8.jpg" alt="Как проверить историю автомобиля по VIN-коду" style="width:100%; border-radius:var(--r-lg); box-shadow:var(--shadow-md); aspect-ratio:16/8; object-fit:cover;">
+      <img src="{{COVER}}" alt="{{TITLE}}" style="width:100%; border-radius:var(--r-lg); box-shadow:var(--shadow-md); aspect-ratio:16/8; object-fit:cover;">
     </figure>
     <div class="post-body">
-      <p>VIN (Vehicle Identification Number) — уникальный 17-значный код, содержащий основную информацию об автомобиле: производитель, модель, год, завод и комплектация.</p>
-<h2>Почему это важно перед покупкой</h2>
-<p>По VIN-коду проверяется история автомобиля: аварии, записи о пробеге, страховые случаи и предыдущие владельцы. Проверка истории до участия в торгах — обязательный шаг: она нередко расскажет больше, чем описание лота.</p>
-<h2>VIN в процессе доставки</h2>
-<p>В VG Auto Export VIN — это ещё и ключ к отслеживанию вашего автомобиля: введите код на <a href="https://st0ckitch.github.io/vga-auto/ru/search/">странице VIN-поиска</a> и увидите фотоотчёты всех четырёх этапов — аукцион, перевозка по США, американский порт и Поти.</p>
-<h2>Где найти VIN</h2>
-<p>VIN-код виден в нижнем углу лобового стекла, на стойке водительской двери и в транспортных документах. На странице лота аукциона он указан всегда.</p>
+{{BODY}}
     </div>
   </div>
 </article>
@@ -309,31 +294,8 @@
       <h2 style="font-size:1.4rem;">Другие статьи</h2>
     </div>
     <div class="grid grid--3">
-            <article class="card card--hover">
-        <a href="https://st0ckitch.github.io/vga-auto/ru/blog/copart-guide/">
-          <div class="card__media"><img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car7.jpg" alt="Как купить автомобиль на аукционе Copart — руководство для начинающих" loading="lazy"></div>
-          <div class="card__body">
-            <h3 class="card__title" style="font-size:0.98rem;">Как купить автомобиль на аукционе Copart — руководство для начинающих</h3>
-          </div>
-        </a>
-      </article>
-            <article class="card card--hover">
-        <a href="https://st0ckitch.github.io/vga-auto/ru/blog/customs-basics/">
-          <div class="card__media"><img src="https://st0ckitch.github.io/vga-auto/images/present/vg-3.jpg" alt="Растаможка в Грузии: что нужно знать до ввоза автомобиля" loading="lazy"></div>
-          <div class="card__body">
-            <h3 class="card__title" style="font-size:0.98rem;">Растаможка в Грузии: что нужно знать до ввоза автомобиля</h3>
-          </div>
-        </a>
-      </article>
-            <article class="card card--hover">
-        <a href="https://st0ckitch.github.io/vga-auto/ru/blog/export-docs-tips/">
-          <div class="card__media"><img src="https://st0ckitch.github.io/vga-auto/images/present/vg-5.jpg" alt="Из какого штата стоит покупать автомобиль — краткое руководство по документам" loading="lazy"></div>
-          <div class="card__body">
-            <h3 class="card__title" style="font-size:0.98rem;">Из какого штата стоит покупать автомобиль — краткое руководство по документам</h3>
-          </div>
-        </a>
-      </article>
-          </div>
+{{RELATED}}
+    </div>
   </div>
 </section>
 

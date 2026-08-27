@@ -146,6 +146,38 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .kv { font-family: var(--mono); font-size: .72rem; color: var(--dim); }
 .statusline { font-family: var(--mono); font-size: .72rem; color: var(--dim); margin-top: 10px; min-height: 1em; }
 .hidden { display: none !important; }
+.rt-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.rt-bar button {
+  background: var(--glass2); border: 1px solid var(--line); color: var(--ink);
+  border-radius: 8px; padding: 7px 12px; cursor: pointer; font-size: .8rem;
+}
+.rt-bar button:hover { border-color: var(--acc-line); color: var(--acc-deep); }
+.rt-editor {
+  min-height: 280px; background: rgba(0,0,0,.28); border: 1px solid var(--line);
+  border-radius: 12px; padding: 20px 22px; font-size: .95rem; line-height: 1.65; outline: none;
+}
+.rt-editor:focus { border-color: var(--acc-line); }
+.rt-editor h2 { font-size: 1.25rem; margin: 22px 0 8px; }
+.rt-editor h3 { font-size: 1.05rem; margin: 18px 0 6px; }
+.rt-editor a { color: var(--acc-deep); }
+.rt-editor blockquote { border-left: 3px solid var(--acc); margin: 14px 0; padding: 4px 0 4px 16px; color: var(--dim); }
+.rt-editor img { max-width: 100%; border-radius: 10px; }
+.pv-overlay { position: fixed; inset: 0; z-index: 200; background: var(--bg); overflow-y: auto; padding: 40px 20px 80px; }
+.pv-close { position: fixed; top: 18px; right: 22px; z-index: 210; }
+.pv-article { max-width: 760px; margin: 0 auto; }
+.pv-article .kv { letter-spacing: .14em; }
+.pv-article h1 { font-size: clamp(1.6rem, 3.4vw, 2.5rem); line-height: 1.25; margin: 10px 0 6px; }
+.pv-article .pv-cover { width: 100%; aspect-ratio: 16/8; object-fit: cover; border-radius: 16px; margin: 22px 0 26px; }
+.pv-body { font-size: 1rem; line-height: 1.7; color: var(--dim); }
+.pv-body h2, .pv-body h3 { color: var(--ink); }
+.pv-body a { color: var(--acc-deep); }
+.pv-body img { max-width: 100%; border-radius: 12px; }
+.pv-body blockquote { border-left: 3px solid var(--acc); margin: 16px 0; padding: 4px 0 4px 18px; }
+.pg-field { margin-bottom: 12px; }
+.pg-field label { display: flex; gap: 8px; align-items: baseline; }
+.pg-field label i { font-style: normal; color: var(--acc); }
+.pg-field textarea { min-height: 44px; }
+
 .svc-item, .jr-item, .stat-item { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
 .warn { color: #ffb86b; font-size: .82rem; }
 </style>
@@ -188,12 +220,14 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 <div class="shell hidden" id="app">
   <nav class="rail" id="rail">
     <button data-view="cars" class="on"><span class="num">01</span>მანქანები</button>
-    <button data-view="home"><span class="num">02</span>მთავარი გვერდი</button>
-    <button data-view="services"><span class="num">03</span>სერვისები</button>
-    <button data-view="journey"><span class="num">04</span>პროცესი</button>
-    <button data-view="marquee"><span class="num">05</span>ბრენდების ლენტა</button>
-    <button data-view="contacts"><span class="num">06</span>კონტაქტები</button>
-    <button data-view="files"><span class="num">07</span>ფაილები (Pro)</button>
+    <button data-view="blog"><span class="num">02</span>ბლოგი</button>
+    <button data-view="home"><span class="num">03</span>მთავარი გვერდი</button>
+    <button data-view="services"><span class="num">04</span>სერვისები</button>
+    <button data-view="journey"><span class="num">05</span>პროცესი</button>
+    <button data-view="marquee"><span class="num">06</span>ბრენდების ლენტა</button>
+    <button data-view="contacts"><span class="num">07</span>კონტაქტები</button>
+    <button data-view="pages"><span class="num">08</span>გვერდები</button>
+    <button data-view="files"><span class="num">09</span>ფაილები (Pro)</button>
   </nav>
 
   <div class="content">
@@ -328,6 +362,159 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
         </div>
         <div class="statusline" id="contacts-status"></div>
         <p style="margin:16px 0 0"><button class="btn" data-save="contacts">შენახვა და გამოქვეყნება</button></p>
+      </div>
+    </section>
+
+    <!-- ===== BLOG ===== -->
+    <section id="view-blog" class="hidden">
+      <h1>ბლოგი</h1>
+      <p class="sub">სტატიები ქვეყნდება სამივე ენაზე — თითო სტატიას აქვს ქართული, ინგლისური და რუსული ვერსია. SEO პარამეტრები თითო ენისთვის ცალკეა.</p>
+      <p><button class="btn" id="post-add">+ ახალი სტატია</button></p>
+      <div class="carlist" id="postlist"></div>
+
+      <div class="card hidden" id="post-form">
+        <h2 id="post-form-title" style="margin-top:0">ახალი სტატია</h2>
+        <div class="row row--2">
+          <div><label>ბმულის სახელი (ლათინურად, ტირეებით) *</label><input type="text" id="p-slug" placeholder="rogor-viyidot-avto"></div>
+          <div><label>თარიღი</label><input type="date" id="p-date"></div>
+        </div>
+        <div class="row row--2">
+          <div><label style="text-transform:none;letter-spacing:0"><input type="checkbox" id="p-published" checked style="width:auto;margin-right:8px">გამოქვეყნებული</label></div>
+          <div></div>
+        </div>
+        <h2>ყდის ფოტო</h2>
+        <div class="photos" id="p-cover-box" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))"></div>
+        <input type="file" id="p-cover-file" accept="image/*" hidden>
+
+        <div class="langtabs" id="p-langtabs" style="margin-top:26px"></div>
+        <div class="row row--2">
+          <div><label>სათაური *</label><input type="text" id="p-title"></div>
+          <div><label>მოკლე აღწერა (ბარათზე)</label><input type="text" id="p-excerpt"></div>
+        </div>
+        <label>ტექსტი</label>
+        <div class="rt-bar" id="p-toolbar">
+          <button type="button" data-cmd="bold"><b>B</b></button>
+          <button type="button" data-cmd="italic"><i>I</i></button>
+          <button type="button" data-block="h2">H2</button>
+          <button type="button" data-block="h3">H3</button>
+          <button type="button" data-block="p">¶</button>
+          <button type="button" data-cmd="insertUnorderedList">• სია</button>
+          <button type="button" data-cmd="insertOrderedList">1. სია</button>
+          <button type="button" data-block="blockquote">„ციტატა“</button>
+          <button type="button" id="rt-link">ბმული</button>
+          <button type="button" id="rt-img">🖼 სურათი</button>
+          <button type="button" data-cmd="removeFormat">✕ ფორმატი</button>
+        </div>
+        <div class="rt-editor" id="p-editor" contenteditable="true"></div>
+        <input type="file" id="p-img-file" accept="image/*" hidden>
+        <h2>SEO (ამ ენისთვის)</h2>
+        <div class="row row--2">
+          <div><label>SEO სათაური — ბრაუზერის ტაბი და Google</label><input type="text" id="p-seoTitle" placeholder="სათაური | VG Auto Export"></div>
+          <div><label>SEO აღწერა — Google-ის სნიპეტი</label><textarea id="p-seoDesc" style="min-height:64px"></textarea></div>
+        </div>
+        <div class="statusline" id="post-status"></div>
+        <p style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0">
+          <button class="btn" id="post-save">შენახვა და გამოქვეყნება</button>
+          <button class="btn btn--ghost" id="post-preview">👁 გადახედვა</button>
+          <button class="btn btn--ghost" id="post-cancel">გაუქმება</button>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== PAGES ===== -->
+    <section id="view-pages" class="hidden">
+      <h1>გვერდები</h1>
+      <p class="sub">აირჩიეთ საიტის ნებისმიერი გვერდი — ჩაიტვირთება მისი ყველა სათაური, ტექსტი და SEO პარამეტრები. მთავარი გვერდის ჰერო/სერვისები/პროცესი „მთავარი გვერდის“ ტაბიდან იმართება.</p>
+      <div class="card">
+        <div class="row" style="grid-template-columns:1fr auto;align-items:end">
+          <div><label>გვერდი</label><select id="pg-select">
+            <optgroup label="ქართული">
+              <option value="about/index.html">about/</option>
+              <option value="blog/copart-guide/index.html">blog/copart-guide/</option>
+              <option value="blog/customs-basics/index.html">blog/customs-basics/</option>
+              <option value="blog/export-docs-tips/index.html">blog/export-docs-tips/</option>
+              <option value="blog/hybrid-vs-gas/index.html">blog/hybrid-vs-gas/</option>
+              <option value="blog/index.html">blog/</option>
+              <option value="blog/vin-check/index.html">blog/vin-check/</option>
+              <option value="calculator/index.html">calculator/</option>
+              <option value="car/index.html">car/</option>
+              <option value="cars/index.html">cars/</option>
+              <option value="contact/index.html">contact/</option>
+              <option value="export/index.html">export/</option>
+              <option value="import/index.html">import/</option>
+              <option value="index.html">მთავარი /</option>
+              <option value="partlist/index.html">partlist/</option>
+              <option value="partners/index.html">partners/</option>
+              <option value="parts/index.html">parts/</option>
+              <option value="search/index.html">search/</option>
+              <option value="service/index.html">service/</option>
+              <option value="transport/index.html">transport/</option>
+              <option value="video/index.html">video/</option>
+            </optgroup>
+            <optgroup label="English">
+              <option value="en/about/index.html">en/about/</option>
+              <option value="en/auth/index.html">en/auth/</option>
+              <option value="en/blog/copart-guide/index.html">en/blog/copart-guide/</option>
+              <option value="en/blog/customs-basics/index.html">en/blog/customs-basics/</option>
+              <option value="en/blog/export-docs-tips/index.html">en/blog/export-docs-tips/</option>
+              <option value="en/blog/hybrid-vs-gas/index.html">en/blog/hybrid-vs-gas/</option>
+              <option value="en/blog/index.html">en/blog/</option>
+              <option value="en/blog/vin-check/index.html">en/blog/vin-check/</option>
+              <option value="en/calculator/index.html">en/calculator/</option>
+              <option value="en/car/index.html">en/car/</option>
+              <option value="en/cars/index.html">en/cars/</option>
+              <option value="en/contact/index.html">en/contact/</option>
+              <option value="en/export/index.html">en/export/</option>
+              <option value="en/import/index.html">en/import/</option>
+              <option value="en/index.html">en/</option>
+              <option value="en/partlist/index.html">en/partlist/</option>
+              <option value="en/partners/index.html">en/partners/</option>
+              <option value="en/parts/index.html">en/parts/</option>
+              <option value="en/search/index.html">en/search/</option>
+              <option value="en/service/index.html">en/service/</option>
+              <option value="en/transport/index.html">en/transport/</option>
+              <option value="en/video/index.html">en/video/</option>
+            </optgroup>
+            <optgroup label="Русский">
+              <option value="ru/about/index.html">ru/about/</option>
+              <option value="ru/auth/index.html">ru/auth/</option>
+              <option value="ru/blog/copart-guide/index.html">ru/blog/copart-guide/</option>
+              <option value="ru/blog/customs-basics/index.html">ru/blog/customs-basics/</option>
+              <option value="ru/blog/export-docs-tips/index.html">ru/blog/export-docs-tips/</option>
+              <option value="ru/blog/hybrid-vs-gas/index.html">ru/blog/hybrid-vs-gas/</option>
+              <option value="ru/blog/index.html">ru/blog/</option>
+              <option value="ru/blog/vin-check/index.html">ru/blog/vin-check/</option>
+              <option value="ru/calculator/index.html">ru/calculator/</option>
+              <option value="ru/car/index.html">ru/car/</option>
+              <option value="ru/cars/index.html">ru/cars/</option>
+              <option value="ru/contact/index.html">ru/contact/</option>
+              <option value="ru/export/index.html">ru/export/</option>
+              <option value="ru/import/index.html">ru/import/</option>
+              <option value="ru/index.html">ru/</option>
+              <option value="ru/partlist/index.html">ru/partlist/</option>
+              <option value="ru/partners/index.html">ru/partners/</option>
+              <option value="ru/parts/index.html">ru/parts/</option>
+              <option value="ru/search/index.html">ru/search/</option>
+              <option value="ru/service/index.html">ru/service/</option>
+              <option value="ru/transport/index.html">ru/transport/</option>
+              <option value="ru/video/index.html">ru/video/</option>
+            </optgroup>
+          </select></div>
+          <div><button class="btn btn--ghost" id="pg-load">ჩატვირთვა</button></div>
+        </div>
+        <div id="pg-editor" class="hidden">
+          <h2>SEO</h2>
+          <div><label>სათაური (title — ბრაუზერის ტაბი და Google)</label><input type="text" id="pg-title"></div>
+          <div style="margin-top:12px"><label>აღწერა (meta description)</label><textarea id="pg-desc" style="min-height:60px"></textarea></div>
+          <div class="row row--2" style="margin-top:12px">
+            <div><label>OG სათაური (სოც. ქსელებში)</label><input type="text" id="pg-ogtitle"></div>
+            <div><label>OG სურათი (ბმული)</label><input type="text" id="pg-ogimg"></div>
+          </div>
+          <h2>ტექსტები <span class="kv" id="pg-count"></span></h2>
+          <div id="pg-fields"></div>
+          <div class="statusline" id="pages-status"></div>
+          <p style="margin:16px 0 0"><button class="btn" id="pg-save">შენახვა და გამოქვეყნება</button></p>
+        </div>
       </div>
     </section>
 
@@ -488,10 +675,12 @@ function enterAnon() {
   var SITE = 'https://st0ckitch.github.io/vga-auto/';
   Promise.all([
     fetch(SITE + 'public/data/site.json?t=' + Date.now()).then(function (r) { return r.json(); }),
-    fetch(SITE + 'public/data/cars.json?t=' + Date.now()).then(function (r) { return r.json(); })
+    fetch(SITE + 'public/data/cars.json?t=' + Date.now()).then(function (r) { return r.json(); }),
+    fetch(SITE + 'public/data/blog.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
   ]).then(function (res) {
     state.site = res[0];
     state.cars = res[1];
+    state.blog = res[2];
     showApp();
     $('anon-banner').classList.remove('hidden');
     $('go-login').hidden = false;
@@ -532,11 +721,14 @@ function loadData(overwrite) {
     getFile('public/data/site.json', BRANCH_LIVE),
     getFile('public/data/cars.json', BRANCH_LIVE),
     getFile('public/data/site.json', BRANCH_SRC),
-    getFile('public/data/cars.json', BRANCH_SRC)
+    getFile('public/data/cars.json', BRANCH_SRC),
+    getFile('public/data/blog.json', BRANCH_LIVE),
+    getFile('public/data/blog.json', BRANCH_SRC)
   ]).then(function (res) {
     if (!res[0].text || !res[1].text) throw new Error('მონაცემების ფაილები ვერ მოიძებნა');
     if (overwrite !== false || !state.site) state.site = JSON.parse(res[0].text);
     if (overwrite !== false || !state.cars) state.cars = JSON.parse(res[1].text);
+    if (res[4] && res[4].text && (overwrite !== false || !state.blog)) state.blog = JSON.parse(res[4].text);
   });
 }
 $('login-btn').addEventListener('click', function () {
@@ -898,9 +1090,435 @@ $('f-save').addEventListener('click', function () {
     .then(function () { btn.disabled = false; });
 });
 
+/* ---------- blog ---------- */
+var SITE_URL = 'https://st0ckitch.github.io/vga-auto/';
+var BLOG_LANGS = [['ka', ''], ['en', 'en/'], ['ru', 'ru/']];
+
+function fmtDateTxt(iso) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
+  return m ? m[3] + '.' + m[2] + '.' + m[1] : (iso || '');
+}
+function deleteFile(path, branch, message) {
+  return getFile(path, branch).then(function (f) {
+    if (!f.sha) return null;
+    return gh('/contents/' + path, {
+      method: 'DELETE',
+      body: JSON.stringify({ message: message, sha: f.sha, branch: branch })
+    });
+  });
+}
+
+function renderPostList() {
+  var box = $('postlist');
+  if (!state.blog) { box.innerHTML = ''; return; }
+  var posts = (state.blog.posts || []).slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+  box.innerHTML = posts.map(function (p) {
+    var t = (p.ka && p.ka.title) || (p.en && p.en.title) || p.slug;
+    return '<div class="carrow" data-pid="' + p.id + '">' +
+      (p.cover ? '<img src="' + escAttr(siteImg(p.cover)) + '" alt="">' : '<div class="noimg">ყდა არაა</div>') +
+      '<div><b>' + escHtml(t) + '</b>' +
+      '<span class="meta">' + escHtml(p.slug) + ' · ' + fmtDateTxt(p.date) + '</span>' +
+      '<span class="tags">' + (p.published === false ? '<span class="tag sold">დამალული</span>' : '<span class="tag feat">გამოქვეყნებული</span>') +
+      ['ka', 'en', 'ru'].map(function (l) { return (p[l] && p[l].title) ? '<span class="tag">' + l.toUpperCase() + '</span>' : ''; }).join('') +
+      '</span></div>' +
+      '<div class="acts">' +
+      '<button class="btn btn--ghost btn--sm" data-pact="edit">რედაქტირება</button>' +
+      '<button class="btn btn--danger btn--sm" data-pact="del">წაშლა</button>' +
+      '</div></div>';
+  }).join('') || '<p class="sub">სტატიები ჯერ არ არის.</p>';
+}
+
+state.plang = 'ka';
+state.postDraft = null;
+state.tpl = {};
+
+function buildPostLangTabs() {
+  var wrap = $('p-langtabs');
+  wrap.innerHTML = '';
+  wrap.className = 'langtabs';
+  ['ka', 'en', 'ru'].forEach(function (l) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = LANG_NAMES[l];
+    b.className = state.plang === l ? 'on' : '';
+    b.addEventListener('click', function () {
+      commitPostLang();
+      state.plang = l;
+      wrap.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      fillPostLang();
+    });
+    wrap.appendChild(b);
+  });
+}
+function commitPostLang() {
+  if (!state.postDraft) return;
+  var L = state.postDraft.langs[state.plang] = state.postDraft.langs[state.plang] || {};
+  L.title = $('p-title').value.trim();
+  L.excerpt = $('p-excerpt').value.trim();
+  L.seoTitle = $('p-seoTitle').value.trim();
+  L.seoDesc = $('p-seoDesc').value.trim();
+  L.html = $('p-editor').innerHTML;
+}
+function fillPostLang() {
+  var L = (state.postDraft && state.postDraft.langs[state.plang]) || {};
+  $('p-title').value = L.title || '';
+  $('p-excerpt').value = L.excerpt || '';
+  $('p-seoTitle').value = L.seoTitle || '';
+  $('p-seoDesc').value = L.seoDesc || '';
+  $('p-editor').innerHTML = L.html || '';
+}
+function renderPostCover() {
+  var box = $('p-cover-box');
+  var c = state.postDraft && state.postDraft.cover;
+  var src = c ? (c.dataUrl || siteImg(c.path)) : '';
+  box.innerHTML = (src ? '<div class="photo"><img src="' + escAttr(src) + '" alt="">' +
+    '<button class="x" id="p-cover-rm">✕</button>' + (c.dataUrl ? '<span class="new">ახალი</span>' : '') + '</div>' : '') +
+    '<button type="button" class="addphoto" id="p-cover-add">+ ყდა</button>';
+  $('p-cover-add').addEventListener('click', function () { $('p-cover-file').click(); });
+  var rm = $('p-cover-rm');
+  if (rm) rm.addEventListener('click', function () { state.postDraft.cover = null; renderPostCover(); });
+}
+
+function openPostForm(post) {
+  state.plang = 'ka';
+  if (post) {
+    state.postDraft = {
+      id: post.id, slug: post.slug, oldSlug: post.slug, date: post.date || '',
+      published: post.published !== false,
+      cover: post.cover ? { path: post.cover } : null,
+      langs: {
+        ka: Object.assign({}, post.ka), en: Object.assign({}, post.en), ru: Object.assign({}, post.ru)
+      }
+    };
+  } else {
+    var today = new Date();
+    var iso = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    state.postDraft = { id: null, slug: '', oldSlug: null, date: iso, published: true, cover: null, langs: { ka: {}, en: {}, ru: {} } };
+  }
+  $('post-form-title').textContent = post ? 'რედაქტირება — ' + ((post.ka && post.ka.title) || post.slug) : 'ახალი სტატია';
+  $('p-slug').value = state.postDraft.slug;
+  $('p-date').value = state.postDraft.date;
+  $('p-published').checked = state.postDraft.published;
+  buildPostLangTabs();
+  fillPostLang();
+  renderPostCover();
+  $('post-form').classList.remove('hidden');
+  $('post-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+$('post-add').addEventListener('click', function () { openPostForm(null); });
+$('post-cancel').addEventListener('click', function () { $('post-form').classList.add('hidden'); });
+
+$('postlist').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-pact]');
+  if (!b) return;
+  var id = +b.closest('.carrow').dataset.pid;
+  var post = state.blog.posts.filter(function (p) { return p.id === id; })[0];
+  if (!post) return;
+  if (b.dataset.pact === 'edit') openPostForm(post);
+  if (b.dataset.pact === 'del') {
+    if (!confirm('წაიშალოს სტატია „' + ((post.ka && post.ka.title) || post.slug) + '“ სამივე ენაზე?')) return;
+    b.disabled = true;
+    state.blog.posts = state.blog.posts.filter(function (p) { return p.id !== id; });
+    var chain = saveJson('public/data/blog.json', state.blog, 'admin: delete post ' + post.slug, null);
+    BLOG_LANGS.forEach(function (lp) {
+      [BRANCH_LIVE, BRANCH_SRC].forEach(function (br) {
+        chain = chain.then(function () {
+          return deleteFile(lp[1] + 'blog/' + post.slug + '/index.html', br, 'admin: delete post page ' + post.slug).catch(function () {});
+        });
+      });
+    });
+    chain.then(function () { toast('✓ სტატია წაიშალა', 'ok'); renderPostList(); })
+      .catch(function (err) { toast('✗ ' + err.message, 'bad'); });
+  }
+});
+
+/* toolbar */
+$('p-toolbar').addEventListener('click', function (e) {
+  var b = e.target.closest('button');
+  if (!b) return;
+  $('p-editor').focus();
+  if (b.dataset.cmd) document.execCommand(b.dataset.cmd, false, null);
+  if (b.dataset.block) document.execCommand('formatBlock', false, b.dataset.block);
+});
+$('rt-link').addEventListener('click', function () {
+  var url = prompt('ბმულის მისამართი (https://…):');
+  if (url) { $('p-editor').focus(); document.execCommand('createLink', false, url); }
+});
+$('rt-img').addEventListener('click', function () { $('p-img-file').click(); });
+$('p-img-file').addEventListener('change', function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) return;
+  resizeImage(f, 1400, 0.82).then(function (dataUrl) {
+    $('p-editor').focus();
+    document.execCommand('insertHTML', false, '<img src="' + dataUrl + '" alt="">');
+  }).catch(function () { toast('✗ სურათი ვერ წაიკითხა', 'bad'); });
+});
+$('p-cover-file').addEventListener('change', function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) return;
+  resizeImage(f, 1600, 0.82).then(function (dataUrl) {
+    state.postDraft.cover = { dataUrl: dataUrl, b64: dataUrl.split(',')[1] };
+    renderPostCover();
+  });
+});
+
+/* preview */
+$('post-preview').addEventListener('click', function () {
+  commitPostLang();
+  var d = state.postDraft;
+  var L = d.langs[state.plang] || {};
+  var cov = d.cover ? (d.cover.dataUrl || siteImg(d.cover.path)) : '';
+  var ov = document.createElement('div');
+  ov.className = 'pv-overlay';
+  ov.innerHTML = '<button class="btn btn--ghost pv-close">✕ დახურვა</button>' +
+    '<article class="pv-article">' +
+    '<span class="kv">' + escHtml(fmtDateTxt($('p-date').value)) + ' · VG BLOG · ' + state.plang.toUpperCase() + '</span>' +
+    '<h1>' + escHtml(L.title || 'უსათაურო') + '</h1>' +
+    '<p style="color:var(--dim)">' + escHtml(L.excerpt || '') + '</p>' +
+    (cov ? '<img class="pv-cover" src="' + escAttr(cov) + '" alt="">' : '') +
+    '<div class="pv-body">' + (L.html || '<p><i>ტექსტი ცარიელია</i></p>') + '</div>' +
+    '</article>';
+  document.body.appendChild(ov);
+  ov.querySelector('.pv-close').addEventListener('click', function () { ov.remove(); });
+});
+
+/* save */
+function getTemplate(lang) {
+  if (state.tpl[lang]) return Promise.resolve(state.tpl[lang]);
+  return fetch(SITE_URL + 'public/data/post-tpl-' + lang + '.html?t=' + Date.now())
+    .then(function (r) { if (!r.ok) throw new Error('template ' + lang); return r.text(); })
+    .then(function (t) { state.tpl[lang] = t; return t; });
+}
+function relatedCards(lang, pfx, excludeSlug) {
+  var others = (state.blog.posts || []).filter(function (p) {
+    return p.slug !== excludeSlug && p.published !== false && p[lang] && p[lang].title;
+  }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); }).slice(0, 3);
+  return others.map(function (p) {
+    var url = SITE_URL + pfx + 'blog/' + p.slug + '/';
+    return '<article class="card card--hover"><a href="' + url + '">' +
+      '<div class="card__media"><img src="' + escAttr(siteImg(p.cover || '')) + '" alt="' + escAttr(p[lang].title) + '" loading="lazy"></div>' +
+      '<div class="card__body"><time class="muted" datetime="' + escAttr(p.date || '') + '" style="font-size:0.82rem;">' + fmtDateTxt(p.date) + '</time>' +
+      '<h2 class="card__title" style="font-size:1.05rem; margin-top:6px;">' + escHtml(p[lang].title) + '</h2>' +
+      '<p style="font-size:0.9rem; margin:0;">' + escHtml(p[lang].excerpt || '') + '</p></div></a></article>';
+  }).join('\n');
+}
+function uploadEditorImages(html, slug, statusEl) {
+  var div = document.createElement('div');
+  div.innerHTML = html;
+  var imgs = Array.prototype.slice.call(div.querySelectorAll('img[src^="data:"]'));
+  var chain = Promise.resolve();
+  imgs.forEach(function (img, i) {
+    chain = chain.then(function () {
+      if (statusEl) statusEl.textContent = 'იტვირთება სურათი ' + (i + 1) + '/' + imgs.length + '…';
+      var b64 = img.src.split(',')[1];
+      var path = 'public/img/blog/' + slug + '-' + Date.now() + '-' + i + '.jpg';
+      return putFile(path, b64, 'admin: blog image ' + slug, BRANCH_LIVE).then(function () {
+        return putFile(path, b64, 'admin: blog image ' + slug, BRANCH_SRC).catch(function () {});
+      }).then(function () { img.src = SITE_URL + path; });
+    });
+  });
+  return chain.then(function () { return div.innerHTML; });
+}
+$('post-save').addEventListener('click', function () {
+  var btn = this, st = $('post-status');
+  commitPostLang();
+  var d = state.postDraft;
+  d.slug = $('p-slug').value.trim().toLowerCase();
+  d.date = $('p-date').value;
+  d.published = $('p-published').checked;
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(d.slug)) { toast('ბმულის სახელი ლათინურად, ტირეებით (მაგ: my-article)', 'bad'); return; }
+  if (!d.langs.ka.title) { toast('ქართული სათაური სავალდებულოა', 'bad'); return; }
+  btn.disabled = true;
+
+  var chain = Promise.resolve();
+  /* cover upload */
+  if (d.cover && d.cover.b64) {
+    chain = chain.then(function () {
+      st.textContent = 'იტვირთება ყდა…';
+      var path = 'public/img/blog/' + d.slug + '-cover-' + Date.now() + '.jpg';
+      return putFile(path, d.cover.b64, 'admin: blog cover ' + d.slug, BRANCH_LIVE).then(function () {
+        return putFile(path, d.cover.b64, 'admin: blog cover ' + d.slug, BRANCH_SRC).catch(function () {});
+      }).then(function () { d.cover = { path: path }; });
+    });
+  }
+  /* inline images per lang */
+  ['ka', 'en', 'ru'].forEach(function (l) {
+    chain = chain.then(function () {
+      var L = d.langs[l];
+      if (!L || !L.html || L.html.indexOf('data:image') === -1) return;
+      return uploadEditorImages(L.html, d.slug, st).then(function (html) { L.html = html; });
+    });
+  });
+
+  chain.then(function () {
+    /* blog.json entry */
+    var id = d.id || state.blog.nextId || 1;
+    var entry = { id: id, slug: d.slug, published: d.published, date: d.date, cover: d.cover ? d.cover.path : '' };
+    ['ka', 'en', 'ru'].forEach(function (l) {
+      var L = d.langs[l] || {};
+      entry[l] = {
+        title: L.title || '', excerpt: L.excerpt || '',
+        seoTitle: L.seoTitle || ((L.title || '') + ' | VG Auto Export'),
+        seoDesc: L.seoDesc || L.excerpt || '',
+        html: L.html || ''
+      };
+    });
+    var idx = state.blog.posts.findIndex(function (p) { return p.id === id; });
+    if (idx > -1) state.blog.posts[idx] = entry; else state.blog.posts.push(entry);
+    state.blog.nextId = Math.max.apply(null, state.blog.posts.map(function (p) { return p.id; })) + 1;
+
+    return saveJson('public/data/blog.json', state.blog, 'admin: save post ' + d.slug, st).then(function () { return entry; });
+  }).then(function (entry) {
+    /* generate static pages per language */
+    var chain2 = Promise.resolve();
+    BLOG_LANGS.forEach(function (lp) {
+      var lang = lp[0], pfx = lp[1];
+      var L = entry[lang];
+      if (!L.title || !L.html) return;
+      chain2 = chain2.then(function () {
+        st.textContent = 'იქმნება გვერდი (' + lang.toUpperCase() + ')…';
+        return getTemplate(lang).then(function (tpl) {
+          var url = SITE_URL + pfx + 'blog/' + entry.slug + '/';
+          var cover = entry.cover ? siteImg(entry.cover) : SITE_URL + 'images/logo400.png';
+          var ld = JSON.stringify({
+            '@context': 'https://schema.org', '@type': 'BlogPosting',
+            headline: L.title, description: L.seoDesc, datePublished: entry.date,
+            image: cover, mainEntityOfPage: url,
+            author: { '@type': 'Organization', name: 'VG Auto Export' }
+          });
+          var html = tpl
+            .replace(/\{\{SLUG\}\}/g, entry.slug)
+            .replace(/\{\{SEO_TITLE\}\}/g, escAttr(L.seoTitle))
+            .replace(/\{\{SEO_DESC\}\}/g, escAttr(L.seoDesc))
+            .replace(/\{\{TITLE\}\}/g, escHtml(L.title))
+            .replace(/\{\{DATE_ISO\}\}/g, entry.date)
+            .replace(/\{\{DATE_TXT\}\}/g, fmtDateTxt(entry.date))
+            .replace(/\{\{COVER\}\}/g, cover)
+            .replace(/\{\{JSONLD\}\}/g, ld)
+            .replace('{{BODY}}', L.html)
+            .replace('{{RELATED}}', relatedCards(lang, pfx, entry.slug));
+          var path = pfx + 'blog/' + entry.slug + '/index.html';
+          return writeBoth(path, b64encode(html), 'admin: publish post page ' + entry.slug + ' (' + lang + ')', null);
+        });
+      });
+    });
+    /* slug changed: remove old pages */
+    if (d.oldSlug && d.oldSlug !== entry.slug) {
+      BLOG_LANGS.forEach(function (lp) {
+        [BRANCH_LIVE, BRANCH_SRC].forEach(function (br) {
+          chain2 = chain2.then(function () {
+            return deleteFile(lp[1] + 'blog/' + d.oldSlug + '/index.html', br, 'admin: remove old slug ' + d.oldSlug).catch(function () {});
+          });
+        });
+      });
+    }
+    return chain2;
+  }).then(function () {
+    st.textContent = '';
+    toast('✓ სტატია გამოქვეყნდა — საიტზე გამოჩნდება ~1 წუთში', 'ok');
+    $('post-form').classList.add('hidden');
+    renderPostList();
+  }).catch(function (e) {
+    st.textContent = '';
+    toast('✗ ' + e.message, 'bad');
+  }).then(function () { btn.disabled = false; });
+});
+
+/* ---------- pages editor ---------- */
+var INLINE_TAGS = { A: 1, B: 1, I: 1, EM: 1, STRONG: 1, SPAN: 1, BR: 1, SMALL: 1, U: 1, TIME: 1, SUP: 1, SUB: 1, MARK: 1 };
+state.page = null;
+
+$('pg-load').addEventListener('click', function () {
+  var path = $('pg-select').value;
+  var st = $('pages-status');
+  st.textContent = 'იტვირთება…';
+  var read = state.token
+    ? getFile(path, BRANCH_LIVE).then(function (f) { if (f.text == null) throw new Error('ვერ მოიძებნა'); return f.text; })
+    : fetch(SITE_URL + path + '?t=' + Date.now()).then(function (r) { if (!r.ok) throw new Error('ვერ მოიძებნა'); return r.text(); });
+  read.then(function (text) {
+    var doc = new DOMParser().parseFromString(text, 'text/html');
+    var nodes = [];
+    doc.querySelectorAll('main h1, main h2, main h3, main h4, main p, main li, main figcaption, main blockquote, main dt, main dd, footer h3, footer h4, footer p, footer li, footer a').forEach(function (el) {
+      if (el.closest('[data-cars-grid],[data-blog-list],[data-car-view],[data-cars-filters],script,style')) return;
+      var kids = el.children, mode = 'text';
+      for (var i = 0; i < kids.length; i++) {
+        if (!INLINE_TAGS[kids[i].tagName]) return; /* has block children -> children edited individually */
+      }
+      if (kids.length) mode = 'html';
+      var val = mode === 'text' ? el.textContent : el.innerHTML;
+      if (!val.trim()) return;
+      if (el.tagName === 'A' && el.closest('main')) return; /* only footer links */
+      nodes.push({ el: el, mode: mode, val: val.trim() });
+    });
+    state.page = { path: path, doc: doc, nodes: nodes };
+    /* seo */
+    var t = doc.querySelector('title');
+    var dsc = doc.querySelector('meta[name="description"]');
+    var ogt = doc.querySelector('meta[property="og:title"]');
+    var ogi = doc.querySelector('meta[property="og:image"]');
+    $('pg-title').value = t ? t.textContent : '';
+    $('pg-desc').value = dsc ? dsc.getAttribute('content') : '';
+    $('pg-ogtitle').value = ogt ? ogt.getAttribute('content') : '';
+    $('pg-ogimg').value = ogi ? ogi.getAttribute('content') : '';
+    /* fields */
+    var box = $('pg-fields');
+    box.innerHTML = '';
+    nodes.forEach(function (n, i) {
+      var tag = n.el.tagName.toLowerCase();
+      var wrap = document.createElement('div');
+      wrap.className = 'pg-field';
+      var lbl = document.createElement('label');
+      lbl.innerHTML = '<i>' + tag + '</i>' + (n.mode === 'html' ? ' <span class="kv">(ბმულებით)</span>' : '');
+      var inp = document.createElement(n.val.length > 90 || n.mode === 'html' ? 'textarea' : 'input');
+      if (inp.tagName === 'INPUT') inp.type = 'text';
+      inp.value = n.val;
+      inp.dataset.idx = i;
+      wrap.appendChild(lbl);
+      wrap.appendChild(inp);
+      box.appendChild(wrap);
+    });
+    $('pg-count').textContent = '(' + nodes.length + ' ველი)';
+    $('pg-editor').classList.remove('hidden');
+    st.textContent = '✓ ' + path;
+  }).catch(function (e) { st.textContent = '✗ ' + e.message; });
+});
+
+$('pg-save').addEventListener('click', function () {
+  var btn = this, st = $('pages-status');
+  var pg = state.page;
+  if (!pg) return;
+  btn.disabled = true;
+  /* apply fields */
+  $('pg-fields').querySelectorAll('input, textarea').forEach(function (inp) {
+    var n = pg.nodes[+inp.dataset.idx];
+    if (!n) return;
+    if (n.mode === 'text') n.el.textContent = inp.value;
+    else n.el.innerHTML = inp.value;
+  });
+  var doc = pg.doc;
+  var t = doc.querySelector('title');
+  if (t) t.textContent = $('pg-title').value;
+  var dsc = doc.querySelector('meta[name="description"]');
+  if (dsc) dsc.setAttribute('content', $('pg-desc').value);
+  var ogt = doc.querySelector('meta[property="og:title"]');
+  if (ogt) ogt.setAttribute('content', $('pg-ogtitle').value);
+  var ogd = doc.querySelector('meta[property="og:description"]');
+  if (ogd) ogd.setAttribute('content', $('pg-desc').value);
+  var ogi = doc.querySelector('meta[property="og:image"]');
+  if (ogi && $('pg-ogimg').value) ogi.setAttribute('content', $('pg-ogimg').value);
+  var html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+  writeBoth(pg.path, b64encode(html), 'admin: edit page ' + pg.path, st)
+    .then(function () { st.textContent = '✓ ' + pg.path; toast('✓ შენახულია — გამოჩნდება ~1 წუთში', 'ok'); })
+    .catch(function (e) { st.textContent = ''; toast('✗ ' + e.message, 'bad'); })
+    .then(function () { btn.disabled = false; });
+});
+
 /* ---------- boot ---------- */
 function renderAll() {
   fillCarSelects();
+  renderPostList();
   buildLangTabs();
   renderCarList();
   fillSection('home');
