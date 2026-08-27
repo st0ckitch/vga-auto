@@ -41,7 +41,8 @@
           '</div></a></article>';
       }).join('');
     })
-    .catch(function () { /* baked fallback removed; leave empty grid hidden */
-      box.innerHTML = '<p class="cars-empty">' + esc(T.empty || '') + '</p>';
+    .catch(function () {
+      /* keep the statically baked cards; only message if the grid is truly empty */
+      if (!box.children.length) box.innerHTML = '<p class="cars-empty">' + esc(T.empty || '') + '</p>';
     });
 })();
