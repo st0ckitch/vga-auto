@@ -1,4 +1,4 @@
-/* VG Auto Export — blog listing, rendered from public/data/blog.json */
+/* VG Auto Export - blog listing, rendered from public/data/blog.json */
 (function () {
   'use strict';
   var box = document.querySelector('[data-blog-list]');

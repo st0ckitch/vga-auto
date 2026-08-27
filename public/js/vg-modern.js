@@ -1,4 +1,4 @@
-/* VG AUTO EXPORT — modern shared JS (vanilla, no dependencies) */
+/* VG AUTO EXPORT - modern shared JS (vanilla, no dependencies) */
 (function () {
   'use strict';
 
@@ -66,7 +66,7 @@
   var navEl = document.querySelector('.nav');
   if (burger && navEl) {
     /* The header carries backdrop-filter, which makes it the containing block
-       for fixed children — the drawer must live at the body root to size
+       for fixed children - the drawer must live at the body root to size
        against the viewport. */
     document.body.appendChild(navEl);
 
@@ -90,7 +90,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && document.body.classList.contains('nav-open')) setNav(false);
     });
-    /* a link inside the drawer navigates away — close it behind them */
+    /* a link inside the drawer navigates away - close it behind them */
     navEl.addEventListener('click', function (e) {
       if (e.target.closest('a, [data-open]')) setNav(false);
     });
@@ -334,7 +334,7 @@
         var tf = fmtFor(zone, timeFmt, function (z) {
           return { timeZone: z, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
         });
-        if (!tf) { out.textContent = '—'; return; }
+        if (!tf) { out.textContent = '-'; return; }
         var abbr = el.getAttribute('data-clock-abbr');
         if (abbr === null) {
           var zf = fmtFor(zone, zoneFmt, function (z) {
@@ -351,7 +351,7 @@
     };
     tickClocks();
     setInterval(tickClocks, 1000);
-    /* DST shifts the abbreviation — re-derive it hourly rather than every tick */
+    /* DST shifts the abbreviation - re-derive it hourly rather than every tick */
     setInterval(function () {
       clocks.forEach(function (el) { el.removeAttribute('data-clock-abbr'); });
     }, 3600000);
@@ -368,7 +368,7 @@
     var syncPlayBtn = function () { if (playBtn) playBtn.classList.toggle('is-active', !video.paused); };
     var tryPlay = function () {
       var p = video.play();
-      if (p && p.catch) p.catch(function () { /* autoplay refused — the controls stay */ });
+      if (p && p.catch) p.catch(function () { /* autoplay refused - the controls stay */ });
     };
 
     if ('IntersectionObserver' in window) {
@@ -422,7 +422,7 @@
       var fallback = function () {
         if (!msg) return;
         msg.className = 'form-msg form-msg--err';
-        msg.innerHTML = tr('cbFail', 'Requests are temporarily unavailable — please call: ') +
+        msg.innerHTML = tr('cbFail', 'Requests are temporarily unavailable - please call: ') +
           '<a href="tel:+995322500504">0322 50 05 04</a>';
       };
       fetch((window.siteUrl || '/') + 'index.php?class=Action&method=callback_request' +
@@ -477,7 +477,7 @@
         box.classList.add('is-visible');
         box.innerHTML =
           '<p class="form-note u-mb-16">' +
-          tr('lotUnavailable', 'Automatic lot lookup is not available yet — please use the calculator or contact us.') +
+          tr('lotUnavailable', 'Automatic lot lookup is not available yet - please use the calculator or contact us.') +
           '</p>' +
           '<div class="u-flex u-flex-wrap">' +
           '<button class="btn btn--primary btn--sm" type="button" data-open="#dlg-calc">' + tr('lotCalc', 'Calculator') + '</button>' +
@@ -505,7 +505,7 @@
             '<span class="lot-result__place">' + esc([d.location, d.city, d.state].filter(Boolean).join(', ')) + '</span>' +
             '</div>' +
             '<div class="lot-result__rows">' + rows + '</div>' +
-            '<div class="calc-total"><span>' + tr('lotTotal', 'Shipping total') + '</span><b>' + (money(d.total, cur) || '—') + '</b></div>' +
+            '<div class="calc-total"><span>' + tr('lotTotal', 'Shipping total') + '</span><b>' + (money(d.total, cur) || '-') + '</b></div>' +
             '</div></div>';
         })
         .catch(unavailable)
@@ -532,7 +532,7 @@
           var t = (html || '').trim();
           if (t && t.indexOf('<option') === 0) {
             city.innerHTML = t;
-            out.textContent = '—'; out.classList.remove('is-note');
+            out.textContent = '-'; out.classList.remove('is-note');
           } else {
             showNote();
           }

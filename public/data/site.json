@@ -12,7 +12,7 @@
   },
   "ka": {
     "heroTitle": "საუკეთესო გზა *ამერიკული* *ავტომობილისთვის*",
-    "heroSub": "აუქციონზე შეძენიდან ფოთის პორტამდე — ტრანსპორტირება, განბაჟება და სრული ფოტო-რეპორტი ერთ სივრცეში.",
+    "heroSub": "აუქციონზე შეძენიდან ფოთის პორტამდე - ტრანსპორტირება, განბაჟება და სრული ფოტო-რეპორტი ერთ სივრცეში.",
     "stats": [
       {
         "v": "7+",
@@ -29,13 +29,13 @@
     ],
     "video": {
       "eyebrow": "გაიცანით VG ავტო ექსპორტი",
-      "title": "აუქციონიდან ფოთამდე — სრული პროცესი ერთ ვიდეოში",
-      "text": "ავტომობილის მიღება, ტერმინალზე დატვირთვა, კონტეინერში ჩადება და ფოთის პორტში გადმოტვირთვა — ყოველი ეტაპი, რომელსაც ჩვენი გუნდი ყოველდღიურად ასრულებს."
+      "title": "აუქციონიდან ფოთამდე - სრული პროცესი ერთ ვიდეოში",
+      "text": "ავტომობილის მიღება, ტერმინალზე დატვირთვა, კონტეინერში ჩადება და ფოთის პორტში გადმოტვირთვა - ყოველი ეტაპი, რომელსაც ჩვენი გუნდი ყოველდღიურად ასრულებს."
     },
     "services": [
       {
         "title": "ავტომობილების მოძიება",
-        "text": "სასურველ ავტომობილს მოგიძიებთ Copart-სა და IAAI-ზე — ისტორიის, მდგომარეობისა და რეალური ფასის შეფასებით."
+        "text": "სასურველ ავტომობილს მოგიძიებთ Copart-სა და IAAI-ზე - ისტორიის, მდგომარეობისა და რეალური ფასის შეფასებით."
       },
       {
         "title": "გადაზიდვა ამერიკაში",
@@ -51,7 +51,7 @@
       },
       {
         "title": "ავტომობილის შეკეთება",
-        "text": "საჭიროების შემთხვევაში — აღდგენა და შეკეთება სანდო სერვის-ცენტრებში, ორიგინალი ავტონაწილებით."
+        "text": "საჭიროების შემთხვევაში - აღდგენა და შეკეთება სანდო სერვის-ცენტრებში, ორიგინალი ავტონაწილებით."
       },
       {
         "title": "ავტომობილის ჩაბარება",
@@ -100,7 +100,7 @@
   },
   "en": {
     "heroTitle": "The Easiest Way to Get *Your American* *Car*",
-    "heroSub": "From auction purchase to the port of Poti — shipping, customs clearance, and a full photo report, all in one place.",
+    "heroSub": "From auction purchase to the port of Poti - shipping, customs clearance, and a full photo report, all in one place.",
     "stats": [
       {
         "v": "7+",
@@ -117,13 +117,13 @@
     ],
     "video": {
       "eyebrow": "Meet VG Auto Export",
-      "title": "From the auction to Poti — the whole process in one film",
-      "text": "Receiving the car, loading at the terminal, securing it inside the container and unloading in Poti — every stage our team runs daily."
+      "title": "From the auction to Poti - the whole process in one film",
+      "text": "Receiving the car, loading at the terminal, securing it inside the container and unloading in Poti - every stage our team runs daily."
     },
     "services": [
       {
         "title": "Car sourcing",
-        "text": "We find the car you want on Copart and IAAI — with its history, condition and real price assessed."
+        "text": "We find the car you want on Copart and IAAI - with its history, condition and real price assessed."
       },
       {
         "title": "Transport across the USA",
@@ -139,7 +139,7 @@
       },
       {
         "title": "Vehicle repair",
-        "text": "Where it is needed — restoration and repair at trusted service centres, with original parts."
+        "text": "Where it is needed - restoration and repair at trusted service centres, with original parts."
       },
       {
         "title": "Vehicle delivery",
@@ -188,7 +188,7 @@
   },
   "ru": {
     "heroTitle": "Лучший путь к *американскому* *автомобилю*",
-    "heroSub": "От покупки на аукционе до порта Поти — доставка, растаможка и полный фотоотчёт в одном месте.",
+    "heroSub": "От покупки на аукционе до порта Поти - доставка, растаможка и полный фотоотчёт в одном месте.",
     "stats": [
       {
         "v": "7+",
@@ -205,17 +205,17 @@
     ],
     "video": {
       "eyebrow": "Знакомьтесь: VG Auto Export",
-      "title": "От аукциона до Поти — весь процесс в одном видео",
-      "text": "Приёмка автомобиля, погрузка на терминале, крепление в контейнере и выгрузка в Поти — каждый этап, который наша команда выполняет ежедневно."
+      "title": "От аукциона до Поти - весь процесс в одном видео",
+      "text": "Приёмка автомобиля, погрузка на терминале, крепление в контейнере и выгрузка в Поти - каждый этап, который наша команда выполняет ежедневно."
     },
     "services": [
       {
         "title": "Подбор автомобилей",
-        "text": "Подберём нужный автомобиль на Copart и IAAI — с оценкой истории, состояния и реальной цены."
+        "text": "Подберём нужный автомобиль на Copart и IAAI - с оценкой истории, состояния и реальной цены."
       },
       {
         "title": "Перевозка по США",
-        "text": "От аукциона до ближайшего порта — сетью опытных водителей."
+        "text": "От аукциона до ближайшего порта - сетью опытных водителей."
       },
       {
         "title": "Морская перевозка",
@@ -227,7 +227,7 @@
       },
       {
         "title": "Ремонт автомобиля",
-        "text": "При необходимости — восстановление и ремонт в проверенных сервисах, с оригинальными запчастями."
+        "text": "При необходимости - восстановление и ремонт в проверенных сервисах, с оригинальными запчастями."
       },
       {
         "title": "Выдача автомобиля",

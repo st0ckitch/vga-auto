@@ -1,4 +1,4 @@
-/* VG Auto Export — car catalog (listing + detail), data from public/data/cars.json */
+/* VG Auto Export - car catalog (listing + detail), data from public/data/cars.json */
 (function () {
   'use strict';
 
@@ -195,7 +195,7 @@
       if (view) view.hidden = false;
       if (notFound) notFound.hidden = true;
 
-      document.title = carName(c) + ' ' + (c.year || '') + ' — VG Auto Export';
+      document.title = carName(c) + ' ' + (c.year || '') + ' - VG Auto Export';
       var h1 = view.querySelector('[data-cd-title]');
       if (h1) h1.textContent = carName(c) + (c.year ? ' · ' + c.year : '');
 
