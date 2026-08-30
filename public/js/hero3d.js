@@ -96,20 +96,29 @@ function init(host, THREE, GLTFLoader) {
 
   /* ---------- Exploded view ----------
      The car arrives as one welded shell plus wheels, so the "parts" are
-     found geometrically: union-find over the triangle graph splits the
-     body into its ~118 connected pieces (bumpers, lights, grille, trim,
-     seats…). Each vertex then carries the offset its own piece should
+     found geometrically: union-find over the triangle graph (welded by
+     exact vertex position) splits the body into its connected pieces
+     (bumpers, lights, grille, trim, seats…). Each vertex then carries the offset its own piece should
      travel, and a single uniform slides every piece out and back — one
      draw call, no per-part meshes. */
   const explodeU = { value: 1 };
 
-  const buildExplodeOffsets = (geometry, localCenter) => {
+  const buildExplodeOffsets = (mesh, worldBox, worldCentre, carSoupTotal) => {
+    /* Panel cuts assign offsets per TRIANGLE, so triangles must not share
+       vertices across a cut - drop indexing first (welding is re-derived
+       from exact positions below, so piece detection still works). */
+    if (mesh.geometry.index) {
+      const ni = mesh.geometry.toNonIndexed();
+      mesh.geometry.dispose();
+      mesh.geometry = ni;
+    }
+    const geometry = mesh.geometry;
     const pos = geometry.attributes.position;
     const count = pos.count;
     const offsets = new Float32Array(count * 3);
-    const index = geometry.index;
+    const localCenter = mesh.worldToLocal(worldCentre.clone());
 
-    /* piece id per vertex */
+    /* piece id per vertex: weld coincident vertices, then walk triangles */
     const parent = new Int32Array(count);
     for (let i = 0; i < count; i++) parent[i] = i;
     const find = (x) => {
@@ -119,10 +128,13 @@ function init(host, THREE, GLTFLoader) {
       return r;
     };
     const union = (a, b) => { const ra = find(a), rb = find(b); if (ra !== rb) parent[ra] = rb; };
-    if (index) {
-      const arr = index.array;
-      for (let t = 0; t < arr.length; t += 3) { union(arr[t], arr[t + 1]); union(arr[t + 1], arr[t + 2]); }
+    const seen = new Map();
+    for (let i = 0; i < count; i++) {
+      const key = pos.getX(i) + '|' + pos.getY(i) + '|' + pos.getZ(i);
+      const first = seen.get(key);
+      if (first === undefined) seen.set(key, i); else union(i, first);
     }
+    for (let v = 0; v + 2 < count; v += 3) { union(v, v + 1); union(v + 1, v + 2); }
 
     /* centroid of every piece */
     const sums = new Map();
@@ -134,7 +146,8 @@ function init(host, THREE, GLTFLoader) {
     }
 
     /* direction + distance from the shared centre, so outer trim travels
-       further than pieces near the core; the core itself stays put */
+       further than pieces near the core; the welded main shell is instead
+       cut into body panels below */
     let maxDist = 1e-6;
     sums.forEach((s) => {
       s.cx = s.x / s.n - localCenter.x;
@@ -143,15 +156,59 @@ function init(host, THREE, GLTFLoader) {
       s.d = Math.hypot(s.cx, s.cy, s.cz);
       if (s.d > maxDist) maxDist = s.d;
     });
-    sums.forEach((s, root) => {
-      if (s.d < 1e-4 || s.n > count * 0.25) { s.ox = s.oy = s.oz = 0; return; } /* main shell = core */
+    sums.forEach((s) => {
+      s.shell = s.n > count * 0.25 && s.n > carSoupTotal * 0.1; /* the welded body, not a small side mesh */
+      if (s.d < 1e-4 || s.shell) { s.ox = s.oy = s.oz = 0; return; }
       const mag = 0.16 + 0.40 * (s.d / maxDist);
       s.ox = (s.cx / s.d) * mag;
       s.oy = (s.cy / s.d) * mag;
       s.oz = (s.cz / s.d) * mag;
     });
+
+    /* ---- body panels: cut the welded shell into roof / hood / trunk /
+       door sides by triangle position, so doors and details come apart
+       just like the wheels do. Offsets are authored in car space
+       (front = +Z, up = +Y) and mapped back into mesh-local space. */
+    const invM3 = new THREE.Matrix3().setFromMatrix4(
+      new THREE.Matrix4().copy(mesh.matrixWorld).invert());
+    const panel = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix3(invM3);
+    const PANELS = {
+      roof: panel(0, 0.74, 0),
+      front: panel(0, 0.26, 0.92),
+      rear: panel(0, 0.26, -0.92),
+      right: panel(0.82, 0.06, 0),
+      left: panel(-0.82, 0.06, 0),
+      core: panel(0, 0, 0),
+    };
+    const bMin = worldBox.min;
+    const bSize = worldBox.getSize(new THREE.Vector3());
+    const wv = new THREE.Vector3();
+    for (let v = 0; v + 2 < count; v += 3) {
+      const s = sums.get(find(v));
+      if (!s.shell) continue;
+      let wx = 0, wy = 0, wz = 0;
+      for (let k = 0; k < 3; k++) {
+        wv.set(pos.getX(v + k), pos.getY(v + k), pos.getZ(v + k)).applyMatrix4(mesh.matrixWorld);
+        wx += wv.x; wy += wv.y; wz += wv.z;
+      }
+      const nx = (wx / 3 - bMin.x) / bSize.x;
+      const ny = (wy / 3 - bMin.y) / bSize.y;
+      const nz = (wz / 3 - bMin.z) / bSize.z;
+      let key = 'core';
+      if (ny > 0.72) key = 'roof';
+      else if (nz > 0.74 && ny > 0.30) key = 'front';
+      else if (nz < 0.26 && ny > 0.30) key = 'rear';
+      else if (ny > 0.24) key = nx > 0.60 ? 'right' : (nx < 0.40 ? 'left' : 'core');
+      const off = PANELS[key];
+      for (let k = 0; k < 3; k++) {
+        offsets[(v + k) * 3] = off.x;
+        offsets[(v + k) * 3 + 1] = off.y;
+        offsets[(v + k) * 3 + 2] = off.z;
+      }
+    }
     for (let i = 0; i < count; i++) {
       const s = sums.get(find(i));
+      if (s.shell) continue; /* panel offsets already written */
       offsets[i * 3] = s.ox; offsets[i * 3 + 1] = s.oy; offsets[i * 3 + 2] = s.oz;
     }
     geometry.setAttribute('aOffset', new THREE.BufferAttribute(offsets, 3));
@@ -197,9 +254,20 @@ function init(host, THREE, GLTFLoader) {
       /* split the body into pieces and remember where each wheel rests */
       patchExplode(glassMat);
       patchExplode(wheelMat);
+      /* the animation loop drives car.position.y directly (suspension bob),
+         which would otherwise jump the car ~1 unit up on the first animated
+         frame - bake the same vertical pose into the static frame too */
+      car.position.y = 0;
       car.updateMatrixWorld(true);
       const worldCentre = new THREE.Vector3();
-      new THREE.Box3().setFromObject(car).getCenter(worldCentre);
+      const worldBox = new THREE.Box3().setFromObject(car);
+      worldBox.getCenter(worldCentre);
+      let carSoupTotal = 0;
+      car.traverse((o) => {
+        if (!o.isMesh) return;
+        if (wheels.some((w) => w === o || o.parent === w)) return;
+        carSoupTotal += o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count;
+      });
       car.traverse((o) => {
         if (!o.isMesh) return;
         const isWheelPart = wheels.some((w) => w === o || o.parent === w);
@@ -211,8 +279,7 @@ function init(host, THREE, GLTFLoader) {
           }
           return;
         }
-        const localCentre = o.worldToLocal(worldCentre.clone());
-        buildExplodeOffsets(o.geometry, localCentre);
+        buildExplodeOffsets(o, worldBox, worldCentre, carSoupTotal);
       });
       wheels.forEach((w) => {
         w.userData.restX = w.position.x;

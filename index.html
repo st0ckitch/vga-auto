@@ -28,7 +28,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-UltraLight.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=23">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -299,18 +299,15 @@
           <button class="btn btn--primary" type="submit">ძებნა</button>
         </form>
 
-        <div class="hero-clocks" aria-label="მიმდინარე დრო">
-          <div class="clock" data-clock="Asia/Tbilisi">
-            <span class="clock__label">საქართველო</span>
-            <span class="clock__time">-</span>
+        <div class="hero-convert" data-tz-convert aria-label="დროის გადამყვანი" title="ჩაწერეთ აუქციონის დრო (CDT) და ნახეთ რომელი საათი იქნება თბილისში">
+          <div class="tzc-side">
+            <span class="tzc-label">CDT · აუქციონის დრო</span>
+            <input class="tzc-input" type="time" value="11:00" step="60" data-tzc-in aria-label="CDT · აუქციონის დრო">
           </div>
-          <div class="clock" data-clock="America/New_York">
-            <span class="clock__label">ნიუ-იორკი</span>
-            <span class="clock__time">-</span>
-          </div>
-          <div class="clock" data-clock="America/Los_Angeles">
-            <span class="clock__label">ლოს-ანჯელესი</span>
-            <span class="clock__time">-</span>
+          <span class="tzc-arrow" aria-hidden="true">→</span>
+          <div class="tzc-side">
+            <span class="tzc-label">თბილისი</span>
+            <span class="tzc-out"><b data-tzc-out>20:00</b><small data-tzc-day hidden>მეორე დღეს</small></span>
           </div>
         </div>
 
@@ -606,7 +603,7 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=12" defer></script>
-<script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=11"></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=12"></script>
 </body>
 </html>

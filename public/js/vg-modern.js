@@ -314,47 +314,75 @@
     }, { passive: true });
   }
 
-  /* ---------- World clocks (.clock[data-clock="<IANA zone>"]) ---------- */
-  var clocks = document.querySelectorAll('.clock[data-clock]');
-  if (clocks.length) {
-    var timeFmt = {};
-    var zoneFmt = {};
-    var fmtFor = function (zone, store, opts) {
-      if (!(zone in store)) {
-        try { store[zone] = new Intl.DateTimeFormat(store === zoneFmt ? 'en-US' : 'en-GB', opts(zone)); } catch (e) { store[zone] = null; }
-      }
-      return store[zone];
+  /* ---------- CDT -> Tbilisi auction-time converter ([data-tz-convert]) ----------
+     Auction listings show start times in US Central time; the widget turns a
+     typed Central time into the Tbilisi wall-clock time. The typed time is
+     resolved to a real instant on today's Chicago date, so DST on either
+     side - including transition days - stays correct. */
+  var tzConverts = document.querySelectorAll('[data-tz-convert]');
+  if (tzConverts.length) {
+    /* wall clock + offset of a zone at a given instant */
+    var zoneClock = function (zone, date) {
+      try {
+        var parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: zone, hour12: false, hourCycle: 'h23',
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        }).formatToParts(date);
+        var v = {};
+        parts.forEach(function (p) { v[p.type] = p.value; });
+        var h = v.hour === '24' ? 0 : +v.hour;
+        var asUtc = Date.UTC(+v.year, +v.month - 1, +v.day, h, +v.minute, +v.second);
+        return {
+          y: +v.year, mo: +v.month, d: +v.day, h: h, mi: +v.minute,
+          off: Math.round((asUtc - date.getTime()) / 60000)
+        };
+      } catch (e) { return null; }
     };
-    var tickClocks = function () {
-      var now = new Date();
-      clocks.forEach(function (el) {
-        var zone = el.getAttribute('data-clock');
-        var out = el.querySelector('.clock__time');
-        if (!out) return;
-        var tf = fmtFor(zone, timeFmt, function (z) {
-          return { timeZone: z, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-        });
-        if (!tf) { out.textContent = '-'; return; }
-        var abbr = el.getAttribute('data-clock-abbr');
-        if (abbr === null) {
-          var zf = fmtFor(zone, zoneFmt, function (z) {
-            return { timeZone: z, timeZoneName: 'short', hour: '2-digit' };
-          });
-          abbr = '';
-          if (zf && zf.formatToParts) {
-            zf.formatToParts(now).forEach(function (p) { if (p.type === 'timeZoneName') abbr = p.value; });
-          }
-          el.setAttribute('data-clock-abbr', abbr);
+    var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+    tzConverts.forEach(function (box) {
+      var input = box.querySelector('[data-tzc-in]');
+      var out = box.querySelector('[data-tzc-out]');
+      var dayNote = box.querySelector('[data-tzc-day]');
+      if (!input || !out) return;
+      var render = function () {
+        var mHM = /^([0-9]{1,2}):([0-9]{2})$/.exec(input.value || '');
+        if (!mHM || +mHM[1] > 23 || +mHM[2] > 59) {
+          out.textContent = '--:--';
+          if (dayNote) dayNote.hidden = true;
+          return;
         }
-        out.innerHTML = tf.format(now) + (abbr ? ' <small>' + abbr + '</small>' : '');
-      });
-    };
-    tickClocks();
-    setInterval(tickClocks, 1000);
-    /* DST shifts the abbreviation - re-derive it hourly rather than every tick */
-    setInterval(function () {
-      clocks.forEach(function (el) { el.removeAttribute('data-clock-abbr'); });
-    }, 3600000);
+        var hh = +mHM[1], mm = +mHM[2];
+        var now = new Date();
+        var chiNow = zoneClock('America/Chicago', now);
+        if (!chiNow) {
+          /* no Intl zone data: coarse seasonal offset (+9h in DST, +10h in winter) */
+          var diff = (now.getUTCMonth() >= 2 && now.getUTCMonth() <= 9) ? 540 : 600;
+          var total = ((hh * 60 + mm + diff) % 1440 + 1440) % 1440;
+          out.textContent = pad2(Math.floor(total / 60)) + ':' + pad2(total % 60);
+          if (dayNote) dayNote.hidden = hh * 60 + mm + diff < 1440;
+          return;
+        }
+        /* the instant that is <today in Chicago> at hh:mm - refine the offset
+           once so times across a DST switch resolve correctly */
+        var wall = Date.UTC(chiNow.y, chiNow.mo - 1, chiNow.d, hh, mm);
+        var inst = new Date(wall - chiNow.off * 60000);
+        var chiAt = zoneClock('America/Chicago', inst) || chiNow;
+        inst = new Date(wall - chiAt.off * 60000);
+        var tbi = zoneClock('Asia/Tbilisi', inst);
+        if (!tbi) { out.textContent = '--:--'; if (dayNote) dayNote.hidden = true; return; }
+        out.textContent = pad2(tbi.h) + ':' + pad2(tbi.mi);
+        if (dayNote) {
+          dayNote.hidden = Date.UTC(tbi.y, tbi.mo - 1, tbi.d) <= Date.UTC(chiNow.y, chiNow.mo - 1, chiNow.d);
+        }
+      };
+      /* start from the current moment in Chicago so the widget is alive on load */
+      var seed = zoneClock('America/Chicago', new Date());
+      if (seed) input.value = pad2(seed.h) + ':' + pad2(seed.mi);
+      input.addEventListener('input', render);
+      input.addEventListener('change', render);
+      render();
+    });
   }
 
   /* ---------- Full-bleed video band: play while on screen ---------- */

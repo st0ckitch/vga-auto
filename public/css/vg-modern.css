@@ -613,35 +613,57 @@ body.nav-open .burger span:nth-child(3) { transform: translateY(-7px) rotate(-45
 .hero-pill svg { width: 17px; height: 17px; flex: none; color: var(--c-primary-strong); }
 @keyframes pillPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.72); opacity: 0.6; } }
 
-/* ----- World clocks + auction times (replaces the duplicated quick links) ----- */
-.hero-clocks {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 38px;
-}
-.clock {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
-  padding: 11px 20px; border-radius: var(--r-md); min-width: 138px;
+/* ----- CDT -> Tbilisi auction-time converter ----- */
+.hero-convert {
+  display: inline-flex; align-items: stretch; gap: 0;
+  margin-bottom: 38px; border-radius: var(--r-md);
   background: var(--glass-2); border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-edge);
+  box-shadow: var(--glass-edge); overflow: hidden;
 }
-.clock__label {
-  display: block; font-size: 0.72rem; font-weight: 600;
+.tzc-side {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 11px 20px; min-width: 150px;
+}
+.tzc-label {
+  font-size: 0.7rem; font-weight: 600;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-muted);
+  white-space: nowrap;
 }
-.clock__time {
-  display: block; font-family: var(--font-display);
-  font-weight: 800; font-size: 1.15rem; line-height: 1.15; color: var(--c-ink);
+.tzc-input {
+  appearance: none; -webkit-appearance: none;
+  background: none; border: 0; padding: 0; margin: 0;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.15rem;
+  line-height: 1.15; color: var(--c-primary);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+  width: auto; min-width: 5.2ch; max-width: 9.5ch; cursor: text; caret-color: var(--c-primary);
+}
+.tzc-input:focus { outline: none; }
+.tzc-input::-webkit-calendar-picker-indicator { display: none; }
+.tzc-arrow {
+  align-self: center; padding: 0 2px;
+  color: var(--c-muted); font-size: 1.05rem;
+  border-left: 1px solid var(--glass-border);
+  height: 100%; display: flex; align-items: center;
+  border-left: 0;
+}
+.tzc-out {
+  display: flex; align-items: baseline; gap: 7px;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.15rem;
+  line-height: 1.15; color: var(--c-ink);
   font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
 }
-.clock__time small { font-size: 0.62em; font-weight: 600; color: var(--c-muted); margin-left: 3px; }
-.clock--auction { border-color: var(--glass-border); }
-.clock--auction .clock__time { color: var(--c-ink); }
-@media (max-width: 620px) {
-  .hero-clocks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .hero-clocks .clock:last-child { grid-column: 1 / -1; }
-  .clock { padding: 9px 14px; min-width: 0; }
-  .clock__time { font-size: 1rem; }
+.tzc-out small {
+  font-size: 0.62rem; font-weight: 600; color: var(--c-muted);
+  letter-spacing: 0.04em; white-space: nowrap;
 }
+.hero-convert .tzc-side + .tzc-arrow + .tzc-side { border-left: 1px solid var(--glass-border); }
+@media (max-width: 620px) {
+  .hero-convert { display: flex; width: 100%; }
+  .tzc-side { min-width: 0; flex: 1; padding: 9px 14px; }
+  .tzc-input, .tzc-out { font-size: 1rem; }
+}
+
 
 /* ----- Live 3D glass sculpture (three.js torus knot, hero3d.js) ----- */
 .hero-3d { position: relative; min-height: 520px; }
