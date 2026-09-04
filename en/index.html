@@ -28,7 +28,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-UltraLight.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -95,19 +95,10 @@
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/en/transport/">Shipping</a>
-      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/en/cars/">Cars</a>
-      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/en/parts/">Auto Parts</a>
-      <div class="nav__item">
-        <button class="nav__link nav__toggle" aria-expanded="false">Tools</button>
-        <div class="nav__menu">
-          <a href="https://st0ckitch.github.io/vga-auto/en/calculator/">Calculator</a>
-          <button data-open="#dlg-lot">Calculate by lot number</button>
-          <button data-open="#dlg-track">Container Tracking</button>
-          <a href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a>
-          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Customs Calculator</a>
-        </div>
-      </div>
+      <button class="nav__link" type="button" data-open="#dlg-track">Container Tracking</button>
+      <a class="nav__link" data-class="Export" href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/en/blog/">Blog</a>
+      <a class="nav__link" data-class="Faq" href="https://st0ckitch.github.io/vga-auto/en/faq/">FAQ</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/en/partners/">Partners</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a>
       <div class="nav__cta">
@@ -118,53 +109,6 @@
 </header>
 
 
-<dialog class="dlg" id="dlg-calc" aria-labelledby="dlg-calc-title">
-  <div class="dlg__head">
-    <h2 id="dlg-calc-title">Calculator</h2>
-    <button class="dlg__close" data-close aria-label="Close">✕</button>
-  </div>
-  <div class="dlg__body" data-calc>
-    <p class="form-note u-mb-16">Estimate the shipping cost from the auction to Georgia.</p>
-    <div class="form-grid">
-      <div class="field">
-        <label for="vehicleType">Car Type</label>
-        <select class="select" id="vehicleType">
-                      <option value="1">CAR</option>
-                      <option value="2">MOTO</option>
-                      <option value="3">VAN</option>
-                  </select>
-      </div>
-      <div class="field">
-        <label for="us_auc">Auction</label>
-        <select class="select js-calc-auction" id="us_auc">
-                      <option value="Copart">Copart</option>
-                      <option value="IAAI">IAAI</option>
-                      <option value="Manheim">Manheim</option>
-                      <option value="Adesa">Adesa</option>
-                      <option value="Pipeline">Pipeline</option>
-                      <option value="Ove">Ove</option>
-                      <option value="DPrivat">DPrivat</option>
-                  </select>
-      </div>
-      <div class="field">
-        <label for="us_city">City</label>
-        <select class="select js-calc-city" id="us_city"><option value="">Select a city</option></select>
-      </div>
-      <div class="field">
-        <label for="geo_port">Port in Georgia</label>
-        <select class="select" id="geo_port">
-          <option value="poti">Poti</option>
-          <option value="batumi">Batumi</option>
-        </select>
-      </div>
-    </div>
-    <div class="calc-total" aria-live="polite">
-      <span>Total</span>
-      <b id="calcresult" class="js-calc-result" data-msg-unavailable="Data temporarily unavailable">-</b>
-    </div>
-    <p class="form-note u-mt-16 u-mb-0">Contact us for exact rates - the price depends on the auction location and vehicle type.</p>
-  </div>
-</dialog>
 
 <dialog class="dlg" id="dlg-track" aria-labelledby="dlg-track-title">
   <div class="dlg__head">
@@ -222,49 +166,6 @@
   </div>
 </dialog>
 
-<dialog class="dlg dlg--wide" id="dlg-lot" aria-labelledby="dlg-lot-title">
-  <div class="dlg__head">
-    <h2 id="dlg-lot-title">Calculate by lot number</h2>
-    <button class="dlg__close" data-close aria-label="&#10005;">&#10005;</button>
-  </div>
-  <div class="dlg__body">
-    <p class="form-note u-mb-16">Enter the auction lot number - we look up where the car is and calculate shipping to Georgia.</p>
-    <form class="lot-form" data-lot-form data-lot-result="#lot-result-dlg">
-      <div class="form-grid">
-        <div class="field">
-          <label for="lot-auction">Auction</label>
-          <select class="select" id="lot-auction" name="auction">
-            <option value="Copart">Copart</option>
-            <option value="IAAI">IAAI</option>
-            <option value="Manheim">Manheim</option>
-            <option value="Adesa">Adesa</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="lot-number">Lot number</label>
-          <input class="input" id="lot-number" name="lot" type="text" inputmode="numeric" placeholder="e.g. 58412345" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="lot-vehicle">Vehicle type</label>
-          <select class="select" id="lot-vehicle" name="vehicle">
-            <option value="1">CAR</option>
-            <option value="2">MOTO</option>
-            <option value="3">VAN</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="lot-port">Port in Georgia</label>
-          <select class="select" id="lot-port" name="port">
-            <option value="poti">Poti</option>
-            <option value="batumi">Batumi</option>
-          </select>
-        </div>
-      </div>
-      <button class="btn btn--primary btn--lg u-mt-24" type="submit" style="width:100%;">Calculate</button>
-    </form>
-    <div class="lot-result" id="lot-result-dlg"></div>
-  </div>
-</dialog>
 
 <dialog class="lightbox" id="vg-lightbox" aria-label="Enlarge photo">
   <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">‹</button>
@@ -275,31 +176,26 @@
   <button class="lightbox__nav lightbox__nav--next" aria-label="Next photo">›</button>
 </dialog>
 <main id="main">
-  <section class="hero-v2">
-  <div class="container container--wide">
-    <div class="hero-v2__grid">
-
-      <div>
-        <button class="hero-pill" type="button" data-open="#dlg-callback">
-          <i aria-hidden="true"></i>Request a call
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        </button>
-        <h1 class="hero-v2__title">
+<section class="hero-v3" aria-label="VG Auto Export - company video">
+  <video class="hero-v3__media" muted loop playsinline preload="none" poster="https://st0ckitch.github.io/vga-auto/public/img/slider/light/banner1.webp" data-lazy-video>
+    <source data-src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
+  </video>
+  <div class="hero-v3__veil" aria-hidden="true"></div>
+  <div class="container container--wide hero-v3__in">
+    <h1 class="hero-v3__title">
           <span class="w" style="--d:0s;">The Easiest</span>
           <span class="w" style="--d:0.08s;">Way to Get</span>
           <span class="w accent" style="--d:0.16s;">Your American</span>
           <span class="w accent" style="--d:0.24s;">Car</span>
-        </h1>
-        <p class="hero-v2__sub">From auction purchase to the port of Poti - shipping, customs clearance, and a full photo report, all in one place.</p>
-
-        <form class="search-pill" data-vin-form action="https://st0ckitch.github.io/vga-auto/search/" method="get">
+    </h1>
+    <div class="hero-v3__panel">
+      <form class="search-pill" data-vin-form action="https://st0ckitch.github.io/vga-auto/search/" method="get">
           <input type="hidden" name="class" value="Search">
           <input type="hidden" name="lang" value="en">          <label class="search-pill__label" for="hero-vin">VIN</label>
           <input id="hero-vin" name="vin" type="text" placeholder="Search by VIN" autocomplete="off">
           <button class="btn btn--primary" type="submit">Search</button>
         </form>
-
-        <div class="hero-convert" data-tz-convert aria-label="Time zone converter" title="Enter the auction time (CDT) to see the Tbilisi time">
+      <div class="hero-convert" data-tz-convert aria-label="Time zone converter" title="Enter the auction time (CDT) to see the Tbilisi time">
           <div class="tzc-side">
             <span class="tzc-label">CDT · Auction time</span>
             <input class="tzc-input" type="time" value="11:00" step="60" data-tzc-in aria-label="CDT · Auction time">
@@ -310,50 +206,17 @@
             <span class="tzc-out"><b data-tzc-out>20:00</b><small data-tzc-day hidden>next day</small></span>
           </div>
         </div>
-
-        <div class="hero-v2__stats">
-          <div class="stat-row stat-row--divided">
-            <div class="stat"><b data-count="7" data-suffix="+">7+</b><span>auto auctions</span></div>
-            <div class="stat"><b data-count="5">5</b><span>shipping lines</span></div>
-            <div class="stat"><b data-count="50">50</b><span>states we ship from</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-3d" data-hero-3d>
-        <div class="hero-3d__glow" aria-hidden="true"></div>
-        <div class="hero-3d__ring" aria-hidden="true"></div>
-        <canvas class="hero-3d__canvas" aria-hidden="true"></canvas>
-      </div>
-
+      <button class="btn btn--primary btn--lg btn-call" type="button" data-open="#dlg-callback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Request a call</button>
+    </div>
+    <div class="hero-v3__stats">
+      <div class="stat"><b data-count="7" data-suffix="+">7+</b><span>auto auctions</span></div>
+      <div class="stat"><b data-count="5">5</b><span>shipping lines</span></div>
+      <div class="stat"><b data-count="50">50</b><span>states we ship from</span></div>
     </div>
   </div>
+  <div class="hero-v3__scroll" aria-hidden="true"></div>
 </section>
 
-
-<section class="video-band" data-video-band aria-label="VG Auto Export - company video">
-  <video class="video-band__media" muted loop playsinline preload="none" poster="https://st0ckitch.github.io/vga-auto/public/img/slider/light/banner1.webp" data-lazy-video>
-    <source data-src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
-  </video>
-  <div class="video-band__veil" aria-hidden="true"></div>
-  <div class="container container--wide video-band__in">
-    <div class="video-band__controls">
-      <button class="video-band__btn" type="button" data-video-play aria-label="Play or pause">
-        <svg class="is-on" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        <svg class="is-off" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-      </button>
-      <button class="video-band__btn" type="button" data-video-sound aria-label="Turn sound on">
-        <svg class="is-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-        <svg class="is-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-      </button>
-    </div>
-    <div class="video-band__copy">
-      <p class="eyebrow">Meet VG Auto Export</p>
-      <h2>From the auction to Poti - the whole process in one film</h2>
-      <p>Receiving the car, loading at the terminal, securing it inside the container and unloading in Poti - every stage our team runs daily.</p>
-    </div>
-  </div>
-</section>
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
@@ -490,22 +353,51 @@
         </ol>
       </div>
     </div>
+    <div class="jloc">
+      <div class="jloc__group"><span class="jloc__label">USA</span><span class="jloc__chip">Texas</span><span class="jloc__chip">Georgia</span><span class="jloc__chip">New Jersey</span><span class="jloc__chip">California</span><span class="jloc__chip">Florida</span><span class="jloc__chip">Indiana</span></div>
+      <div class="jloc__group"><span class="jloc__label">Canada</span><span class="jloc__chip">Ontario</span></div>
+      <div class="jloc__group"><span class="jloc__label">Georgia</span><span class="jloc__chip">Poti</span><span class="jloc__chip">Batumi</span></div>
+    </div>
   </div>
 </section>
 
-<section class="section section--tight reveal" id="cartypes">
+<section class="section section--tight reveal" id="blogrow">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">Quick Filters</p>
-      <h2>Car Type</h2>
+    <div class="section-head section-head--row">
+      <div>
+        <p class="eyebrow">Blog</p>
+        <h2>Tips and <span class="accent">news</span></h2>
+      </div>
+      <div class="bslider-nav">
+        <button type="button" data-bs-prev aria-label="&#8592;">&#8592;</button>
+        <button type="button" data-bs-next aria-label="&#8594;">&#8594;</button>
+      </div>
     </div>
-    <div class="home-filters">
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/en/cars/?sort=price-asc">By Price</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/en/cars/?cat=hybrid">Hybrid</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/en/cars/?cat=sedan">Sedan</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/en/cars/?cat=suv">SUV</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/en/cars/?cat=hatchback">Hatchback</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/en/cars/">Trending</a>
+  </div>
+  <div class="bslider" data-blog-slider data-lang="en" data-base="https://st0ckitch.github.io/vga-auto/en/blog/">
+    <div class="container container--wide">
+      <div class="bslider__track">
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/en/blog/copart-guide/">
+          <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car7.jpg" alt="How to Buy a Car at a Copart Auction - A Beginner's Guide" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>How to Buy a Car at a Copart Auction - A Beginner's Guide</h3><span class="bcard__meta">14.07.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/en/blog/customs-basics/">
+          <img src="https://st0ckitch.github.io/vga-auto/images/present/vg-3.jpg" alt="Customs Clearance in Georgia: What to Know Before Importing a Car" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Customs Clearance in Georgia: What to Know Before Importing a Car</h3><span class="bcard__meta">30.06.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/en/blog/vin-check/">
+          <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car8.jpg" alt="How to Check a Car's History by VIN" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>How to Check a Car's History by VIN</h3><span class="bcard__meta">12.06.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/en/blog/export-docs-tips/">
+          <img src="https://st0ckitch.github.io/vga-auto/images/present/vg-5.jpg" alt="Which States Are Safe to Buy From - A Quick Guide to Title Documents" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Which States Are Safe to Buy From - A Quick Guide to Title Documents</h3><span class="bcard__meta">28.05.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/en/blog/hybrid-vs-gas/">
+          <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car6.jpg" alt="Hybrid, Gas, or Electric - Which Should You Import from the US?" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Hybrid, Gas, or Electric - Which Should You Import from the US?</h3><span class="bcard__meta">10.05.2026</span></div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -535,7 +427,6 @@
         <p>Get an estimate up front or drop us a line - our team will help you at every step.</p>
       </div>
       <div class="cta-band__actions">
-        <button class="btn btn--primary btn--lg" type="button" data-open="#dlg-calc">Calculator</button>
         <a class="btn btn--light btn--lg" href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a>
       </div>
     </div>
@@ -543,7 +434,6 @@
 </section>
 
 
-<script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=12"></script>
 </main>
 <footer class="site-footer">
   <div class="container">
@@ -559,9 +449,8 @@
           <li><a href="https://st0ckitch.github.io/vga-auto/en/">Home</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/transport/">Shipping</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/en/cars/">Cars</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/en/parts/">Auto Parts</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/blog/">Blog</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/faq/">FAQ</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/partners/">Partners</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a></li>
         </ul>
@@ -570,12 +459,10 @@
       <nav aria-label="Services">
         <h3>Services</h3>
         <ul>
-          <li><a href="https://st0ckitch.github.io/vga-auto/en/calculator/">Calculator</a></li>
           <li><button data-open="#dlg-track">Container Tracking</button></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/video/">Video Tutorials</a></li>
           <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">Dealer Portal</a></li>
-          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Customs Calculator</a></li>
         </ul>
       </nav>
 
@@ -604,6 +491,7 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=14" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-blog.js?v=3" defer></script>
 </body>
 </html>

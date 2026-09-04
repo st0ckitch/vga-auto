@@ -2,7 +2,8 @@
 (function () {
   'use strict';
   var box = document.querySelector('[data-blog-list]');
-  if (!box) return;
+  var slider = document.querySelector('[data-blog-slider]');
+  if (!box && !slider) return;
   var T = window.VG_BLOG_T || {};
   var lang = T.lang || 'ka';
   var SITE = 'https://st0ckitch.github.io/vga-auto/';
@@ -18,9 +19,31 @@
     return m ? m[3] + '.' + m[2] + '.' + m[1] : (iso || '');
   }
 
+  function fillSlider(data) {
+    if (!slider) return;
+    var track = slider.querySelector('.bslider__track');
+    if (!track) return;
+    var lg = slider.getAttribute('data-lang') || 'ka';
+    var base = slider.getAttribute('data-base') || (SITE + 'blog/');
+    var posts = (data.posts || []).filter(function (p) {
+      return p.published !== false && p[lg] && p[lg].title;
+    }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); }).slice(0, 5);
+    if (!posts.length) return;
+    var html = posts.map(function (p) {
+      return '<a class="bcard" href="' + esc(base + p.slug + '/') + '">' +
+        '<img src="' + esc(imgUrl(p.cover || '')) + '" alt="' + esc(p[lg].title) + '" loading="lazy" width="640" height="400">' +
+        '<div class="bcard__body"><h3>' + esc(p[lg].title) + '</h3><span class="bcard__meta">' + esc(fmtDate(p.date)) + '</span></div></a>';
+    }).join('');
+    var live = Array.prototype.map.call(track.children, function (el) { return el.href; }).join('|');
+    var want = posts.map(function (p) { return base + p.slug + '/'; }).join('|');
+    if (live !== want) track.innerHTML = html;
+  }
+
   fetch(SITE + 'public/data/blog.json?t=' + Date.now())
     .then(function (r) { if (!r.ok) throw 0; return r.json(); })
     .then(function (data) {
+      fillSlider(data);
+      if (!box) return;
       var posts = (data.posts || []).filter(function (p) {
         return p.published !== false && p[lang] && p[lang].title;
       }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
@@ -43,6 +66,6 @@
     })
     .catch(function () {
       /* keep the statically baked cards; only message if the grid is truly empty */
-      if (!box.children.length) box.innerHTML = '<p class="cars-empty">' + esc(T.empty || '') + '</p>';
+      if (box && !box.children.length) box.innerHTML = '<p class="cars-empty">' + esc(T.empty || '') + '</p>';
     });
 })();

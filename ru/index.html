@@ -28,7 +28,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-UltraLight.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -95,19 +95,10 @@
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a>
-      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/ru/cars/">Автомобили</a>
-      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/ru/parts/">Автозапчасти</a>
-      <div class="nav__item">
-        <button class="nav__link nav__toggle" aria-expanded="false">Инструменты</button>
-        <div class="nav__menu">
-          <a href="https://st0ckitch.github.io/vga-auto/ru/calculator/">Калькулятор</a>
-          <button data-open="#dlg-lot">Расчёт по номеру лота</button>
-          <button data-open="#dlg-track">Поиск контейнера</button>
-          <a href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a>
-          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Калькулятор растаможки</a>
-        </div>
-      </div>
+      <button class="nav__link" type="button" data-open="#dlg-track">Поиск контейнера</button>
+      <a class="nav__link" data-class="Export" href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a>
+      <a class="nav__link" data-class="Faq" href="https://st0ckitch.github.io/vga-auto/ru/faq/">Частые вопросы</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/ru/partners/">Партнёры</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a>
       <div class="nav__cta">
@@ -118,53 +109,6 @@
 </header>
 
 
-<dialog class="dlg" id="dlg-calc" aria-labelledby="dlg-calc-title">
-  <div class="dlg__head">
-    <h2 id="dlg-calc-title">Калькулятор</h2>
-    <button class="dlg__close" data-close aria-label="Закрыть">✕</button>
-  </div>
-  <div class="dlg__body" data-calc>
-    <p class="form-note u-mb-16">Рассчитайте ориентировочную стоимость доставки с аукциона до Грузии.</p>
-    <div class="form-grid">
-      <div class="field">
-        <label for="vehicleType">Тип автомобиля</label>
-        <select class="select" id="vehicleType">
-                      <option value="1">CAR</option>
-                      <option value="2">MOTO</option>
-                      <option value="3">VAN</option>
-                  </select>
-      </div>
-      <div class="field">
-        <label for="us_auc">Аукцион</label>
-        <select class="select js-calc-auction" id="us_auc">
-                      <option value="Copart">Copart</option>
-                      <option value="IAAI">IAAI</option>
-                      <option value="Manheim">Manheim</option>
-                      <option value="Adesa">Adesa</option>
-                      <option value="Pipeline">Pipeline</option>
-                      <option value="Ove">Ove</option>
-                      <option value="DPrivat">DPrivat</option>
-                  </select>
-      </div>
-      <div class="field">
-        <label for="us_city">Город</label>
-        <select class="select js-calc-city" id="us_city"><option value="">Выберите город</option></select>
-      </div>
-      <div class="field">
-        <label for="geo_port">Порт в Грузии</label>
-        <select class="select" id="geo_port">
-          <option value="poti">Поти</option>
-          <option value="batumi">Батуми</option>
-        </select>
-      </div>
-    </div>
-    <div class="calc-total" aria-live="polite">
-      <span>Сумма</span>
-      <b id="calcresult" class="js-calc-result" data-msg-unavailable="Данные временно недоступны">-</b>
-    </div>
-    <p class="form-note u-mt-16 u-mb-0">Для точных тарифов свяжитесь с нами - цена зависит от местоположения аукциона и типа автомобиля.</p>
-  </div>
-</dialog>
 
 <dialog class="dlg" id="dlg-track" aria-labelledby="dlg-track-title">
   <div class="dlg__head">
@@ -222,49 +166,6 @@
   </div>
 </dialog>
 
-<dialog class="dlg dlg--wide" id="dlg-lot" aria-labelledby="dlg-lot-title">
-  <div class="dlg__head">
-    <h2 id="dlg-lot-title">Расчёт по номеру лота</h2>
-    <button class="dlg__close" data-close aria-label="&#10005;">&#10005;</button>
-  </div>
-  <div class="dlg__body">
-    <p class="form-note u-mb-16">Введите номер лота аукциона - система найдёт местонахождение автомобиля и рассчитает стоимость доставки в Грузию.</p>
-    <form class="lot-form" data-lot-form data-lot-result="#lot-result-dlg">
-      <div class="form-grid">
-        <div class="field">
-          <label for="lot-auction">Аукцион</label>
-          <select class="select" id="lot-auction" name="auction">
-            <option value="Copart">Copart</option>
-            <option value="IAAI">IAAI</option>
-            <option value="Manheim">Manheim</option>
-            <option value="Adesa">Adesa</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="lot-number">Номер лота</label>
-          <input class="input" id="lot-number" name="lot" type="text" inputmode="numeric" placeholder="напр.: 58412345" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="lot-vehicle">Тип транспорта</label>
-          <select class="select" id="lot-vehicle" name="vehicle">
-            <option value="1">CAR</option>
-            <option value="2">MOTO</option>
-            <option value="3">VAN</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="lot-port">Порт в Грузии</label>
-          <select class="select" id="lot-port" name="port">
-            <option value="poti">Поти</option>
-            <option value="batumi">Батуми</option>
-          </select>
-        </div>
-      </div>
-      <button class="btn btn--primary btn--lg u-mt-24" type="submit" style="width:100%;">Рассчитать</button>
-    </form>
-    <div class="lot-result" id="lot-result-dlg"></div>
-  </div>
-</dialog>
 
 <dialog class="lightbox" id="vg-lightbox" aria-label="Увеличить фото">
   <button class="lightbox__nav lightbox__nav--prev" aria-label="Предыдущее фото">‹</button>
@@ -275,31 +176,26 @@
   <button class="lightbox__nav lightbox__nav--next" aria-label="Следующее фото">›</button>
 </dialog>
 <main id="main">
-  <section class="hero-v2">
-  <div class="container container--wide">
-    <div class="hero-v2__grid">
-
-      <div>
-        <button class="hero-pill" type="button" data-open="#dlg-callback">
-          <i aria-hidden="true"></i>Заказать звонок
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        </button>
-        <h1 class="hero-v2__title">
+<section class="hero-v3" aria-label="VG Auto Export - видео компании">
+  <video class="hero-v3__media" muted loop playsinline preload="none" poster="https://st0ckitch.github.io/vga-auto/public/img/slider/light/banner1.webp" data-lazy-video>
+    <source data-src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
+  </video>
+  <div class="hero-v3__veil" aria-hidden="true"></div>
+  <div class="container container--wide hero-v3__in">
+    <h1 class="hero-v3__title">
           <span class="w" style="--d:0s;">Лучший</span>
           <span class="w" style="--d:0.08s;">путь к</span>
           <span class="w accent" style="--d:0.16s;">американскому</span>
           <span class="w accent" style="--d:0.24s;">автомобилю</span>
-        </h1>
-        <p class="hero-v2__sub">От покупки на аукционе до порта Поти - доставка, растаможка и полный фотоотчёт в одном месте.</p>
-
-        <form class="search-pill" data-vin-form action="https://st0ckitch.github.io/vga-auto/search/" method="get">
+    </h1>
+    <div class="hero-v3__panel">
+      <form class="search-pill" data-vin-form action="https://st0ckitch.github.io/vga-auto/search/" method="get">
           <input type="hidden" name="class" value="Search">
           <input type="hidden" name="lang" value="ru">          <label class="search-pill__label" for="hero-vin">VIN</label>
           <input id="hero-vin" name="vin" type="text" placeholder="Поиск по VIN" autocomplete="off">
           <button class="btn btn--primary" type="submit">Поиск</button>
         </form>
-
-        <div class="hero-convert" data-tz-convert aria-label="Конвертер времени" title="Введите время аукциона (CDT), чтобы увидеть время в Тбилиси">
+      <div class="hero-convert" data-tz-convert aria-label="Конвертер времени" title="Введите время аукциона (CDT), чтобы увидеть время в Тбилиси">
           <div class="tzc-side">
             <span class="tzc-label">CDT · Время аукциона</span>
             <input class="tzc-input" type="time" value="11:00" step="60" data-tzc-in aria-label="CDT · Время аукциона">
@@ -310,50 +206,17 @@
             <span class="tzc-out"><b data-tzc-out>20:00</b><small data-tzc-day hidden>на след. день</small></span>
           </div>
         </div>
-
-        <div class="hero-v2__stats">
-          <div class="stat-row stat-row--divided">
-            <div class="stat"><b data-count="7" data-suffix="+">7+</b><span>автоаукционов</span></div>
-            <div class="stat"><b data-count="5">5</b><span>контейнерных линий</span></div>
-            <div class="stat"><b data-count="50">50</b><span>штатов отправки</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-3d" data-hero-3d>
-        <div class="hero-3d__glow" aria-hidden="true"></div>
-        <div class="hero-3d__ring" aria-hidden="true"></div>
-        <canvas class="hero-3d__canvas" aria-hidden="true"></canvas>
-      </div>
-
+      <button class="btn btn--primary btn--lg btn-call" type="button" data-open="#dlg-callback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Заказать звонок</button>
+    </div>
+    <div class="hero-v3__stats">
+      <div class="stat"><b data-count="7" data-suffix="+">7+</b><span>автоаукционов</span></div>
+      <div class="stat"><b data-count="5">5</b><span>контейнерных линий</span></div>
+      <div class="stat"><b data-count="50">50</b><span>штатов отправки</span></div>
     </div>
   </div>
+  <div class="hero-v3__scroll" aria-hidden="true"></div>
 </section>
 
-
-<section class="video-band" data-video-band aria-label="VG Auto Export - видео о компании">
-  <video class="video-band__media" muted loop playsinline preload="none" poster="https://st0ckitch.github.io/vga-auto/public/img/slider/light/banner1.webp" data-lazy-video>
-    <source data-src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
-  </video>
-  <div class="video-band__veil" aria-hidden="true"></div>
-  <div class="container container--wide video-band__in">
-    <div class="video-band__controls">
-      <button class="video-band__btn" type="button" data-video-play aria-label="Воспроизведение или пауза">
-        <svg class="is-on" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        <svg class="is-off" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-      </button>
-      <button class="video-band__btn" type="button" data-video-sound aria-label="Включить звук">
-        <svg class="is-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-        <svg class="is-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-      </button>
-    </div>
-    <div class="video-band__copy">
-      <p class="eyebrow">Знакомьтесь: VG Auto Export</p>
-      <h2>От аукциона до Поти - весь процесс в одном видео</h2>
-      <p>Приёмка автомобиля, погрузка на терминале, крепление в контейнере и выгрузка в Поти - каждый этап, который наша команда выполняет ежедневно.</p>
-    </div>
-  </div>
-</section>
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
@@ -490,22 +353,51 @@
         </ol>
       </div>
     </div>
+    <div class="jloc">
+      <div class="jloc__group"><span class="jloc__label">США</span><span class="jloc__chip">Texas</span><span class="jloc__chip">Georgia</span><span class="jloc__chip">New Jersey</span><span class="jloc__chip">California</span><span class="jloc__chip">Florida</span><span class="jloc__chip">Indiana</span></div>
+      <div class="jloc__group"><span class="jloc__label">Канада</span><span class="jloc__chip">Ontario</span></div>
+      <div class="jloc__group"><span class="jloc__label">Грузия</span><span class="jloc__chip">Поти</span><span class="jloc__chip">Батуми</span></div>
+    </div>
   </div>
 </section>
 
-<section class="section section--tight reveal" id="cartypes">
+<section class="section section--tight reveal" id="blogrow">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">Быстрые фильтры</p>
-      <h2>Тип автомобиля</h2>
+    <div class="section-head section-head--row">
+      <div>
+        <p class="eyebrow">Блог</p>
+        <h2>Советы и <span class="accent">новости</span></h2>
+      </div>
+      <div class="bslider-nav">
+        <button type="button" data-bs-prev aria-label="&#8592;">&#8592;</button>
+        <button type="button" data-bs-next aria-label="&#8594;">&#8594;</button>
+      </div>
     </div>
-    <div class="home-filters">
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/ru/cars/?sort=price-asc">По цене</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/ru/cars/?cat=hybrid">Гибрид</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/ru/cars/?cat=sedan">Седан</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/ru/cars/?cat=suv">Внедорожник</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/ru/cars/?cat=hatchback">Хэтчбек</a>
-      <a class="chip" href="https://st0ckitch.github.io/vga-auto/ru/cars/">Популярные</a>
+  </div>
+  <div class="bslider" data-blog-slider data-lang="ru" data-base="https://st0ckitch.github.io/vga-auto/ru/blog/">
+    <div class="container container--wide">
+      <div class="bslider__track">
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/ru/blog/copart-guide/">
+          <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car7.jpg" alt="Как купить автомобиль на аукционе Copart - руководство для начинающих" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Как купить автомобиль на аукционе Copart - руководство для начинающих</h3><span class="bcard__meta">14.07.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/ru/blog/customs-basics/">
+          <img src="https://st0ckitch.github.io/vga-auto/images/present/vg-3.jpg" alt="Растаможка в Грузии: что нужно знать до ввоза автомобиля" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Растаможка в Грузии: что нужно знать до ввоза автомобиля</h3><span class="bcard__meta">30.06.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/ru/blog/vin-check/">
+          <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car8.jpg" alt="Как проверить историю автомобиля по VIN-коду" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Как проверить историю автомобиля по VIN-коду</h3><span class="bcard__meta">12.06.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/ru/blog/export-docs-tips/">
+          <img src="https://st0ckitch.github.io/vga-auto/images/present/vg-5.jpg" alt="Из какого штата стоит покупать автомобиль - краткое руководство по документам" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Из какого штата стоит покупать автомобиль - краткое руководство по документам</h3><span class="bcard__meta">28.05.2026</span></div>
+        </a>
+        <a class="bcard" href="https://st0ckitch.github.io/vga-auto/ru/blog/hybrid-vs-gas/">
+          <img src="https://st0ckitch.github.io/vga-auto/public/img/mycar/car6.jpg" alt="Гибрид, бензин или электромобиль - какой привезти из США" loading="lazy" width="640" height="400">
+          <div class="bcard__body"><h3>Гибрид, бензин или электромобиль - какой привезти из США</h3><span class="bcard__meta">10.05.2026</span></div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -535,7 +427,6 @@
         <p>Рассчитайте примерную стоимость заранее или напишите нам - наша команда поможет на каждом этапе.</p>
       </div>
       <div class="cta-band__actions">
-        <button class="btn btn--primary btn--lg" type="button" data-open="#dlg-calc">Калькулятор</button>
         <a class="btn btn--light btn--lg" href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a>
       </div>
     </div>
@@ -543,7 +434,6 @@
 </section>
 
 
-<script type="module" src="https://st0ckitch.github.io/vga-auto/public/js/hero3d.js?v=12"></script>
 </main>
 <footer class="site-footer">
   <div class="container">
@@ -559,9 +449,8 @@
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/">Главная</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/cars/">Автомобили</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/parts/">Автозапчасти</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/ru/faq/">Частые вопросы</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/partners/">Партнёры</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a></li>
         </ul>
@@ -570,12 +459,10 @@
       <nav aria-label="Сервисы">
         <h3>Сервисы</h3>
         <ul>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/calculator/">Калькулятор</a></li>
           <li><button data-open="#dlg-track">Поиск контейнера</button></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/video/">Видеоуроки</a></li>
           <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">Портал дилера</a></li>
-          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Калькулятор растаможки</a></li>
         </ul>
       </nav>
 
@@ -604,6 +491,7 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=14" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-blog.js?v=3" defer></script>
 </body>
 </html>

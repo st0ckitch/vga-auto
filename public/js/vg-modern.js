@@ -639,7 +639,7 @@
       };
 
       /* hero */
-      var h1 = document.querySelector('.hero-v2__title');
+      var h1 = document.querySelector('.hero-v3__title, .hero-v2__title');
       if (h1 && L.heroTitle && h1.textContent.replace(/\s+/g, ' ').trim() !== L.heroTitle.replace(/\*/g, '').replace(/\s+/g, ' ').trim()) {
         h1.innerHTML = L.heroTitle.trim().split(/\s+/).map(function (w, i) {
           var acc = /^\*.*\*$/.test(w);
@@ -648,12 +648,12 @@
             w.replace(/[&<>]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]; }) + '</span>';
         }).join(' ');
       }
-      var sub = document.querySelector('.hero-v2__sub');
+      var sub = document.querySelector('.hero-v2__sub');  /* removed from the video hero - guard keeps this a no-op */
       if (sub && L.heroSub) setText(sub, L.heroSub);
 
       /* stats */
       if (L.stats && L.stats.length) {
-        var stats = document.querySelectorAll('.hero-v2__stats .stat');
+        var stats = document.querySelectorAll('.hero-v3__stats .stat, .hero-v2__stats .stat');
         L.stats.forEach(function (s, i) {
           var el = stats[i];
           if (!el) return;
@@ -712,26 +712,84 @@
     .catch(function () {});
 })();
 
-/* ---------- Lazy video: fetch and play band videos only near the viewport ---------- */
+/* ---------- Lazy video: load near the viewport, play only while visible.
+     Reduced-motion visitors keep the still poster. ---------- */
 (function () {
   var vids = document.querySelectorAll('video[data-lazy-video]');
   if (!vids.length) return;
-  var start = function (v) {
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var load = function (v) {
     if (v.dataset.lazyDone) return;
     v.dataset.lazyDone = '1';
     Array.prototype.forEach.call(v.querySelectorAll('source[data-src]'), function (s) { s.src = s.getAttribute('data-src'); });
     v.load();
+  };
+  var play = function (v) {
     var p = v.play();
     if (p && p.catch) p.catch(function () {});
   };
+  if (reduced) return; /* still frame: the poster */
   if (!('IntersectionObserver' in window)) {
-    Array.prototype.forEach.call(vids, start);
+    Array.prototype.forEach.call(vids, function (v) { load(v); play(v); });
     return;
   }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (e.isIntersecting) { start(e.target); io.unobserve(e.target); }
+      var v = e.target;
+      if (e.isIntersecting) { load(v); play(v); }
+      else if (v.dataset.lazyDone) v.pause();
     });
-  }, { rootMargin: '400px 0px' });
+  }, { rootMargin: '300px 0px' });
   Array.prototype.forEach.call(vids, function (v) { io.observe(v); });
+})();
+
+/* ---------- Floating "request a call" button - every page, glowing ---------- */
+(function () {
+  if (!document.querySelector('#dlg-callback')) return;
+  var srcBtn = document.querySelector('.nav__cta .btn');
+  var label = (srcBtn && srcBtn.textContent.trim()) || 'მოითხოვე ზარი';
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'call-float';
+  b.setAttribute('data-open', '#dlg-callback');
+  b.setAttribute('aria-label', label);
+  b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
+    '<span class="call-float__label"></span>';
+  b.querySelector('.call-float__label').textContent = label;
+  document.body.appendChild(b);
+  /* visible after a bit of scroll; on short pages that cannot scroll, always */
+  var sync = function () {
+    var short = document.documentElement.scrollHeight <= window.innerHeight + 360;
+    b.classList.toggle('is-on', short || window.scrollY > 320);
+  };
+  window.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', sync);
+  sync();
+})();
+
+/* ---------- Home blog slider: arrows + gentle auto-advance ---------- */
+(function () {
+  var slider = document.querySelector('[data-blog-slider]');
+  if (!slider) return;
+  var section = slider.closest('section') || document;
+  var step = function () {
+    var card = slider.querySelector('.bcard');
+    return card ? card.getBoundingClientRect().width + 18 : 340;
+  };
+  var go = function (dir) { slider.scrollBy({ left: dir * step(), behavior: 'smooth' }); };
+  var prev = section.querySelector('[data-bs-prev]');
+  var next = section.querySelector('[data-bs-next]');
+  if (prev) prev.addEventListener('click', function () { go(-1); });
+  if (next) next.addEventListener('click', function () { go(1); });
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var paused = false;
+  slider.addEventListener('pointerenter', function () { paused = true; });
+  slider.addEventListener('pointerleave', function () { paused = false; });
+  slider.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+  setInterval(function () {
+    if (paused || document.hidden) return;
+    var max = slider.scrollWidth - slider.clientWidth - 4;
+    if (slider.scrollLeft >= max) slider.scrollTo({ left: 0, behavior: 'smooth' });
+    else go(1);
+  }, 5000);
 })();

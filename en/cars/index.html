@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/cars.css?v=3">
 
 <script type="application/ld+json">
@@ -94,19 +94,10 @@
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/en/transport/">Shipping</a>
-      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/en/cars/">Cars</a>
-      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/en/parts/">Auto Parts</a>
-      <div class="nav__item">
-        <button class="nav__link nav__toggle" aria-expanded="false">Tools</button>
-        <div class="nav__menu">
-          <a href="https://st0ckitch.github.io/vga-auto/en/calculator/">Calculator</a>
-          <button data-open="#dlg-lot">Calculate by lot number</button>
-          <button data-open="#dlg-track">Container Tracking</button>
-          <a href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a>
-          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Customs Calculator</a>
-        </div>
-      </div>
+      <button class="nav__link" type="button" data-open="#dlg-track">Container Tracking</button>
+      <a class="nav__link" data-class="Export" href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/en/blog/">Blog</a>
+      <a class="nav__link" data-class="Faq" href="https://st0ckitch.github.io/vga-auto/en/faq/">FAQ</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/en/partners/">Partners</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a>
       <div class="nav__cta">
@@ -332,9 +323,8 @@
           <li><a href="https://st0ckitch.github.io/vga-auto/en/">Home</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/import/">Car Import</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/transport/">Shipping</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/en/cars/">Cars</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/en/parts/">Auto Parts</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/blog/">Blog</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/en/faq/">FAQ</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/partners/">Partners</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/contact/">Contact</a></li>
         </ul>
@@ -343,12 +333,10 @@
       <nav aria-label="Services">
         <h3>Services</h3>
         <ul>
-          <li><a href="https://st0ckitch.github.io/vga-auto/en/calculator/">Calculator</a></li>
           <li><button data-open="#dlg-track">Container Tracking</button></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/export/">Export Documentation</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/en/video/">Video Tutorials</a></li>
           <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">Dealer Portal</a></li>
-          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Customs Calculator</a></li>
         </ul>
       </nav>
 
@@ -379,6 +367,6 @@
 
 <script>window.VG_CARS_T = {"carPage": "https://st0ckitch.github.io/vga-auto/en/car/", "carsPage": "https://st0ckitch.github.io/vga-auto/en/cars/", "h1": "Cars", "lead": "Catalog of cars imported from US auctions - filter by manufacturer, year, price and category.", "home": "Home", "search": "Search", "reset": "Reset", "found": "Found", "all": "All", "empty": "No cars match these filters", "loadFail": "The catalog is temporarily unavailable", "sold": "Sold", "priceAsk": "Price on request", "back": "← Back to catalog", "call": "Call us", "callback": "Request a call", "notFound": "Car not found", "notFoundText": "The link may be outdated, or the car has been sold.", "sortNew": "Newest first", "sortPriceAsc": "Price: low to high", "sortPriceDesc": "Price: high to low", "sortYear": "Year", "fMake": "Manufacturer", "fModel": "Model", "fYearFrom": "Year from", "fYearTo": "Year to", "fPriceTo": "Price up to", "fCat": "Category", "fSort": "Sort", "fields": {"make": "Manufacturer", "model": "Model", "year": "Year", "engine": "Engine", "transmission": "Transmission", "fuel": "Fuel", "steering": "Steering", "location": "Location", "customs": "Customs", "category": "Category", "mileage": "Mileage", "vin": "VIN"}, "transmission": {"automatic": "Automatic", "manual": "Manual", "variator": "CVT"}, "fuel": {"petrol": "Petrol", "diesel": "Diesel", "hybrid": "Hybrid", "electric": "Electric", "gas": "LPG"}, "steering": {"left": "Left", "right": "Right"}, "customs": {"cleared": "Cleared", "in_progress": "Clearance in progress", "not_cleared": "Not cleared"}, "category": {"sedan": "Sedan", "suv": "SUV", "hatchback": "Hatchback", "coupe": "Coupe", "pickup": "Pickup", "minivan": "Minivan", "hybrid": "Hybrid", "moto": "Moto"}, "location": {"tbilisi": "Tbilisi", "poti": "Poti", "batumi": "Batumi", "kutaisi": "Kutaisi", "usa": "USA", "transit": "In transit"}};</script>
 <script src="https://st0ckitch.github.io/vga-auto/public/js/vg-cars.js?v=2" defer></script>
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=14" defer></script>
 </body>
 </html>

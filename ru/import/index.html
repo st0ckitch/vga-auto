@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/import.css?v=3">
 
 <script type="application/ld+json">
@@ -94,19 +94,10 @@
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a>
-      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/ru/cars/">Автомобили</a>
-      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/ru/parts/">Автозапчасти</a>
-      <div class="nav__item">
-        <button class="nav__link nav__toggle" aria-expanded="false">Инструменты</button>
-        <div class="nav__menu">
-          <a href="https://st0ckitch.github.io/vga-auto/ru/calculator/">Калькулятор</a>
-          <button data-open="#dlg-lot">Расчёт по номеру лота</button>
-          <button data-open="#dlg-track">Поиск контейнера</button>
-          <a href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a>
-          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Калькулятор растаможки</a>
-        </div>
-      </div>
+      <button class="nav__link" type="button" data-open="#dlg-track">Поиск контейнера</button>
+      <a class="nav__link" data-class="Export" href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a>
+      <a class="nav__link" data-class="Faq" href="https://st0ckitch.github.io/vga-auto/ru/faq/">Частые вопросы</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/ru/partners/">Партнёры</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a>
       <div class="nav__cta">
@@ -337,7 +328,7 @@
     </details>
     <details class="accordion">
       <summary>Сколько стоит доставка?</summary>
-      <div class="accordion__body"><p>Цена зависит от типа автомобиля, местоположения аукциона и порта. Для расчёта ориентировочной стоимости воспользуйтесь <button class="btn btn--sm btn--ghost" data-open="#dlg-calc">калькулятором</button> или <a href="https://st0ckitch.github.io/vga-auto/ru/contact/">свяжитесь с нами</a>.</p></div>
+      <div class="accordion__body"><p>Цена зависит от типа автомобиля, местоположения аукциона и порта. Для расчёта ориентировочной стоимости воспользуйтесь <button class="btn btn--sm btn--ghost" data-open="#dlg-callback">Заказать звонок</button> или <a href="https://st0ckitch.github.io/vga-auto/ru/contact/">свяжитесь с нами</a>.</p></div>
     </details>
     <details class="accordion">
       <summary>С каких аукционов можно купить автомобиль?</summary>
@@ -362,7 +353,7 @@
         <p>Рассчитайте ориентировочную стоимость или напишите нам - поможем от подбора до передачи.</p>
       </div>
       <div class="u-flex">
-        <button class="btn btn--primary btn--lg" data-open="#dlg-calc">Калькулятор</button>
+        <button class="btn btn--primary btn--lg" data-open="#dlg-callback">Заказать звонок</button>
         <a class="btn btn--light btn--lg" href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a>
       </div>
     </div>
@@ -404,9 +395,8 @@
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/">Главная</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/cars/">Автомобили</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/parts/">Автозапчасти</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/ru/faq/">Частые вопросы</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/partners/">Партнёры</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a></li>
         </ul>
@@ -415,12 +405,10 @@
       <nav aria-label="Сервисы">
         <h3>Сервисы</h3>
         <ul>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/calculator/">Калькулятор</a></li>
           <li><button data-open="#dlg-track">Поиск контейнера</button></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/video/">Видеоуроки</a></li>
           <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">Портал дилера</a></li>
-          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Калькулятор растаможки</a></li>
         </ul>
       </nav>
 
@@ -449,6 +437,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=14" defer></script>
 </body>
 </html>

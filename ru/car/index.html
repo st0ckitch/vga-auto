@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/car.css?v=3">
 
 <script type="application/ld+json">
@@ -94,19 +94,10 @@
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a>
-      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/ru/cars/">Автомобили</a>
-      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/ru/parts/">Автозапчасти</a>
-      <div class="nav__item">
-        <button class="nav__link nav__toggle" aria-expanded="false">Инструменты</button>
-        <div class="nav__menu">
-          <a href="https://st0ckitch.github.io/vga-auto/ru/calculator/">Калькулятор</a>
-          <button data-open="#dlg-lot">Расчёт по номеру лота</button>
-          <button data-open="#dlg-track">Поиск контейнера</button>
-          <a href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a>
-          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Калькулятор растаможки</a>
-        </div>
-      </div>
+      <button class="nav__link" type="button" data-open="#dlg-track">Поиск контейнера</button>
+      <a class="nav__link" data-class="Export" href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a>
+      <a class="nav__link" data-class="Faq" href="https://st0ckitch.github.io/vga-auto/ru/faq/">Частые вопросы</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/ru/partners/">Партнёры</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a>
       <div class="nav__cta">
@@ -324,9 +315,8 @@
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/">Главная</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/import/">Доставка автомобиля</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/transport/">Транспортировка</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/cars/">Автомобили</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/parts/">Автозапчасти</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/blog/">Блог</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/ru/faq/">Частые вопросы</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/partners/">Партнёры</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/contact/">Контакты</a></li>
         </ul>
@@ -335,12 +325,10 @@
       <nav aria-label="Сервисы">
         <h3>Сервисы</h3>
         <ul>
-          <li><a href="https://st0ckitch.github.io/vga-auto/ru/calculator/">Калькулятор</a></li>
           <li><button data-open="#dlg-track">Поиск контейнера</button></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/export/">Экспортная документация</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/ru/video/">Видеоуроки</a></li>
           <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">Портал дилера</a></li>
-          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">Калькулятор растаможки</a></li>
         </ul>
       </nav>
 
@@ -371,6 +359,6 @@
 
 <script>window.VG_CARS_T = {"carPage": "https://st0ckitch.github.io/vga-auto/ru/car/", "carsPage": "https://st0ckitch.github.io/vga-auto/ru/cars/", "h1": "Автомобили", "lead": "Каталог автомобилей, импортированных с аукционов США - фильтруйте по производителю, году, цене и категории.", "home": "Главная", "search": "Поиск", "reset": "Сбросить", "found": "Найдено", "all": "Все", "empty": "По этим фильтрам автомобили не найдены", "loadFail": "Каталог временно недоступен", "sold": "Продано", "priceAsk": "Цена по договорённости", "back": "← Назад в каталог", "call": "Позвоните нам", "callback": "Заказать звонок", "notFound": "Автомобиль не найден", "notFoundText": "Ссылка могла устареть, либо автомобиль уже продан.", "sortNew": "Сначала новые", "sortPriceAsc": "Цена: по возрастанию", "sortPriceDesc": "Цена: по убыванию", "sortYear": "Год", "fMake": "Производитель", "fModel": "Модель", "fYearFrom": "Год от", "fYearTo": "Год до", "fPriceTo": "Цена до", "fCat": "Категория", "fSort": "Сортировка", "fields": {"make": "Производитель", "model": "Модель", "year": "Год выпуска", "engine": "Двигатель", "transmission": "Трансмиссия", "fuel": "Топливо", "steering": "Руль", "location": "Местонахождение", "customs": "Растаможка", "category": "Категория", "mileage": "Пробег", "vin": "VIN"}, "transmission": {"automatic": "Автомат", "manual": "Механика", "variator": "Вариатор"}, "fuel": {"petrol": "Бензин", "diesel": "Дизель", "hybrid": "Гибрид", "electric": "Электро", "gas": "Газ"}, "steering": {"left": "Левый", "right": "Правый"}, "customs": {"cleared": "Растаможен", "in_progress": "В процессе растаможки", "not_cleared": "Не растаможен"}, "category": {"sedan": "Седан", "suv": "Джип", "hatchback": "Хэтчбек", "coupe": "Купе", "pickup": "Пикап", "minivan": "Минивэн", "hybrid": "Гибрид", "moto": "Мото"}, "location": {"tbilisi": "Тбилиси", "poti": "Поти", "batumi": "Батуми", "kutaisi": "Кутаиси", "usa": "США", "transit": "В пути"}};</script>
 <script src="https://st0ckitch.github.io/vga-auto/public/js/vg-cars.js?v=2" defer></script>
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=14" defer></script>
 </body>
 </html>

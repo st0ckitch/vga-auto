@@ -27,7 +27,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=24">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/import.css?v=3">
 
 <script type="application/ld+json">
@@ -94,19 +94,10 @@
       </nav>
       <a class="nav__link" data-class="Import" href="https://st0ckitch.github.io/vga-auto/import/">ჩამოყვანა</a>
       <a class="nav__link" data-class="Transport" href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a>
-      <a class="nav__link" data-class="Cars" href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a>
-      <a class="nav__link" data-class="Parts" href="https://st0ckitch.github.io/vga-auto/parts/">ავტონაწილები</a>
-      <div class="nav__item">
-        <button class="nav__link nav__toggle" aria-expanded="false">კალკულაცია</button>
-        <div class="nav__menu">
-          <a href="https://st0ckitch.github.io/vga-auto/calculator/">კალკულატორი</a>
-          <button data-open="#dlg-lot">ლოტის ნომრით დათვლა</button>
-          <button data-open="#dlg-track">კონტეინერის ძებნა</button>
-          <a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a>
-          <a href="https://old.rs.ge/4889" target="_blank" rel="noopener">განბაჟების კალკულატორი</a>
-        </div>
-      </div>
+      <button class="nav__link" type="button" data-open="#dlg-track">კონტეინერის ძებნა</button>
+      <a class="nav__link" data-class="Export" href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a>
       <a class="nav__link" data-class="Blog" href="https://st0ckitch.github.io/vga-auto/blog/">ბლოგი</a>
+      <a class="nav__link" data-class="Faq" href="https://st0ckitch.github.io/vga-auto/faq/">ხშირი კითხვები</a>
       <a class="nav__link" data-class="Partners" href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a>
       <a class="nav__link" data-class="Contact" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
       <div class="nav__cta">
@@ -337,7 +328,7 @@
     </details>
     <details class="accordion">
       <summary>რა ღირს ჩამოყვანა?</summary>
-      <div class="accordion__body"><p>ფასი დამოკიდებულია ავტომობილის ტიპზე, აუქციონის მდებარეობასა და პორტზე. სავარაუდო ღირებულების გამოსათვლელად გამოიყენეთ <button class="btn btn--sm btn--ghost" data-open="#dlg-calc">კალკულატორი</button> ან <a href="https://st0ckitch.github.io/vga-auto/contact/">დაგვიკავშირდით</a>.</p></div>
+      <div class="accordion__body"><p>ფასი დამოკიდებულია ავტომობილის ტიპზე, აუქციონის მდებარეობასა და პორტზე. სავარაუდო ღირებულების გამოსათვლელად გამოიყენეთ <button class="btn btn--sm btn--ghost" data-open="#dlg-callback">მოითხოვე ზარი</button> ან <a href="https://st0ckitch.github.io/vga-auto/contact/">დაგვიკავშირდით</a>.</p></div>
     </details>
     <details class="accordion">
       <summary>რომელი აუქციონებიდან შეიძლება შეძენა?</summary>
@@ -362,7 +353,7 @@
         <p>გამოთვალეთ სავარაუდო ღირებულება ან მოგვწერეთ - დაგეხმარებით შერჩევიდან ჩაბარებამდე.</p>
       </div>
       <div class="u-flex">
-        <button class="btn btn--primary btn--lg" data-open="#dlg-calc">კალკულატორი</button>
+        <button class="btn btn--primary btn--lg" data-open="#dlg-callback">მოითხოვე ზარი</button>
         <a class="btn btn--light btn--lg" href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a>
       </div>
     </div>
@@ -404,9 +395,8 @@
           <li><a href="https://st0ckitch.github.io/vga-auto/">მთავარი</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/import/">ავტომობილის ჩამოყვანა</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/transport/">ტრანსპორტირება</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/cars/">ავტომობილები</a></li>
-          <li><a href="https://st0ckitch.github.io/vga-auto/parts/">ავტონაწილები</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/blog/">ბლოგი</a></li>
+          <li><a href="https://st0ckitch.github.io/vga-auto/faq/">ხშირი კითხვები</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/partners/">პარტნიორები</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/contact/">კონტაქტი</a></li>
         </ul>
@@ -415,12 +405,10 @@
       <nav aria-label="სერვისები">
         <h3>სერვისები</h3>
         <ul>
-          <li><a href="https://st0ckitch.github.io/vga-auto/calculator/">კალკულატორი</a></li>
           <li><button data-open="#dlg-track">კონტეინერის ძებნა</button></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/export/">საექსპორტო დოკუმენტაცია</a></li>
           <li><a href="https://st0ckitch.github.io/vga-auto/video/">ვიდეო გაკვეთილები</a></li>
           <li><a href="http://vgae.com.ge/dlr/" target="_blank" rel="noopener">დილერის პორტალი</a></li>
-          <li><a href="https://old.rs.ge/4889" target="_blank" rel="noopener">განბაჟების კალკულატორი</a></li>
         </ul>
       </nav>
 
@@ -449,6 +437,6 @@
   </div>
 </footer>
 
-<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=13" defer></script>
+<script src="https://st0ckitch.github.io/vga-auto/public/js/vg-modern.js?v=14" defer></script>
 </body>
 </html>
