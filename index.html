@@ -28,7 +28,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-UltraLight.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=25">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=26">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -177,18 +177,32 @@
 </dialog>
 <main id="main">
 <section class="hero-v3" aria-label="VG ავტო ექსპორტი - კომპანიის ვიდეო">
-  <video class="hero-v3__media" muted loop playsinline preload="none" poster="https://st0ckitch.github.io/vga-auto/public/img/slider/light/banner1.webp" data-lazy-video>
-    <source data-src="https://st0ckitch.github.io/vga-auto/public/video/VGAUTOpresent.mp4" type="video/mp4">
+  <video class="hero-v3__media" muted loop playsinline preload="none" data-lazy-video>
+    <!-- Client footage: add <source data-src="https://st0ckitch.github.io/vga-auto/public/video/hero.mp4" type="video/mp4"> here -->
   </video>
   <div class="hero-v3__veil" aria-hidden="true"></div>
   <div class="container container--wide hero-v3__in">
-    <h1 class="hero-v3__title">
+    <div class="hero-v3__grid">
+      <div class="hero-v3__main">
+        <p class="hero-v3__kicker">აუქციონიდან ფოთამდე. სრული სერვისი.</p>
+        <h1 class="hero-v3__title">
           <span class="w" style="--d:0s;">საუკეთესო</span>
           <span class="w" style="--d:0.08s;">გზა</span>
           <span class="w accent" style="--d:0.16s;">ამერიკული</span>
           <span class="w accent" style="--d:0.24s;">ავტომობილისთვის</span>
-    </h1>
-    <div class="hero-v3__panel">
+        </h1>
+        <button class="hero-v3__cta" type="button" data-open="#dlg-callback">მოითხოვე ზარი<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <aside class="hero-v3__side">
+        <p class="hero-v3__desc">ავტომობილის შეძენა ამერიკულ აუქციონებზე, ტრანსპორტირება და განბაჟება - ერთი კომპანია, სრული პასუხისმგებლობა.</p>
+        <ul class="hero-v3__feats">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>ფოტო-რეპორტი ყოველ ეტაპზე</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4"/><path d="M12 11v10"/></svg><span>კონტეინერით გადაზიდვა</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>განბაჟება და ჩაბარება</span></li>
+        </ul>
+      </aside>
+    </div>
+    <div class="hero-v3__tools">
       <form class="search-pill" data-vin-form action="https://st0ckitch.github.io/vga-auto/search/" method="get">
           <input type="hidden" name="class" value="Search">
                     <label class="search-pill__label" for="hero-vin">VIN</label>
@@ -206,12 +220,6 @@
             <span class="tzc-out"><b data-tzc-out>20:00</b><small data-tzc-day hidden>მეორე დღეს</small></span>
           </div>
         </div>
-      <button class="btn btn--primary btn--lg btn-call" type="button" data-open="#dlg-callback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>მოითხოვე ზარი</button>
-    </div>
-    <div class="hero-v3__stats">
-      <div class="stat"><b data-count="7" data-suffix="+">7+</b><span>ავტოაუქციონი</span></div>
-      <div class="stat"><b data-count="5">5</b><span>საკონტეინერო ხაზი</span></div>
-      <div class="stat"><b data-count="50">50</b><span>შტატიდან ექსპორტი</span></div>
     </div>
   </div>
   <div class="hero-v3__scroll" aria-hidden="true"></div>
