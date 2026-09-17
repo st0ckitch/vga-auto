@@ -28,7 +28,7 @@
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://st0ckitch.github.io/vga-auto/public/fonts/firago/FiraGO-UltraLight.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=27">
+<link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/vg-modern.css?v=29">
 <link rel="stylesheet" href="https://st0ckitch.github.io/vga-auto/public/css/pages/home.css?v=3">
 
 <script type="application/ld+json">
@@ -191,7 +191,10 @@
           <span class="w accent" style="--d:0.16s;">американскому</span>
           <span class="w accent" style="--d:0.24s;">автомобилю</span>
         </h1>
-        <button class="hero-v3__cta" type="button" data-open="#dlg-callback">Заказать звонок<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+        <div class="hero-v3__actions">
+          <button class="hero-v3__cta" type="button" data-open="#dlg-callback">Заказать звонок<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+          <a class="hero-v3__cta hero-v3__cta--ghost" href="#how">Как это работает<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z" fill="currentColor" stroke="none"/></svg></a>
+        </div>
       </div>
       <aside class="hero-v3__side">
         <p class="hero-v3__desc">Покупка на аукционах США, перевозка и растаможка - одна компания, полная ответственность.</p>
@@ -327,26 +330,40 @@
     </div>
     <div class="journey">
       <div class="journey__map" aria-hidden="true">
-        <svg viewBox="0 0 640 330" role="img">
+        <svg viewBox="0 0 720 330" role="img">
           <defs>
             <pattern id="jmDots-ru" width="18" height="18" patternUnits="userSpaceOnUse">
               <circle class="jm-grid" cx="1.5" cy="1.5" r="1.2"/>
             </pattern>
           </defs>
-          <image href="https://st0ckitch.github.io/vga-auto/public/img/route-map.svg" x="0" y="0" width="640" height="330"/>
-          <rect width="640" height="330" fill="url(#jmDots-ru)"/>
-          <path class="jm-base" d="M80 193 Q 338 30 596 136"/>
-          <path class="jm-arc" d="M80 193 Q 338 30 596 136"/>
-          <circle class="jm-ping" cx="80" cy="193" r="5"/>
-          <circle class="jm-ping" cx="596" cy="136" r="5" style="animation-delay: 1.1s"/>
-          <circle class="jm-dot" cx="80" cy="193" r="5"/>
-          <circle class="jm-dot" cx="596" cy="136" r="5"/>
+          <image href="https://st0ckitch.github.io/vga-auto/public/img/route-map.svg?v=2" x="0" y="0" width="720" height="330"/>
+          <rect width="720" height="330" fill="url(#jmDots-ru)"/>
+          <circle class="jm-loc" cx="31" cy="182" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="39" y="186" text-anchor="start">CALIFORNIA</text>
+          <circle class="jm-loc" cx="117" cy="197" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="117" y="213" text-anchor="middle">TEXAS</text>
+          <circle class="jm-loc" cx="161" cy="149" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="154" y="146" text-anchor="end">INDIANA</text>
+          <circle class="jm-loc" cx="168" cy="183" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="168" y="174" text-anchor="middle">GEORGIA</text>
+          <circle class="jm-loc" cx="181" cy="218" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="189" y="224" text-anchor="start">FLORIDA</text>
+          <circle class="jm-loc" cx="209" cy="147" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="217" y="151" text-anchor="start">NEW JERSEY</text>
+          <circle class="jm-loc" cx="184" cy="116" r="4"/>
+          <text class="jm-lbl jm-lbl--loc" x="192" y="113" text-anchor="start">ONTARIO</text>
+          <path class="jm-base" d="M182 193 Q 430 30 678 136"/>
+          <path class="jm-arc" d="M182 193 Q 430 30 678 136"/>
+          <circle class="jm-ping" cx="182" cy="193" r="5"/>
+          <circle class="jm-ping" cx="678" cy="136" r="5" style="animation-delay: 1.1s"/>
+          <circle class="jm-dot" cx="182" cy="193" r="5"/>
+          <circle class="jm-dot" cx="678" cy="136" r="5"/>
           <circle class="jm-vessel" r="5.5">
-            <animateMotion dur="6s" repeatCount="indefinite" path="M80 193 Q 338 30 596 136"/>
+            <animateMotion dur="6s" repeatCount="indefinite" path="M182 193 Q 430 30 678 136"/>
           </circle>
-          <text class="jm-lbl" x="84" y="222" text-anchor="middle">SAVANNAH &#183; USA</text>
-          <text class="jm-lbl" x="338" y="74" text-anchor="middle">&#8776; 14 800 KM &#183; 40&#8211;50 ДНЕЙ</text>
-          <text class="jm-lbl jm-lbl--hot" x="618" y="166" text-anchor="end">POTI &#183; GEORGIA</text>
+          <text class="jm-lbl" x="191" y="207" text-anchor="start">SAVANNAH &#183; USA</text>
+          <text class="jm-lbl" x="430" y="74" text-anchor="middle">&#8776; 14 800 KM &#183; 40&#8211;50 ДНЕЙ</text>
+          <text class="jm-lbl jm-lbl--hot" x="700" y="166" text-anchor="end">POTI / BATUMI</text>
         </svg>
       </div>
       <div class="jtl">
