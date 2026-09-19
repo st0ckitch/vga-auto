@@ -445,7 +445,8 @@ h1 .accent, .display .accent {
 }
 .brand { display: flex; align-items: center; gap: 12px; flex: none; }
 .brand img { height: 42px; width: auto; }
-.brand .brand__logo { height: 46px; border-radius: 8px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); }
+.brand .brand__logo { height: 44px; width: auto; border-radius: 0; box-shadow: none; }
+@media (max-width: 720px) { .brand .brand__logo { height: 34px; } }
 .brand__text { font-family: var(--font-display); line-height: 1.05; }
 .brand__text b { display: block; font-size: 1.25rem; font-weight: 900; color: var(--c-ink); letter-spacing: 0.01em; }
 .brand__text span { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.34em; color: var(--c-primary); text-transform: uppercase; }
@@ -1076,7 +1077,7 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
 .site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .site-footer ul a, .site-footer ul button { color: var(--c-body); font-size: 0.94rem; background: none; border: none; padding: 0; text-align: left; }
 .site-footer ul a:hover, .site-footer ul button:hover { color: var(--c-primary); }
-.footer-brand img { height: 52px; margin-bottom: 16px; border-radius: 8px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); }
+.footer-brand img { height: 46px; width: auto; margin-bottom: 18px; border-radius: 0; box-shadow: none; }
 .footer-brand p { font-size: 0.92rem; max-width: 320px; }
 .footer-news { display: flex; gap: 8px; margin-top: 14px; }
 .footer-news .btn { flex: none; width: 50px; height: 50px; padding: 0; border-radius: 50%; }
@@ -1786,15 +1787,17 @@ button.nav__link {
   backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
 }
-.hero-v3__feats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.hero-v3__feats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
 .hero-v3__feats li {
   display: flex; align-items: center; gap: 14px;
   font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700;
   letter-spacing: 0.12em; text-transform: uppercase; color: rgba(248, 244, 240, 0.94);
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
 }
-.hero-v3__feats svg {
-  width: 34px; height: 34px; flex: none; padding: 7px; border-radius: 10px;
+.hero-v3__feats b {
+  width: 34px; height: 34px; flex: none; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em;
   color: var(--c-primary); background: rgba(12, 10, 10, 0.45); border: 1px solid rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
@@ -1947,3 +1950,35 @@ button.nav__link {
 }
 .bslider-nav button:hover { border-color: var(--c-primary); color: var(--c-primary); }
 
+
+
+/* ----- Services in light theme: dark information cards on a warm tinted band ----- */
+[data-theme="light"] #services {
+  background:
+    radial-gradient(70% 60% at 85% 10%, rgba(255, 128, 57, 0.16), transparent 60%),
+    radial-gradient(60% 50% at 10% 90%, rgba(122, 110, 255, 0.1), transparent 60%),
+    linear-gradient(180deg, #f3ebe4, #efe4dc);
+}
+[data-theme="light"] #services .feature {
+  background: rgba(22, 18, 19, 0.94); border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 50px rgba(36, 31, 32, 0.18);
+}
+[data-theme="light"] #services .feature h3 { color: #FCF8F4; }
+[data-theme="light"] #services .feature p { color: rgba(244, 238, 233, 0.78); }
+[data-theme="light"] #services .feature__icon { background: rgba(255, 255, 255, 0.07); color: #FCF8F4; border-color: rgba(255, 255, 255, 0.14); }
+[data-theme="light"] #services .feature:hover { border-color: rgba(255, 128, 57, 0.55); }
+[data-theme="light"] #services .feature:hover .feature__icon { background: rgba(255, 128, 57, 0.18); color: var(--c-primary); }
+
+/* ----- Process map: bluish sea under the land layer ----- */
+.jm-sea { fill: #3b7fb8; fill-opacity: 0.2; }
+[data-theme="light"] .jm-sea { fill: #5aa4de; fill-opacity: 0.26; }
+
+/* ----- VIN page status block ----- */
+.vin-status {
+  margin-top: 18px; padding: 20px 22px; border-radius: var(--r-lg);
+  background: var(--glass-2); border: 1px solid rgba(255, 128, 57, 0.35);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px;
+}
+.vin-status__label { margin: 0; font-family: var(--font-display); font-weight: 800; letter-spacing: 0.04em; }
+.vin-status__label b { color: var(--c-primary); font-family: var(--font-mono); letter-spacing: 0.08em; }
+.vin-status__note { margin: 0; flex: 1 1 320px; font-size: 0.92rem; color: var(--c-body); }

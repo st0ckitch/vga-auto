@@ -793,3 +793,17 @@
     else go(1);
   }, 5000);
 })();
+
+/* ---------- VIN page: echo the searched VIN and offer the callback ---------- */
+(function () {
+  var box = document.querySelector('[data-vin-status]');
+  if (!box) return;
+  var vin = '';
+  try { vin = (new URLSearchParams(window.location.search).get('vin') || '').trim().toUpperCase(); } catch (e) {}
+  if (!vin) return;
+  var out = box.querySelector('[data-vin-value]');
+  if (out) out.textContent = vin;
+  box.hidden = false;
+  var input = document.querySelector('form[data-vin-form] input[name="vin"]');
+  if (input && !input.value) input.value = vin;
+})();
