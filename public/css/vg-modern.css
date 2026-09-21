@@ -1524,6 +1524,9 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
 }
 @keyframes jmDash { to { stroke-dashoffset: -26; } }
 .jm-dot { fill: var(--c-primary); }
+.jm-dot--alt { fill: var(--c-primary); fill-opacity: 0.75; }
+.jm-base--alt { stroke-opacity: 0.6; }
+.jm-arc--alt { stroke-width: 1.6; stroke-opacity: 0.55; stroke-dasharray: 8 10; animation-duration: 2.2s; }
 .jm-loc { fill: var(--c-ink); fill-opacity: 0.5; }
 .jm-vessel { fill: var(--c-ink); }
 .jm-ping { fill: none; stroke: var(--c-primary); stroke-width: 1.4; animation: jmPing 2.2s ease-out infinite; }
