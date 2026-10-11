@@ -2047,3 +2047,4 @@ button.nav__link {
 .map-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 .map-link { display: inline-block; margin-top: 10px; font-size: 0.9rem; color: var(--c-primary); text-decoration: none; }
 .map-link:hover { text-decoration: underline; }
+.check-list li b { color: var(--c-ink); font-weight: 700; }
