@@ -34,8 +34,12 @@
         '<img src="' + esc(imgUrl(p.cover || '')) + '" alt="' + esc(p[lg].title) + '" loading="lazy" width="640" height="400">' +
         '<div class="bcard__body"><h3>' + esc(p[lg].title) + '</h3><span class="bcard__meta">' + esc(fmtDate(p.date)) + '</span></div></a>';
     }).join('');
-    var live = Array.prototype.map.call(track.children, function (el) { return el.href; }).join('|');
-    var want = posts.map(function (p) { return base + p.slug + '/'; }).join('|');
+    var sig = function (href, title, cover) { return href + '\u0001' + title + '\u0001' + cover; };
+    var live = Array.prototype.map.call(track.children, function (el) {
+      var h = el.querySelector('h3'), i = el.querySelector('img');
+      return sig(el.href, h ? h.textContent : '', i ? i.getAttribute('src') : '');
+    }).join('|');
+    var want = posts.map(function (p) { return sig(base + p.slug + '/', p[lg].title, imgUrl(p.cover || '')); }).join('|');
     if (live !== want) track.innerHTML = html;
   }
 

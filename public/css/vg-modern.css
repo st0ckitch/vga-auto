@@ -2002,3 +2002,11 @@ button.nav__link {
 .vin-status__label { margin: 0; font-family: var(--font-display); font-weight: 800; letter-spacing: 0.04em; }
 .vin-status__label b { color: var(--c-primary); font-family: var(--font-mono); letter-spacing: 0.08em; }
 .vin-status__note { margin: 0; flex: 1 1 320px; font-size: 0.92rem; color: var(--c-body); }
+
+
+/* ----- About: offerings list (page) and numbered offerings (home) ----- */
+.about-offers { margin: 0; padding-left: 1.25em; }
+.about-offers li { margin: 0 0 12px; color: var(--c-body); line-height: 1.6; }
+.about-offers li b { color: var(--c-ink); font-weight: 700; }
+.about-values li span { font-family: var(--font-body); font-weight: 300; color: var(--c-body); line-height: 1.55; }
+.about-values li span strong { font-family: var(--font-display); font-weight: 700; color: var(--c-ink); }
