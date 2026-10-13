@@ -6,7 +6,7 @@
   if (!box && !slider) return;
   var T = window.VG_BLOG_T || {};
   var lang = T.lang || 'ka';
-  var SITE = 'https://st0ckitch.github.io/vga-auto/';
+  var SITE = (function () { var s = document.currentScript; return s ? new URL('../../', s.src).href : '/'; })();
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -24,7 +24,7 @@
     var track = slider.querySelector('.bslider__track');
     if (!track) return;
     var lg = slider.getAttribute('data-lang') || 'ka';
-    var base = slider.getAttribute('data-base') || (SITE + 'blog/');
+    var base = new URL(slider.getAttribute('data-base') || (SITE + 'blog/'), location.href).href;
     var posts = (data.posts || []).filter(function (p) {
       return p.published !== false && p[lg] && p[lg].title;
     }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); }).slice(0, 5);

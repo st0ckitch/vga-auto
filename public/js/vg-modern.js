@@ -1,4 +1,5 @@
 /* VG AUTO EXPORT - modern shared JS (vanilla, no dependencies) */
+var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL('../../', s.src).href : '/'; })();
 (function () {
   'use strict';
 
@@ -605,7 +606,7 @@
   if (!window.fetch) return;
   var lang = (document.documentElement.getAttribute('lang') || 'ka').slice(0, 2);
 
-  fetch('https://st0ckitch.github.io/vga-auto/public/data/site.json?t=' + Date.now())
+  fetch(VG_ROOT + 'public/data/site.json?t=' + Date.now())
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (site) {
       if (!site) return;

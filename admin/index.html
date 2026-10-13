@@ -194,7 +194,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
   <span class="logo"><b>VG</b> ადმინ პანელი</span>
   <span class="hint" id="whoami"></span>
   <span class="sp"></span>
-  <a class="iconbtn" href="https://st0ckitch.github.io/vga-auto/" target="_blank" rel="noopener">საიტის ნახვა ↗</a>
+  <a class="iconbtn" href="../" target="_blank" rel="noopener">საიტის ნახვა ↗</a>
   <button class="iconbtn" id="go-login" hidden>ავტორიზაცია</button>
   <button class="iconbtn" id="logout" hidden>გასვლა</button>
 </div>
@@ -682,7 +682,7 @@ function requireLogin() {
   showLoginView();
 }
 function enterAnon() {
-  var SITE = 'https://st0ckitch.github.io/vga-auto/';
+  var SITE = '../';
   Promise.all([
     fetch(SITE + 'public/data/site.json?t=' + Date.now()).then(function (r) { return r.json(); }),
     fetch(SITE + 'public/data/cars.json?t=' + Date.now()).then(function (r) { return r.json(); }),
@@ -895,7 +895,8 @@ function collect(section) {
 }
 
 /* ---------- cars ---------- */
-function siteImg(p) { return /^https?:/.test(p) ? p : 'https://st0ckitch.github.io/vga-auto/' + p; }
+/* admin lives at admin/, so site files are one level up */
+function siteImg(p) { return /^https?:/.test(p) ? p : '../' + p; }
 
 function renderCarList() {
   var box = $('carlist');
@@ -1101,7 +1102,17 @@ $('f-save').addEventListener('click', function () {
 });
 
 /* ---------- blog ---------- */
-var SITE_URL = 'https://st0ckitch.github.io/vga-auto/';
+var SITE_URL = '../';                     /* site root as seen from admin/ (fetches, previews) */
+var SEO_URL = 'https://vgae.com.ge/';     /* public domain: canonical, JSON-LD, sitemap */
+/* generated pages use relative links so they work on any host */
+function postRoot(lang) { return lang === 'ka' ? '../../' : '../../../'; }          /* <pfx>blog/<slug>/ -> site root */
+function listRoot(lang) { return lang === 'ka' ? '../' : '../../'; }               /* <pfx>blog/ -> site root */
+function relImg(p, root) { return /^https?:|^data:/.test(p) ? p : root + p; }
+function localize(html, root) {
+  return html
+    .replace(/(href|src)="(?:https:\/\/st0ckitch\.github\.io\/vga-auto\/|https:\/\/vgae\.com\.ge\/)/g, '$1="' + root)
+    .replace(/(href|src)="(?:\.\.\/)+public\//g, '$1="' + root + 'public/');
+}
 var BLOG_LANGS = [['ka', ''], ['en', 'en/'], ['ru', 'ru/']];
 
 function fmtDateTxt(iso) {
@@ -1339,9 +1350,9 @@ function relatedCards(lang, pfx, excludeSlug) {
     return p.slug !== excludeSlug && p.published !== false && p[lang] && p[lang].title;
   }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); }).slice(0, 3);
   return others.map(function (p) {
-    var url = SITE_URL + pfx + 'blog/' + p.slug + '/';
+    var url = '../' + p.slug + '/';
     return '<article class="card card--hover"><a href="' + url + '">' +
-      '<div class="card__media"><img src="' + escAttr(siteImg(p.cover || '')) + '" alt="' + escAttr(p[lang].title) + '" loading="lazy"></div>' +
+      '<div class="card__media"><img src="' + escAttr(relImg(p.cover || '', postRoot(lang))) + '" alt="' + escAttr(p[lang].title) + '" loading="lazy"></div>' +
       '<div class="card__body"><time class="muted" datetime="' + escAttr(p.date || '') + '" style="font-size:0.82rem;">' + fmtDateTxt(p.date) + '</time>' +
       '<h2 class="card__title" style="font-size:1.05rem; margin-top:6px;">' + escHtml(p[lang].title) + '</h2>' +
       '<p style="font-size:0.9rem; margin:0;">' + escHtml(p[lang].excerpt || '') + '</p></div></a></article>';
@@ -1425,17 +1436,18 @@ $('post-save').addEventListener('click', function () {
       chain2 = chain2.then(function () {
         st.textContent = 'იქმნება გვერდი (' + lang.toUpperCase() + ')…';
         return getTemplate(lang).then(function (tpl) {
-          var url = SITE_URL + pfx + 'blog/' + entry.slug + '/';
-          var cover = entry.cover ? siteImg(entry.cover) : SITE_URL + 'images/logo400.png';
+          var url = SEO_URL + pfx + 'blog/' + entry.slug + '/';
+          var cover = entry.cover ? relImg(entry.cover, SEO_URL) : SEO_URL + 'images/logo400.png';
+          var coverSrc = relImg(entry.cover || 'images/logo400.png', postRoot(lang));
           var ld = JSON.stringify({
             '@context': 'https://schema.org', '@type': 'BlogPosting',
             headline: L.title, description: L.seoDesc,
             datePublished: entry.date, dateModified: entry.updated || entry.date,
             image: [cover], mainEntityOfPage: url, inLanguage: lang,
-            author: { '@type': 'Organization', name: 'VG Auto Export', url: SITE_URL },
+            author: { '@type': 'Organization', name: 'VG Auto Export', url: SEO_URL },
             publisher: {
               '@type': 'Organization', name: 'VG Auto Export',
-              logo: { '@type': 'ImageObject', url: SITE_URL + 'images/logo400.png' }
+              logo: { '@type': 'ImageObject', url: SEO_URL + 'images/logo400.png' }
             }
           });
           var html = tpl
@@ -1446,9 +1458,10 @@ $('post-save').addEventListener('click', function () {
             .replace(/\{\{DATE_ISO\}\}/g, entry.date)
             .replace(/\{\{DATE_MOD\}\}/g, entry.updated || entry.date)
             .replace(/\{\{DATE_TXT\}\}/g, fmtDateTxt(entry.date))
+            .replace(/\{\{COVER_SRC\}\}/g, coverSrc)
             .replace(/\{\{COVER\}\}/g, cover)
             .replace(/\{\{JSONLD\}\}/g, ld)
-            .replace('{{BODY}}', L.html)
+            .replace('{{BODY}}', function () { return localize(L.html, postRoot(lang)); })
             .replace('{{RELATED}}', relatedCards(lang, pfx, entry.slug));
           var path = pfx + 'blog/' + entry.slug + '/index.html';
           return writeBoth(path, b64encode(html), 'admin: publish post page ' + entry.slug + ' (' + lang + ')', null);
@@ -1487,9 +1500,9 @@ function bakeListingCards(lang, pfx) {
     return p.published !== false && p[lang] && p[lang].title;
   }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
   return posts.map(function (p) {
-    var url = SITE_URL + pfx + 'blog/' + p.slug + '/';
+    var url = p.slug + '/';
     return '<article class="card card--hover"><a href="' + url + '">' +
-      '<div class="card__media"><img src="' + escAttr(siteImg(p.cover || '')) + '" alt="' + escAttr(p[lang].title) + '" loading="lazy"></div>' +
+      '<div class="card__media"><img src="' + escAttr(relImg(p.cover || '', listRoot(lang))) + '" alt="' + escAttr(p[lang].title) + '" loading="lazy"></div>' +
       '<div class="card__body"><time class="muted" datetime="' + escAttr(p.date || '') + '" style="font-size:0.82rem;">' + fmtDateTxt(p.date) + '</time>' +
       '<h2 class="card__title" style="font-size:1.05rem; margin-top:6px;">' + escHtml(p[lang].title) + '</h2>' +
       '<p style="font-size:0.9rem; margin:0;">' + escHtml(p[lang].excerpt || '') + '</p></div></a></article>';
@@ -1519,7 +1532,7 @@ function updateListings(statusEl) {
   return chain;
 }
 function sitemapEntry(pfx, slug, lastmod, langs) {
-  var base = SITE_URL;
+  var base = SEO_URL;
   var loc = base + pfx + 'blog/' + slug + '/';
   var alts = '';
   BLOG_LANGS.forEach(function (lp) {
@@ -1534,7 +1547,7 @@ function updateSitemap(statusEl) {
   return getFile('sitemap.xml', BRANCH_LIVE).then(function (f) {
     if (f.text == null) return;
     /* strip every blog-post entry (the /blog/ listings themselves stay) */
-    var xml = f.text.replace(/[ \t]*<url><loc>https:\/\/st0ckitch\.github\.io\/vga-auto\/(?:en\/|ru\/)?blog\/[A-Za-z0-9-]+\/<\/loc>[\s\S]*?<\/url>\r?\n?/g, '');
+    var xml = f.text.replace(/[ \t]*<url><loc>https:\/\/(?:st0ckitch\.github\.io\/vga-auto|vgae\.com\.ge)\/(?:en\/|ru\/)?blog\/[A-Za-z0-9-]+\/<\/loc>[\s\S]*?<\/url>\r?\n?/g, '');
     var lines = [];
     (state.blog.posts || []).forEach(function (p) {
       if (p.published === false) return;

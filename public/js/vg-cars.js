@@ -7,7 +7,7 @@
   if (!grid && !detail) return;
 
   var T = window.VG_CARS_T || {};
-  var SITE = 'https://st0ckitch.github.io/vga-auto/';
+  var SITE = (function () { var s = document.currentScript; return s ? new URL('../../', s.src).href : '/'; })();
   var CARS_URL = SITE + 'public/data/cars.json';
   var SITE_URL = SITE + 'public/data/site.json';
 
