@@ -35,23 +35,23 @@
     "services": [
       {
         "title": "ავტომობილების მოძიება",
-        "text": "სასურველ ავტომობილს მოგიძიებთ Copart-სა და IAAI-ზე - ისტორიის, მდგომარეობისა და რეალური ფასის შეფასებით."
+        "text": "ჩვენ მოგიძებნით სასურველ ავტომობილებს Copart-ის, IAAI-სა და სხვა აუქციონებზე. გადაგიმოწმებთ ავტომობილის ისტორიასა და მდგომარეობას."
       },
       {
         "title": "გადაზიდვა ამერიკაში",
-        "text": "აუქციონიდან უახლოეს პორტამდე ავტომობილს გამოცდილი მძღოლების ქსელით გადავზიდავთ."
+        "text": "ავტომობილის აუქციონიდან ჩვენს საწყობებამდე გადაზიდვას უზრუნველყოფენ ჩვენი გამოცდილი მძღოლები."
       },
       {
         "title": "საზღვაო გადაზიდვა",
-        "text": "კონტეინერში ჩატვირთვა და გადაზიდვა წამყვანი საკონტეინერო ხაზებით ფოთისა და ბათუმის პორტებამდე."
+        "text": "კონტეინერში ჩატვირთვა და გადაზიდვა წამყვანი საკონტეინერო ხაზებით ფოთის, ბათუმის, კლაიპედასა და დუბაის პორტებამდე."
       },
       {
-        "title": "კონტეინერის და ავტომობილის მიღება",
-        "text": "კონტეინერის განბლოკვა, ავტომობილის მიღება პორტში და ყველა საჭირო დოკუმენტის მომზადება."
+        "title": "კონტეინერისა და ავტომობილის მიღება",
+        "text": "კონტეინერის გახსნის შემდეგ ჩვენი წარმომადგენელი დაასურათებს ავტომობილს და მოგიმზადებთ ყველა საჭირო დოკუმენტაციას ავტომობილის მისაღებად."
       },
       {
         "title": "ავტომობილის შეკეთება",
-        "text": "საჭიროების შემთხვევაში - აღდგენა და შეკეთება სანდო სერვის-ცენტრებში, ორიგინალი ავტონაწილებით."
+        "text": "სურვილის შემთხვევაში ჩვენი გუნდი დაგეხმარებათ ავტომობილის სრულად აღდგენაში."
       },
       {
         "title": "ავტომობილის ჩაბარება",
@@ -64,7 +64,7 @@
         "s": "COPART · IAAI · ლოტი შენს სახელზე"
       },
       {
-        "t": "ეზოდან გატანა",
+        "t": "აუქციონიდან წამოყვანა",
         "s": "სახმელეთო გადაზიდვა პორტამდე"
       },
       {
@@ -123,23 +123,23 @@
     "services": [
       {
         "title": "Car sourcing",
-        "text": "We find the car you want on Copart and IAAI - with its history, condition and real price assessed."
+        "text": "We find the cars you want on Copart, IAAI and other auctions, and check each car's history and condition."
       },
       {
         "title": "Transport across the USA",
-        "text": "From the auction to the nearest port, moved by our own network of experienced drivers."
+        "text": "Our experienced drivers move the car from the auction to our warehouses."
       },
       {
         "title": "Ocean freight",
-        "text": "Loading into the container and shipping with the major container lines to Poti and Batumi."
+        "text": "Loading into the container and shipping with the major container lines to the ports of Poti, Batumi, Klaipėda and Dubai."
       },
       {
         "title": "Container and vehicle handover",
-        "text": "Container release, receiving the car at the port and preparing every required document."
+        "text": "Once the container is opened, our representative photographs the car and prepares every document you need to collect it."
       },
       {
         "title": "Vehicle repair",
-        "text": "Where it is needed - restoration and repair at trusted service centres, with original parts."
+        "text": "If you wish, our team will help you fully restore the car."
       },
       {
         "title": "Vehicle delivery",
@@ -152,7 +152,7 @@
         "s": "COPART · IAAI · the lot in your name"
       },
       {
-        "t": "Yard pickup",
+        "t": "Pickup from the auction",
         "s": "inland trucking to the port"
       },
       {
@@ -211,23 +211,23 @@
     "services": [
       {
         "title": "Подбор автомобилей",
-        "text": "Подберём нужный автомобиль на Copart и IAAI - с оценкой истории, состояния и реальной цены."
+        "text": "Подберём нужные автомобили на Copart, IAAI и других аукционах и проверим историю и состояние автомобиля."
       },
       {
         "title": "Перевозка по США",
-        "text": "От аукциона до ближайшего порта - сетью опытных водителей."
+        "text": "Доставку автомобиля с аукциона до наших складов обеспечивают наши опытные водители."
       },
       {
         "title": "Морская перевозка",
-        "text": "Погрузка в контейнер и доставка ведущими контейнерными линиями до портов Поти и Батуми."
+        "text": "Погрузка в контейнер и доставка ведущими контейнерными линиями до портов Поти, Батуми, Клайпеды и Дубая."
       },
       {
         "title": "Приёмка контейнера и автомобиля",
-        "text": "Раскредитация контейнера, приёмка автомобиля в порту и подготовка всех необходимых документов."
+        "text": "После вскрытия контейнера наш представитель сфотографирует автомобиль и подготовит все документы, необходимые для его получения."
       },
       {
         "title": "Ремонт автомобиля",
-        "text": "При необходимости - восстановление и ремонт в проверенных сервисах, с оригинальными запчастями."
+        "text": "При желании наша команда поможет полностью восстановить автомобиль."
       },
       {
         "title": "Выдача автомобиля",
@@ -240,7 +240,7 @@
         "s": "COPART · IAAI · лот на ваше имя"
       },
       {
-        "t": "Вывоз со стоянки",
+        "t": "Вывоз с аукциона",
         "s": "наземная доставка до порта"
       },
       {
