@@ -294,10 +294,12 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
     <!-- ===== HOME ===== -->
     <section id="view-home" class="hidden">
       <h1>მთავარი გვერდი</h1>
-      <p class="sub">გმირის ტექსტები, სტატისტიკა და ვიდეოს წარწერები. სიტყვა ვარსკვლავებში - <span class="kv">*სიტყვა*</span> - სათაურში ნარინჯისფრად გამოჩნდება.</p>
+      <p class="sub">მთავარი გვერდის დიდი სათაური. სიტყვა ვარსკვლავებში - <span class="kv">*სიტყვა*</span> - სათაურში ნარინჯისფრად გამოჩნდება.</p>
       <div class="langtabs" data-langtabs="home"></div>
       <div class="card">
         <div><label>მთავარი სათაური</label><input type="text" id="h-heroTitle"></div>
+        <!-- legacy fields: these blocks are no longer on the redesigned home page, kept hidden so saving still round-trips the data -->
+        <div hidden>
         <div style="margin-top:14px"><label>ქვესათაური</label><textarea id="h-heroSub"></textarea></div>
         <h2>სტატისტიკა (3)</h2>
         <div id="h-stats"></div>
@@ -307,6 +309,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
         </div>
         <div><label>სათაური</label><input type="text" id="h-videoTitle"></div>
         <div style="margin-top:14px"><label>ტექსტი</label><textarea id="h-videoText"></textarea></div>
+        </div>
         <div class="statusline" id="home-status"></div>
         <p style="margin:16px 0 0"><button class="btn" data-save="home">შენახვა და გამოქვეყნება</button></p>
       </div>
@@ -352,7 +355,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
     <!-- ===== CONTACTS ===== -->
     <section id="view-contacts" class="hidden">
       <h1>კონტაქტები</h1>
-      <p class="sub">ტელეფონი და ელ-ფოსტა ავტომატურად განახლდება საიტის ყველა გვერდზე.</p>
+      <p class="sub">ტელეფონი, ელ-ფოსტა და სოციალური ქსელების ბმულები ავტომატურად განახლდება საიტის ყველა გვერდზე. Instagram-ის ხატულა გამოჩნდება, როგორც კი ბმულს ჩაწერთ.</p>
       <div class="card">
         <div class="row row--2">
           <div><label>ტელეფონი (როგორც ჩანს)</label><input type="text" id="ct-phone" placeholder="032 2 500 504"></div>

@@ -626,6 +626,13 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
           if (a.textContent.indexOf('@') > -1) a.textContent = c.email;
         });
       }
+      /* social links: facebook replaces the default href, instagram stays hidden until a URL is set */
+      if (c.facebook) {
+        document.querySelectorAll('a[aria-label="Facebook"]').forEach(function (a) { a.href = c.facebook; });
+      }
+      if (c.instagram) {
+        document.querySelectorAll('a[data-social="instagram"]').forEach(function (a) { a.href = c.instagram; a.hidden = false; });
+      }
       if (c.dealerUrl) {
         document.querySelectorAll('a.header-dealer').forEach(function (a) { a.href = c.dealerUrl; });
       }
