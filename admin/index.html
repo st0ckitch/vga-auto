@@ -195,15 +195,14 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
   <span class="hint" id="whoami"></span>
   <span class="sp"></span>
   <a class="iconbtn" href="../" target="_blank" rel="noopener">საიტის ნახვა ↗</a>
-  <button class="iconbtn" id="go-login" hidden>ავტორიზაცია</button>
   <button class="iconbtn" id="logout" hidden>გასვლა</button>
 </div>
 
 <!-- ============ LOGIN ============ -->
 <div class="content" id="login-view" style="max-width:640px;margin:0 auto;">
   <h1>შესვლა</h1>
-  <p class="sub">ცვლილებების <b>შესანახად</b> საჭიროა ადმინ პაროლი (მოცემულია სახელმძღვანელოში). ჩაწერეთ ერთხელ - ბრაუზერი დაიმახსოვრებს. პანელის დათვალიერება და შევსება პაროლის გარეშეც შეგიძლიათ - პაროლს მხოლოდ შენახვის ღილაკი ითხოვს.</p>
-  <p><a href="#" id="login-back">← უკან, პანელზე დაბრუნება</a></p>
+  <p class="sub">პანელში შესასვლელად ჩაწერეთ ადმინ პაროლი (მოცემულია სახელმძღვანელოში). ბრაუზერი დაიმახსოვრებს და შემდეგ ჯერზე პირდაპირ პანელი გაიხსნება.</p>
+  <p id="login-back-wrap" hidden><a href="#" id="login-back">← უკან, პანელზე დაბრუნება</a></p>
   <!-- Developer note: the "admin password" is a GitHub fine-grained personal access token.
        To issue or renew one: github.com -> Settings -> Developer settings -> Personal access tokens ->
        Fine-grained tokens -> Generate new token. Name: VG Admin. Expiration: 1 year (max).
@@ -233,10 +232,6 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 
   <div class="content">
 
-    <div class="help hidden" id="anon-banner">
-      სანახავი რეჟიმი - ყველაფრის ნახვა და შევსება შეგიძლიათ, მაგრამ <b>შენახვას</b> სჭირდება ერთჯერადი
-      <a href="#" id="anon-login">ავტორიზაცია</a>. შევსებული ველები არ დაიკარგება.
-    </div>
 
     <!-- ===== CARS ===== -->
     <section id="view-cars">
@@ -679,31 +674,12 @@ function showApp() {
 function showLoginView() {
   $('app').classList.add('hidden');
   $('login-view').classList.remove('hidden');
+  $('login-back-wrap').hidden = !state.fromApp;   /* "back" only makes sense when the session expired mid-work */
   window.scrollTo(0, 0);
 }
 function requireLogin() {
   state.fromApp = true;
   showLoginView();
-}
-function enterAnon() {
-  var SITE = '../';
-  Promise.all([
-    fetch(SITE + 'public/data/site.json?t=' + Date.now()).then(function (r) { return r.json(); }),
-    fetch(SITE + 'public/data/cars.json?t=' + Date.now()).then(function (r) { return r.json(); }),
-    fetch(SITE + 'public/data/blog.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
-  ]).then(function (res) {
-    state.site = res[0];
-    state.cars = res[1];
-    state.blog = res[2];
-    showApp();
-    $('anon-banner').classList.remove('hidden');
-    $('go-login').hidden = false;
-    $('whoami').textContent = 'სანახავი რეჟიმი';
-    renderAll();
-  }).catch(function () {
-    $('login-status').textContent = '✗ მონაცემები ვერ ჩაიტვირთა - სცადეთ ავტორიზაცია';
-    showLoginView();
-  });
 }
 function tryLogin(token, silent) {
   state.token = token;
@@ -721,8 +697,6 @@ function tryLogin(token, silent) {
     localStorage.setItem('vg-admin-token', token);
     showApp();
     $('logout').hidden = false;
-    $('go-login').hidden = true;
-    $('anon-banner').classList.add('hidden');
     $('whoami').textContent = 'ავტორიზებულია';
     if (state.fromApp) {
       state.fromApp = false;
@@ -732,8 +706,8 @@ function tryLogin(token, silent) {
     }
   }).catch(function (e) {
     state.token = '';
-    if (!silent) $('login-status').textContent = '✗ ' + e.message;
-    else enterAnon();
+    $('login-status').textContent = '✗ ' + e.message;
+    showLoginView();
   });
 }
 function loadData(overwrite) {
@@ -1690,20 +1664,18 @@ function renderAll() {
   fillSection('marquee');
   fillContacts();
 }
-$('go-login').addEventListener('click', requireLogin);
-$('anon-login').addEventListener('click', function (e) { e.preventDefault(); requireLogin(); });
 $('login-back').addEventListener('click', function (e) {
   e.preventDefault();
   if (state.site) showApp(); else location.reload();
 });
 
+/* the login screen is the front door: nothing is shown until the password is accepted */
 var saved = localStorage.getItem('vg-admin-token');
 if (saved) {
   $('login-view').classList.add('hidden');
   tryLogin(saved, true);
 } else {
-  $('login-view').classList.add('hidden');
-  enterAnon();
+  showLoginView();
 }
 })();
 </script>
