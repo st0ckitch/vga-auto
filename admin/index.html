@@ -559,7 +559,10 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 var REPO = 'st0ckitch/vga-auto';
 var BRANCH_LIVE = 'gh-pages';
 var BRANCH_SRC = 'main';
-var API = 'https://api.github.com/repos/' + REPO;
+var API_DIRECT = 'https://api.github.com/repos/' + REPO;   /* developer mode: a GitHub token typed as the password */
+var API_PROXY = '../api/admin/github/repos/' + REPO;       /* client mode: the Cloudflare Worker holds the token and checks the admin password */
+var PROXY_PING = '../api/admin/ping';
+function isGhToken(v) { return /^(github_pat_|ghp_|gho_|ghs_)[A-Za-z0-9_]+$/.test(v || ''); }
 
 var OPTS = {
   transmission: { '': '-', automatic: 'ავტომატიკა', manual: 'მექანიკა', variator: 'ვარიატორი' },
@@ -595,13 +598,16 @@ function toast(msg, kind) {
 /* ---------- github api ---------- */
 function gh(path, opts) {
   opts = opts || {};
-  opts.headers = Object.assign({
-    'Authorization': 'Bearer ' + state.token,
+  var direct = isGhToken(state.token);
+  var auth = direct ? { 'Authorization': 'Bearer ' + state.token } : { 'X-Admin-Password': state.token };
+  opts.headers = Object.assign(auth, {
     'Accept': 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28'
   }, opts.headers || {});
-  return fetch(API + path, opts).then(function (r) {
+  return fetch((direct ? API_DIRECT : API_PROXY) + path, opts).then(function (r) {
     if (r.status === 401) { throw new Error('პაროლი არასწორია ან ვადაგასულია - მიმართეთ დეველოპერს'); }
+    if (r.status === 503 && !direct) { throw new Error('ადმინ პაროლი ჯერ არ არის დაყენებული - მიმართეთ დეველოპერს'); }
+    if (r.status === 502 && !direct) { throw new Error('საიტის გასაღების ვადა ამოიწურა - მიმართეთ დეველოპერს'); }
     return r;
   });
 }
@@ -702,7 +708,13 @@ function enterAnon() {
 function tryLogin(token, silent) {
   state.token = token;
   $('login-status').textContent = silent ? '' : 'მოწმდება…';
-  return gh('').then(function (r) {
+  /* password mode needs the site's Worker (/api/admin/); GitHub Pages has none, so say so plainly */
+  var pre = isGhToken(token) ? Promise.resolve() : fetch(PROXY_PING, { cache: 'no-store' }).then(function (r) {
+    if (r.status === 404) throw new Error('ამ მისამართზე პაროლით შესვლა არ მუშაობს - გახსენით პანელი საიტის მთავარი მისამართიდან');
+    if (r.status === 503) throw new Error('ადმინ პაროლი ჯერ არ არის დაყენებული - მიმართეთ დეველოპერს');
+    if (!r.ok) throw new Error('სერვერი არ პასუხობს (' + r.status + ') - სცადეთ მოგვიანებით');
+  });
+  return pre.then(function () { return gh(''); }).then(function (r) {
     if (!r.ok) throw new Error('პაროლი ვერ დადასტურდა (' + r.status + ')');
     return loadData(!state.fromApp);
   }).then(function () {

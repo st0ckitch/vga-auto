@@ -7,3 +7,4 @@ wrangler.jsonc
 node_modules
 docs
 *.md
+worker
