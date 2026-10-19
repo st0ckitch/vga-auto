@@ -41,7 +41,7 @@ async function sameSecret(a, b) {
   return diff === 0;
 }
 
-/* ---- redirects for the old PHP site's addresses ---- */
+/* ---- redirects for the old PHP site's addresses (incl. the old /dlr/ cabinet path) ---- */
 const NEW_PAGES = ['about', 'blog', 'calculator', 'cars', 'contact', 'export', 'faq', 'import', 'partners', 'parts', 'search', 'service', 'transport', 'video'];
 const SYNONYMS = { car: 'cars', auto: 'cars', autos: 'cars', catalog: 'cars', news: 'blog', article: 'blog', articles: 'blog', post: 'blog',
   contacts: 'contact', services: 'service', calc: 'calculator', calculation: 'calculator', partner: 'partners', videos: 'video',
@@ -54,7 +54,7 @@ function legacyRedirect(url) {
   if (prefixed) { lang = prefixed[1].toLowerCase(); path = path.slice(prefixed[0].length); }
   const q = (url.searchParams.get('lang') || '').toLowerCase();
   if (q === 'en' || q === 'ru') lang = q;
-  const isLegacy = /^\/vg(?=\/|$)/i.test(path) || /^\/index\.php$/i.test(path);
+  const isLegacy = /^\/vg(?=\/|$)/i.test(path) || /^\/index\.php$/i.test(path) || /^\/dlr(?=\/|$)/i.test(path);
   if (!isLegacy) return null;
   let target = '/';
   const segs = path.split('/').filter(Boolean).slice(1).map((x) => x.toLowerCase().replace(/\.(php|html?)$/, ''));
