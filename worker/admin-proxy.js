@@ -12,7 +12,9 @@
  *   GET /api/admin/ping                 -> { ok } (200 when both secrets are set, else 503)
  *   *   /api/admin/github/repos/<repo>/… -> forwarded to api.github.com with the token,
  *                                           only after the X-Admin-Password header matches
- * Everything else is served from the static site.
+ * Old-site addresses (vgae.com.ge/vg/Controller/action, index.php?…) are redirected
+ * permanently to the matching new page, or to the home page. Everything else is
+ * served from the static site.
  */
 const REPO = 'st0ckitch/vga-auto';
 const API_PREFIX = '/api/admin/github';
@@ -39,9 +41,35 @@ async function sameSecret(a, b) {
   return diff === 0;
 }
 
+/* ---- redirects for the old PHP site's addresses ---- */
+const NEW_PAGES = ['about', 'blog', 'calculator', 'cars', 'contact', 'export', 'faq', 'import', 'partners', 'parts', 'search', 'service', 'transport', 'video'];
+const SYNONYMS = { car: 'cars', auto: 'cars', autos: 'cars', catalog: 'cars', news: 'blog', article: 'blog', articles: 'blog', post: 'blog',
+  contacts: 'contact', services: 'service', calc: 'calculator', calculation: 'calculator', partner: 'partners', videos: 'video',
+  documents: 'export', documentation: 'export', faqs: 'faq', shipping: 'transport', delivery: 'transport', tracking: 'search' };
+
+function legacyRedirect(url) {
+  let path = decodeURIComponent(url.pathname).replace(/\/+$/, '');
+  let lang = '';
+  const prefixed = /^\/(en|ru)(?=\/|$)/i.exec(path);
+  if (prefixed) { lang = prefixed[1].toLowerCase(); path = path.slice(prefixed[0].length); }
+  const q = (url.searchParams.get('lang') || '').toLowerCase();
+  if (q === 'en' || q === 'ru') lang = q;
+  const isLegacy = /^\/vg(?=\/|$)/i.test(path) || /^\/index\.php$/i.test(path);
+  if (!isLegacy) return null;
+  let target = '/';
+  const segs = path.split('/').filter(Boolean).slice(1).map((x) => x.toLowerCase().replace(/\.(php|html?)$/, ''));
+  for (const seg of segs.reverse()) {
+    const name = SYNONYMS[seg] || seg;
+    if (NEW_PAGES.includes(name)) { target = '/' + name + '/'; break; }
+  }
+  return Response.redirect(url.origin + (lang ? '/' + lang : '') + target, 301);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const legacy = legacyRedirect(url);
+    if (legacy) return legacy;
     const configured = Boolean(env.ADMIN_PASSWORD && env.GITHUB_TOKEN);
 
     if (url.pathname === '/api/admin/ping') {

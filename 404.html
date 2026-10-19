@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>გვერდი ვერ მოიძებნა | VG Auto Export</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+    font-family: "FiraGO", "Segoe UI", Roboto, Arial, sans-serif; color: #FFF6F0;
+    background: radial-gradient(90% 70% at 8% 100%, rgba(255,128,57,.18), transparent 55%), linear-gradient(170deg, #110d0e 0%, #1b1516 60%, #150f10 100%); }
+  .box { max-width: 560px; width: 100%; text-align: center; }
+  .logo { font-weight: 900; letter-spacing: .04em; font-size: 14px; color: #FF8039; margin-bottom: 28px; }
+  .code { font-size: 72px; font-weight: 900; line-height: 1; margin: 0 0 12px; color: #FF8039; }
+  h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+  p { margin: 0; color: rgba(255,244,236,.72); font-size: 15px; line-height: 1.5; }
+  .links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+  a { display: inline-block; padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px;
+    color: #1b1516; background: #FF8039; }
+  a.ghost { color: #FFF6F0; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">VG AUTO EXPORT</div>
+  <div class="code">404</div>
+  <h1>გვერდი ვერ მოიძებნა</h1>
+  <p>ეს მისამართი აღარ არსებობს ან შეიცვალა.<br>Page not found · Страница не найдена</p>
+  <div class="links">
+    <a href="/" data-root="">მთავარი გვერდი</a>
+    <a class="ghost" href="/en/" data-root="en/">English</a>
+    <a class="ghost" href="/ru/" data-root="ru/">Русский</a>
+  </div>
+</div>
+<script>
+  /* on GitHub Pages the site lives under /vga-auto/, elsewhere at the root */
+  (function () {
+    var base = location.pathname.indexOf('/vga-auto/') === 0 ? '/vga-auto/' : '/';
+    document.querySelectorAll('a[data-root]').forEach(function (a) { a.href = base + a.getAttribute('data-root'); });
+  })();
+</script>
+</body>
+</html>
