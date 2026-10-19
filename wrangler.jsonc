@@ -4,6 +4,8 @@
   "main": "worker/admin-proxy.js",
   "compatibility_date": "2026-10-06",
   "observability": { "enabled": true },
+  // required by `wrangler preview`, which Cloudflare runs for non-production branches
+  "previews": {},
   // the site is copied into dist/ first so that .git and tooling never reach the upload
   "build": { "command": "node worker/stage-assets.js" },
   "assets": {
