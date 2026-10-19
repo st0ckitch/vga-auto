@@ -54,7 +54,10 @@ function legacyRedirect(url) {
   if (prefixed) { lang = prefixed[1].toLowerCase(); path = path.slice(prefixed[0].length); }
   const q = (url.searchParams.get('lang') || '').toLowerCase();
   if (q === 'en' || q === 'ru') lang = q;
-  const isLegacy = /^\/vg(?=\/|$)/i.test(path) || /^\/index\.php$/i.test(path) || /^\/dlr(?=\/|$)/i.test(path);
+  /* the dealer cabinet moved to its own subdomain: keep any deeper path and query */
+  const dlr = /^\/dlr(\/.*)?$/i.exec(path);
+  if (dlr) return Response.redirect('https://account.vgae.com.ge/dlr' + (dlr[1] || '/') + url.search, 301);
+  const isLegacy = /^\/vg(?=\/|$)/i.test(path) || /^\/index\.php$/i.test(path);
   if (!isLegacy) return null;
   let target = '/';
   const segs = path.split('/').filter(Boolean).slice(1).map((x) => x.toLowerCase().replace(/\.(php|html?)$/, ''));
