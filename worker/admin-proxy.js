@@ -28,6 +28,44 @@ function json(status, body) {
   });
 }
 
+function jsonCacheable(status, body, seconds) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=' + seconds },
+  });
+}
+
+/* ----- VIN JSON (docs/vin-api/README.md): keep only what the page understands ----- */
+const VIN_CAR_FIELDS = ['make', 'model', 'year', 'lot', 'auction', 'status', 'stage', 'location', 'container', 'eta', 'updated_at'];
+function cleanText(v, max) {
+  if (v === null || v === undefined || typeof v === 'object') return '';
+  return String(v).replace(/\s+/g, ' ').trim().slice(0, max);
+}
+function cleanPhotoUrl(v) {
+  const s = cleanText(v, 2000);
+  if (!/^https?:\/\//i.test(s)) return '';
+  try { const u = new URL(s); u.protocol = 'https:'; return u.href; } /* the site is https: http photos would be blocked */
+  catch (e) { return ''; }
+}
+function cleanVinResult(data, vin) {
+  const car = {};
+  const src = data.car && typeof data.car === 'object' ? data.car : {};
+  for (const k of VIN_CAR_FIELDS) {
+    const v = cleanText(src[k], 200);
+    if (!v) continue;
+    if (k === 'year' || k === 'stage') { const n = parseInt(v, 10); if (n > 0) car[k] = n; }
+    else car[k] = v;
+  }
+  const stages = [];
+  for (const s of Array.isArray(data.stages) ? data.stages.slice(0, 8) : []) {
+    if (!s || typeof s !== 'object') continue;
+    const photos = (Array.isArray(s.photos) ? s.photos : []).map(cleanPhotoUrl).filter(Boolean).slice(0, 80);
+    const id = parseInt(s.id, 10);
+    stages.push({ id: id > 0 ? id : stages.length + 1, name: cleanText(s.name, 80), date: cleanText(s.date, 40) || null, photos });
+  }
+  return { ok: true, vin: cleanText(data.vin, 17).toUpperCase() || vin, car, stages };
+}
+
 /* constant-time comparison of two secrets (compares SHA-256 digests, so length never leaks) */
 async function sameSecret(a, b) {
   const enc = new TextEncoder();
@@ -75,17 +113,42 @@ export default {
     if (legacy) return legacy;
     const configured = Boolean(env.ADMIN_PASSWORD && env.GITHUB_TOKEN);
 
-    /* VIN lookup: fetch the dealer system's HTML fragment for a VIN and hand it to the page.
-       VIN_SOURCE_URL (Cloudflare variable) is the fragment address with {vin}, e.g.
-       https://account.vgae.com.ge/dlr/index.php?class=Action&method=az_car&vin={vin} */
+    /* VIN lookup for the search page. Sources, in this order:
+       1. VIN_API_URL (+ secret VIN_API_KEY): the JSON service docs/vin-api/vin-api.php installed on the
+          dealer system, e.g. https://account.vgae.com.ge/dlr/vin-api.php. Its answer is cleaned and
+          handed to the page as JSON; the page renders the car and its photo stages itself.
+       2. VIN_SOURCE_URL: an HTML fragment address with {vin}, e.g.
+          https://account.vgae.com.ge/dlr/index.php?class=Action&method=az_car&vin={vin}
+       Neither set: 404, and the page falls back to framing the dealer system's own VIN page. */
     if (url.pathname === '/api/vin') {
+      if (request.method !== 'GET') return json(405, { ok: false, error: 'method_not_allowed' });
       const vin = (url.searchParams.get('vin') || '').trim().toUpperCase();
+      if (!/^[A-Z0-9]{5,17}$/.test(vin)) return json(400, { ok: false, error: 'bad_vin' });
+      const api = env.VIN_API_URL || '';
       const tpl = env.VIN_SOURCE_URL || '';
-      if (!/^[A-Z0-9]{5,17}$/.test(vin) || tpl.indexOf('{vin}') < 0) return json(404, { ok: false });
-      const src = tpl.replace('{vin}', encodeURIComponent(vin));
+      if (!api && tpl.indexOf('{vin}') < 0) return json(404, { ok: false, error: 'not_configured' });
       const cacheKey = new Request(url.origin + '/api/vin?vin=' + vin);
       const hit = await caches.default.match(cacheKey);
       if (hit) return hit;
+      const cached = async (res) => { await caches.default.put(cacheKey, res.clone()); return res; };
+
+      if (api) {
+        const src = api.indexOf('{vin}') > -1
+          ? api.replace('{vin}', encodeURIComponent(vin))
+          : api + (api.indexOf('?') > -1 ? '&' : '?') + 'vin=' + encodeURIComponent(vin);
+        let up;
+        let data = null;
+        try { up = await fetch(src, { headers: { 'x-api-key': env.VIN_API_KEY || '', 'accept': 'application/json', 'user-agent': 'vga-auto-site' }, redirect: 'follow' }); }
+        catch (e) { return json(502, { ok: false, error: 'upstream_unreachable' }); }
+        try { data = await up.json(); } catch (e) { data = null; }
+        if (up.status === 404 && data && data.error === 'not_found') {
+          return cached(jsonCacheable(404, { ok: false, error: 'not_found', vin }, 60));
+        }
+        if (!up.ok || !data || data.ok !== true) return json(502, { ok: false, error: 'upstream_error', status: up.status });
+        return cached(jsonCacheable(200, cleanVinResult(data, vin), 120));
+      }
+
+      const src = tpl.replace('{vin}', encodeURIComponent(vin));
       let up;
       try { up = await fetch(src, { headers: { 'user-agent': 'vga-auto-site', 'accept': 'text/html,*/*' }, redirect: 'follow' }); }
       catch (e) { return json(502, { ok: false, message: 'upstream unreachable' }); }
@@ -98,9 +161,7 @@ export default {
         .replace(/(src|href)=("|')\/(?!\/)/gi, '$1=$2' + origin + '/') /* their relative links and photos */
         .trim();
       if (!html) return json(502, { ok: false, message: 'empty' });
-      const res = new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' } });
-      await caches.default.put(cacheKey, res.clone());
-      return res;
+      return cached(new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' } }));
     }
 
     if (url.pathname === '/api/admin/ping') {

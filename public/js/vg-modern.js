@@ -838,11 +838,89 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       .catch(function () {});
   };
   if (!window.fetch) return;
-  /* preferred: the site's own /api/vin (Cloudflare Worker) returns the dealer system's result as an HTML fragment */
+
+  /* preferred: the site's own /api/vin (Cloudflare Worker). It answers with JSON from the dealer
+     system's vin-api.php (docs/vin-api) and the page draws the car itself; with an HTML fragment
+     the fragment is shown as is; otherwise the frame above is used. */
+  var lang = (document.documentElement.lang || 'ka').slice(0, 2);
+  var T = {
+    ka: { car: 'ავტომობილი', status: 'სტატუსი', location: 'მდებარეობა', lot: 'ლოტი', auction: 'აუქციონი', container: 'კონტეინერი', eta: 'ჩამოსვლა', updated_at: 'განახლდა',
+      stages: ['აუქციონი', 'ტრანსპორტირება აშშ-ში', 'პორტი აშშ-ში', 'ფოთი'], current: 'მიმდინარე ეტაპი', photos: 'ფოტო', none: 'ფოტო ჯერ არ არის',
+      notfound: 'ამ VIN კოდით ავტომობილი ვერ მოიძებნა. შეამოწმეთ კოდი ან მოითხოვეთ ზარი - მენეჯერი დაგეხმარებათ.' },
+    en: { car: 'Vehicle', status: 'Status', location: 'Location', lot: 'Lot', auction: 'Auction', container: 'Container', eta: 'Arrival', updated_at: 'Updated',
+      stages: ['Auction', 'Transport in the USA', 'US Port', 'Poti'], current: 'Current stage', photos: 'photos', none: 'No photos yet',
+      notfound: 'No vehicle was found for this VIN. Check the code or request a call - a manager will help you.' },
+    ru: { car: 'Автомобиль', status: 'Статус', location: 'Местоположение', lot: 'Лот', auction: 'Аукцион', container: 'Контейнер', eta: 'Прибытие', updated_at: 'Обновлено',
+      stages: ['Аукцион', 'Транспортировка по США', 'Порт в США', 'Поти'], current: 'Текущий этап', photos: 'фото', none: 'Фото пока нет',
+      notfound: 'Автомобиль с таким VIN не найден. Проверьте код или закажите звонок - менеджер вам поможет.' }
+  };
+  var t = T[lang] || T.ka;
+  var esc = function (v) {
+    return String(v === null || v === undefined ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  var isUrl = function (u) { return /^https?:\/\//i.test(String(u || '')); };
+
+  var renderJson = function (d) {
+    var car = d.car || {};
+    var stages = (d.stages || []).slice(0, 8).map(function (s) {
+      return { id: parseInt(s.id, 10) || 0, name: s.name || '', date: s.date || '', photos: (s.photos || []).filter(isUrl) };
+    }).filter(function (s) { return s.id > 0; });
+    var current = parseInt(car.stage, 10) || 0;
+    if (!current) stages.forEach(function (s) { if (s.photos.length) current = s.id; });
+    var stageName = function (s) { return t.stages[s.id - 1] || s.name || ('#' + s.id); };
+    var title = [car.year, car.make, car.model].filter(Boolean).join(' ') || t.car;
+    var html = '<div class="vin-card"><div class="vin-card__head"><h2 class="vin-card__title">' + esc(title) + '</h2>';
+    stages.forEach(function (s) {
+      if (s.id === current) html += '<span class="vin-card__badge">' + esc(t.current) + ': ' + esc(stageName(s)) + '</span>';
+    });
+    html += '</div>';
+    var facts = ['status', 'location', 'lot', 'auction', 'container', 'eta', 'updated_at'].filter(function (k) { return car[k]; });
+    if (facts.length) {
+      html += '<dl class="vin-facts">' + facts.map(function (k) {
+        return '<div><dt>' + esc(t[k]) + '</dt><dd>' + esc(car[k]) + '</dd></div>';
+      }).join('') + '</dl>';
+    }
+    if (stages.length) {
+      html += '<ol class="vin-stages">' + stages.map(function (s) {
+        var name = stageName(s);
+        var state = s.id === current ? 'is-current' : (s.id < current ? 'is-done' : 'is-todo');
+        var meta = [s.date, s.photos.length ? s.photos.length + ' ' + t.photos : ''].filter(Boolean).join(' · ');
+        var body = s.photos.length
+          ? '<div class="gallery">' + s.photos.map(function (u, i) {
+            return '<a href="' + esc(u) + '" data-lightbox="vin-' + s.id + '" data-title="' + esc(name) + '">' +
+              '<img src="' + esc(u) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
+          }).join('') + '</div>'
+          : '<p class="vin-stage__empty">' + esc(t.none) + '</p>';
+        return '<li class="vin-stage ' + state + '"><div class="vin-stage__head"><span class="vin-stage__num">' + s.id + '</span><h3>' + esc(name) + '</h3>' +
+          (meta ? '<span class="vin-stage__meta">' + esc(meta) + '</span>' : '') + '</div>' + body + '</li>';
+      }).join('') + '</ol>';
+    }
+    html += '</div>';
+    embed.innerHTML = html;
+    embed.hidden = false;
+    shown = 'json';
+    var note = box.querySelector('.vin-status__note'); /* the report is on screen, no need to promise it */
+    if (note) note.hidden = true;
+  };
+  var notFound = function () {
+    embed.innerHTML = '<p class="vin-notfound">' + esc(t.notfound) + '</p>';
+    embed.hidden = false;
+    shown = 'notfound';
+  };
+
   fetch(VG_ROOT + 'api/vin?vin=' + encodeURIComponent(vin))
-    .then(function (r) { return r.ok && (r.headers.get('content-type') || '').indexOf('text/html') > -1 ? r.text() : ''; })
-    .then(function (html) {
-      if (html) { embed.innerHTML = '<div class="search-result">' + html + '</div>'; embed.hidden = false; shown = 'fragment'; }
+    .then(function (r) {
+      var ct = r.headers.get('content-type') || '';
+      if (ct.indexOf('application/json') > -1) return r.json().then(function (d) { return { json: d, status: r.status }; });
+      if (r.ok && ct.indexOf('text/html') > -1) return r.text().then(function (h) { return { html: h }; });
+      return {};
+    })
+    .then(function (res) {
+      if (res.json && res.json.ok === true && res.json.stages) renderJson(res.json);
+      else if (res.json && res.status === 404 && res.json.error === 'not_found') notFound();
+      else if (res.html) { embed.innerHTML = '<div class="search-result">' + res.html + '</div>'; embed.hidden = false; shown = 'fragment'; }
       else useFrame();
     })
     .catch(useFrame);

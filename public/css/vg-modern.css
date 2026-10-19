@@ -2065,3 +2065,36 @@ button.nav__link {
 .vin-embed .azcar-gallery h3, .vin-embed .search-result h3 { font-size: 1.05rem; font-weight: 800; margin: 0 0 14px; }
 .vin-embed .search-result table { width: 100%; border-collapse: collapse; }
 .vin-embed .search-result td, .vin-embed .search-result th { padding: 8px 10px; border-bottom: 1px solid var(--glass-border); text-align: left; }
+
+/* native VIN result drawn from the dealer system's JSON service (docs/vin-api) */
+.vin-card { width: 100%; }
+.vin-card__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 6px 0 14px; }
+.vin-card__title { margin: 0; font-size: 1.35rem; font-weight: 800; }
+.vin-card__badge {
+  display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700;
+  color: var(--c-primary); background: rgba(255, 128, 57, 0.12); border: 1px solid rgba(255, 128, 57, 0.35);
+}
+.vin-facts { margin: 0 0 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.vin-facts div { padding: 10px 14px; border-radius: var(--r-md); background: var(--glass-2); border: 1px solid var(--glass-border); }
+.vin-facts dt { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-body); }
+.vin-facts dd { margin: 0; font-weight: 700; color: var(--c-ink); overflow-wrap: anywhere; }
+.vin-stages { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.vin-stage { padding: 16px 18px; border-radius: var(--r-lg); border: 1px solid var(--glass-border); background: var(--glass-2); }
+.vin-stage.is-current { border-color: rgba(255, 128, 57, 0.55); }
+.vin-stage.is-todo { opacity: 0.72; }
+.vin-stage__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.vin-stage__head h3 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+.vin-stage__num {
+  flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #fff; background: var(--c-primary);
+}
+.vin-stage.is-todo .vin-stage__num { background: transparent; color: var(--c-body); border: 1px solid var(--glass-border); }
+.vin-stage__meta { margin-left: auto; font-size: 0.85rem; color: var(--c-body); }
+.vin-stage .gallery { margin-top: 14px; }
+.vin-stage__empty { margin: 10px 0 0; font-size: 0.9rem; color: var(--c-body); }
+.vin-notfound {
+  margin: 0; padding: 14px 16px; border-radius: var(--r-md); font-weight: 600;
+  background: rgba(255, 128, 57, 0.1); border: 1px solid rgba(255, 128, 57, 0.35);
+}
+@media (min-width: 1100px) { .vin-stage .gallery { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 560px) { .vin-stage .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
