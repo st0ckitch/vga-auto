@@ -72,6 +72,34 @@ export default {
     if (legacy) return legacy;
     const configured = Boolean(env.ADMIN_PASSWORD && env.GITHUB_TOKEN);
 
+    /* VIN lookup: fetch the dealer system's HTML fragment for a VIN and hand it to the page.
+       VIN_SOURCE_URL (Cloudflare variable) is the fragment address with {vin}, e.g.
+       https://account.vgae.com.ge/dlr/index.php?class=Action&method=az_car&vin={vin} */
+    if (url.pathname === '/api/vin') {
+      const vin = (url.searchParams.get('vin') || '').trim().toUpperCase();
+      const tpl = env.VIN_SOURCE_URL || '';
+      if (!/^[A-Z0-9]{5,17}$/.test(vin) || tpl.indexOf('{vin}') < 0) return json(404, { ok: false });
+      const src = tpl.replace('{vin}', encodeURIComponent(vin));
+      const cacheKey = new Request(url.origin + '/api/vin?vin=' + vin);
+      const hit = await caches.default.match(cacheKey);
+      if (hit) return hit;
+      let up;
+      try { up = await fetch(src, { headers: { 'user-agent': 'vga-auto-site', 'accept': 'text/html,*/*' }, redirect: 'follow' }); }
+      catch (e) { return json(502, { ok: false, message: 'upstream unreachable' }); }
+      if (!up.ok) return json(502, { ok: false, status: up.status });
+      const origin = new URL(src).origin;
+      let html = await up.text();
+      html = html
+        .replace(/<script[\s\S]*?<\/script>/gi, '')                 /* never run their scripts in our page */
+        .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*')/gi, '')
+        .replace(/(src|href)=("|')\/(?!\/)/gi, '$1=$2' + origin + '/') /* their relative links and photos */
+        .trim();
+      if (!html) return json(502, { ok: false, message: 'empty' });
+      const res = new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' } });
+      await caches.default.put(cacheKey, res.clone());
+      return res;
+    }
+
     if (url.pathname === '/api/admin/ping') {
       return json(configured ? 200 : 503, { ok: configured });
     }

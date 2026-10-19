@@ -830,10 +830,20 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       '<p class="vin-embed__open"><a href="' + url + '" target="_blank" rel="noopener">' + open + ' &#8599;</a></p>';
     embed.hidden = false;
   };
-  render(box.getAttribute('data-vin-lookup') || '');
+  var useFrame = function () {
+    render(box.getAttribute('data-vin-lookup') || '');
+    fetch(VG_ROOT + 'public/data/site.json?t=' + Date.now())
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (site) { var t = site && site.contacts && site.contacts.vinLookupUrl; if (t) render(t); })
+      .catch(function () {});
+  };
   if (!window.fetch) return;
-  fetch(VG_ROOT + 'public/data/site.json?t=' + Date.now())
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (site) { var t = site && site.contacts && site.contacts.vinLookupUrl; if (t) render(t); })
-    .catch(function () {});
+  /* preferred: the site's own /api/vin (Cloudflare Worker) returns the dealer system's result as an HTML fragment */
+  fetch(VG_ROOT + 'api/vin?vin=' + encodeURIComponent(vin))
+    .then(function (r) { return r.ok && (r.headers.get('content-type') || '').indexOf('text/html') > -1 ? r.text() : ''; })
+    .then(function (html) {
+      if (html) { embed.innerHTML = '<div class="search-result">' + html + '</div>'; embed.hidden = false; shown = 'fragment'; }
+      else useFrame();
+    })
+    .catch(useFrame);
 })();

@@ -2058,3 +2058,10 @@ button.nav__link {
 .vin-embed__open { margin: 8px 0 0; font-size: 0.9rem; }
 .vin-embed__open a { color: var(--c-primary); text-decoration: none; }
 .vin-embed__open a:hover { text-decoration: underline; }
+.vin-embed .search-result { width: 100%; }
+.vin-embed .search-result img { max-width: 100%; height: auto; border-radius: var(--r-md); }
+.vin-embed .azcar-card__title, .vin-embed .search-result h2 { font-size: 1.25rem; font-weight: 800; margin: 0 0 14px; }
+.vin-embed .azcar-gallery, .vin-embed .search-result .gallery { margin-top: 24px; }
+.vin-embed .azcar-gallery h3, .vin-embed .search-result h3 { font-size: 1.05rem; font-weight: 800; margin: 0 0 14px; }
+.vin-embed .search-result table { width: 100%; border-collapse: collapse; }
+.vin-embed .search-result td, .vin-embed .search-result th { padding: 8px 10px; border-bottom: 1px solid var(--glass-border); text-align: left; }
