@@ -11,6 +11,9 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    // paths the Worker must see before the asset router (otherwise unmatched
+    // requests get the 404 page and the Worker never runs): admin API + old-site addresses
+    "run_worker_first": ["/api/*", "/vg", "/vg/*", "/VG", "/VG/*", "/en/vg", "/en/vg/*", "/ru/vg", "/ru/vg/*", "/index.php", "/en/index.php", "/ru/index.php"]
   }
 }
