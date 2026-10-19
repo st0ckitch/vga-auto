@@ -4,8 +4,10 @@
   "main": "worker/admin-proxy.js",
   "compatibility_date": "2026-10-06",
   "observability": { "enabled": true },
+  // the site is copied into dist/ first so that .git and tooling never reach the upload
+  "build": { "command": "node worker/stage-assets.js" },
   "assets": {
-    "directory": ".",
+    "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "404-page"
   }
