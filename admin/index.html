@@ -355,6 +355,9 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
           <div><label>ელ-ფოსტა</label><input type="text" id="ct-email" placeholder="info@..."></div>
           <div><label>დილერის კაბინეტის ბმული</label><input type="text" id="ct-dealerUrl"></div>
         </div>
+        <div class="row">
+          <div><label>VIN ძებნის გვერდი (ჩანს ჩარჩოში საიტზე; {vin}-ის ადგილას ჩაჯდება კოდი)</label><input type="text" id="ct-vinLookupUrl" placeholder="https://account.vgae.com.ge/index.php?class=Search&vin={vin}"></div>
+        </div>
         <div class="row row--2">
           <div><label>Facebook</label><input type="text" id="ct-facebook" placeholder="https://facebook.com/..."></div>
           <div><label>Instagram</label><input type="text" id="ct-instagram" placeholder="https://instagram.com/..."></div>
@@ -811,7 +814,7 @@ function fillSection(section) {
 }
 function fillContacts() {
   var c = state.site.contacts || {};
-  ['phone', 'phoneIntl', 'email', 'dealerUrl', 'facebook', 'instagram'].forEach(function (k) {
+  ['phone', 'phoneIntl', 'email', 'dealerUrl', 'vinLookupUrl', 'facebook', 'instagram'].forEach(function (k) {
     $('ct-' + k).value = c[k] || '';
   });
 }
@@ -836,7 +839,7 @@ document.querySelectorAll('[data-save]').forEach(function (btn) {
 function collect(section) {
   if (section === 'contacts') {
     var c = state.site.contacts = state.site.contacts || {};
-    ['phone', 'phoneIntl', 'email', 'dealerUrl', 'facebook', 'instagram'].forEach(function (k) {
+    ['phone', 'phoneIntl', 'email', 'dealerUrl', 'vinLookupUrl', 'facebook', 'instagram'].forEach(function (k) {
       c[k] = $('ct-' + k).value.trim();
     });
     return;

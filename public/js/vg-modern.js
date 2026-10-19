@@ -814,4 +814,26 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
   box.hidden = false;
   var input = document.querySelector('form[data-vin-form] input[name="vin"]');
   if (input && !input.value) input.value = vin;
+
+  /* stopgap until the dealer system exposes an API: show its own VIN page in a frame.
+     The address template comes from the page (data-vin-lookup) and can be changed
+     in the admin panel (site.json -> contacts.vinLookupUrl); {vin} is replaced. */
+  var embed = box.querySelector('[data-vin-embed]');
+  if (!embed) return;
+  var shown = '';
+  var render = function (tpl) {
+    if (!tpl || tpl.indexOf('{vin}') < 0 || tpl === shown) return;
+    shown = tpl;
+    var url = tpl.replace('{vin}', encodeURIComponent(vin)).replace(/"/g, '&quot;');
+    var open = box.getAttribute('data-vin-open') || 'Open in a new window';
+    embed.innerHTML = '<iframe src="' + url + '" title="VIN ' + vin + '" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+      '<p class="vin-embed__open"><a href="' + url + '" target="_blank" rel="noopener">' + open + ' &#8599;</a></p>';
+    embed.hidden = false;
+  };
+  render(box.getAttribute('data-vin-lookup') || '');
+  if (!window.fetch) return;
+  fetch(VG_ROOT + 'public/data/site.json?t=' + Date.now())
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (site) { var t = site && site.contacts && site.contacts.vinLookupUrl; if (t) render(t); })
+    .catch(function () {});
 })();

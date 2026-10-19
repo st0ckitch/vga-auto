@@ -8,7 +8,8 @@
     "instagram": "",
     "addressKa": "თბილისი, დიდი დიღომი, ტარიელის 10ბ; ფოთი, აღმაშენებლის გამზირი 37",
     "addressEn": "Tbilisi, Didi Dighomi, 10b Tarieli St.; Poti, 37 Aghmashenebeli Ave.",
-    "addressRu": "Тбилиси, Диди Дигоми, ул. Тариэли 10б; Поти, пр. Агмашенебели 37"
+    "addressRu": "Тбилиси, Диди Дигоми, ул. Тариэли 10б; Поти, пр. Агмашенебели 37",
+    "vinLookupUrl": "https://account.vgae.com.ge/index.php?class=Search&vin={vin}"
   },
   "ka": {
     "heroTitle": "საუკეთესო გზა *ამერიკული* *ავტომობილისთვის*",

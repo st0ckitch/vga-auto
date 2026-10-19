@@ -27,7 +27,7 @@
 <link rel="preload" href="../../public/fonts/firago/FiraGO-Heavy.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../public/fonts/firago/FiraGO-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../public/fonts/firago/FiraGO-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../public/css/vg-modern.css?v=35">
+<link rel="stylesheet" href="../../public/css/vg-modern.css?v=36">
 <link rel="stylesheet" href="../../public/css/pages/search.css?v=3">
 
 <script type="application/ld+json">
@@ -288,8 +288,9 @@
       <input type="text" name="vin" placeholder="Поиск по VIN" aria-label="VIN-код" autocomplete="off">
       <button class="btn btn--primary" type="submit">Поиск</button>
     </form>
-    <div class="vin-status" data-vin-status hidden>
+    <div class="vin-status" data-vin-status data-vin-lookup="https://account.vgae.com.ge/index.php?class=Search&amp;vin={vin}" data-vin-open="Открыть в новом окне" hidden>
       <p class="vin-status__label">Ваш VIN <b data-vin-value></b></p>
+      <div class="vin-embed" data-vin-embed hidden></div>
       <p class="vin-status__note">Фотоотчёт отправляет менеджер - закажите звонок, и мы свяжемся с вами в течение нескольких минут.</p>
       <button class="btn btn--primary" type="button" data-open="#dlg-callback">Заказать звонок</button>
     </div>
@@ -381,6 +382,6 @@
   </div>
 </footer>
 
-<script src="../../public/js/vg-modern.js?v=16" defer></script>
+<script src="../../public/js/vg-modern.js?v=17" defer></script>
 </body>
 </html>

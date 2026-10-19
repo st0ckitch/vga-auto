@@ -2048,3 +2048,13 @@ button.nav__link {
 .map-link { display: inline-block; margin-top: 10px; font-size: 0.9rem; color: var(--c-primary); text-decoration: none; }
 .map-link:hover { text-decoration: underline; }
 .check-list li b { color: var(--c-ink); font-weight: 700; }
+
+/* ----- VIN page: dealer-system lookup shown in a frame (stopgap until an API exists) ----- */
+.vin-embed { flex: 1 1 100%; min-width: 0; }
+.vin-embed iframe {
+  display: block; width: 100%; height: 1000px; max-height: 85vh; min-height: 480px;
+  border: 1px solid var(--glass-border); border-radius: var(--r-lg); background: #fff;
+}
+.vin-embed__open { margin: 8px 0 0; font-size: 0.9rem; }
+.vin-embed__open a { color: var(--c-primary); text-decoration: none; }
+.vin-embed__open a:hover { text-decoration: underline; }
