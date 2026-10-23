@@ -906,7 +906,7 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
         var body = s.photos.length
           ? '<div class="gallery">' + s.photos.map(function (p, i) {
             return '<a href="' + esc(p.url) + '" data-lightbox="vin-' + s.id + '" data-title="' + esc(name) + '">' +
-              '<img src="' + esc(p.thumb) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
+              '<img src="' + esc(p.thumb) + '" data-full="' + esc(p.url) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
           }).join('') + '</div>'
           : '<p class="vin-stage__empty">' + esc(t.none) + '</p>';
         var rows = infoRows(s.info);
@@ -922,6 +922,13 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     var note = box.querySelector('.vin-status__note'); /* the report is on screen, no need to promise it */
     if (note) note.hidden = true;
   };
+  /* a thumbnail that fails to load (missing small copy) is replaced by the full photo once */
+  embed.addEventListener('error', function (e) {
+    var img = e.target;
+    if (!img || img.tagName !== 'IMG') return;
+    var full = img.getAttribute('data-full');
+    if (full && img.getAttribute('src') !== full) img.setAttribute('src', full);
+  }, true);
   var notFound = function () {
     embed.innerHTML = '<p class="vin-notfound">' + esc(t.notfound) + '</p>';
     embed.hidden = false;
