@@ -2082,8 +2082,11 @@ button.nav__link {
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .vin-copy:hover { border-color: var(--c-primary); color: var(--c-primary); }
-.vin-copy.is-done { border-color: #3fbf7f; color: #3fbf7f; }
-.vin-copy svg { width: 16px; height: 16px; }
+.vin-copy.is-done { border-color: var(--c-success); color: var(--c-success); }
+.vin-copy svg { width: 16px; height: 16px; display: block; }
+.vin-copy__ok { display: none; }
+.vin-copy.is-done .vin-copy__ico { display: none; }
+.vin-copy.is-done .vin-copy__ok { display: block; }
 
 /* progress tracker */
 .vin-track { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -2103,6 +2106,7 @@ button.nav__link {
 .vin-track__step.is-current a { border-color: rgba(255, 128, 57, 0.55); }
 .vin-track__step.is-todo a { opacity: 0.7; }
 .vin-track__name { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; line-height: 1.25; }
+.vin-track__name--short { display: none; }
 .vin-track__meta { font-size: 0.78rem; color: var(--c-body); }
 
 .vin-facts { margin: 0 0 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
@@ -2152,9 +2156,35 @@ button.nav__link {
 .vin-notice__link:hover { text-decoration: underline; }
 
 @media (min-width: 1100px) { .vin-stage .gallery { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 700px) { .vin-track { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) {
-  .vin-stage .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .vin-card__title { font-size: 1.25rem; }
-  .vin-stage__meta { margin-left: 0; flex-basis: 100%; }
+@media (max-width: 700px) {
+  /* header: title left, icon-only copy button right */
+  .vin-card__head { flex-wrap: nowrap; align-items: flex-start; margin: 2px 0 14px; }
+  .vin-card__title { font-size: 1.2rem; margin-bottom: 8px; }
+  .vin-copy { flex: 0 0 40px; width: 40px; height: 40px; padding: 0; justify-content: center; gap: 0; }
+  .vin-copy__label { display: none; }
+  /* tracker: one row of circles on a progress line, short names */
+  .vin-track { display: flex; gap: 0; position: relative; margin: 0 0 18px; }
+  .vin-track::before, .vin-track::after {
+    content: ''; position: absolute; top: 15px; left: var(--vin-edge, 12.5%); height: 3px; border-radius: 2px;
+    width: var(--vin-span, 75%); background: var(--glass-border);
+  }
+  .vin-track::after { width: calc(var(--vin-span, 75%) * var(--vin-frac, 0)); background: var(--c-primary); }
+  .vin-track__step { flex: 1 1 0; min-width: 0; position: relative; z-index: 1; }
+  .vin-track__step a, .vin-track__step a:hover { padding: 0; gap: 8px; border: 0; background: transparent; border-radius: 0; transform: none; }
+  .vin-track__num { width: 32px; height: 32px; font-size: 0.85rem; background: var(--c-bg); }
+  .vin-track__step.is-done .vin-track__num { background: var(--c-primary); }
+  .vin-track__name--full, .vin-track__meta { display: none; }
+  .vin-track__name--short { display: block; font-size: 0.76rem; line-height: 1.2; overflow-wrap: anywhere; }
+  .vin-track__step.is-todo a { opacity: 0.6; }
+  /* facts and stages: tighter */
+  .vin-facts { gap: 8px; }
+  .vin-facts div { padding: 8px 12px; }
+  .vin-stage { padding: 14px 14px; }
+  .vin-stage__head { gap: 6px 10px; }
+  .vin-stage__head h3 { font-size: 1rem; }
+  .vin-stage__state { font-size: 0.68rem; padding: 3px 8px; }
+  .vin-stage__meta { margin-left: 0; flex-basis: 100%; font-size: 0.8rem; }
+  .vin-stage .gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+  .gallery__more { font-size: 1.3rem; }
+  .vin-more { width: 100%; justify-content: center; }
 }

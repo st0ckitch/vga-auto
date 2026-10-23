@@ -830,19 +830,19 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
   var lang = (document.documentElement.lang || 'ka').slice(0, 2);
   var T = {
     ka: { car: 'ავტომობილი', status: 'სტატუსი', location: 'მდებარეობა', lot: 'ლოტი', auction: 'აუქციონი', container: 'კონტეინერი', eta: 'ჩამოსვლა', updated_at: 'განახლდა',
-      stages: ['აუქციონი', 'ტრანსპორტირება აშშ-ში', 'პორტი აშშ-ში', 'ფოთი'], current: 'მიმდინარე ეტაპი', photos: 'ფოტო', none: 'ფოტო ჯერ არ არის',
+      stages: ['აუქციონი', 'ტრანსპორტირება აშშ-ში', 'პორტი აშშ-ში', 'ფოთი'], short: ['აუქციონი', 'გზაში', 'პორტი', 'ფოთი'], current: 'მიმდინარე ეტაპი', photos: 'ფოტო', none: 'ფოტო ჯერ არ არის',
       done: 'დასრულებულია', now: 'მიმდინარე', next: 'მოლოდინში', showAll: 'ყველა ფოტოს ნახვა', showLess: 'ჩაკეცვა',
       copy: 'ბმულის კოპირება', copied: 'დაკოპირდა', open: 'გახსენით დილერის სისტემაში',
       unavailable: 'მონაცემები დროებით მიუწვდომელია. სცადეთ ცოტა ხანში ან მოითხოვეთ ზარი - მენეჯერი დაგეხმარებათ.',
       notfound: 'ამ VIN კოდით ავტომობილი ვერ მოიძებნა. შეამოწმეთ კოდი ან მოითხოვეთ ზარი - მენეჯერი დაგეხმარებათ.' },
     en: { car: 'Vehicle', status: 'Status', location: 'Location', lot: 'Lot', auction: 'Auction', container: 'Container', eta: 'Arrival', updated_at: 'Updated',
-      stages: ['Auction', 'Transport in the USA', 'US Port', 'Poti'], current: 'Current stage', photos: 'photos', none: 'No photos yet',
+      stages: ['Auction', 'Transport in the USA', 'US Port', 'Poti'], short: ['Auction', 'In transit', 'US port', 'Poti'], current: 'Current stage', photos: 'photos', none: 'No photos yet',
       done: 'Completed', now: 'In progress', next: 'Upcoming', showAll: 'Show all photos', showLess: 'Show less',
       copy: 'Copy link', copied: 'Copied', open: 'Open in the dealer system',
       unavailable: 'The data is temporarily unavailable. Try again in a moment or request a call - a manager will help you.',
       notfound: 'No vehicle was found for this VIN. Check the code or request a call - a manager will help you.' },
     ru: { car: 'Автомобиль', status: 'Статус', location: 'Местоположение', lot: 'Лот', auction: 'Аукцион', container: 'Контейнер', eta: 'Прибытие', updated_at: 'Обновлено',
-      stages: ['Аукцион', 'Транспортировка по США', 'Порт в США', 'Поти'], current: 'Текущий этап', photos: 'фото', none: 'Фото пока нет',
+      stages: ['Аукцион', 'Транспортировка по США', 'Порт в США', 'Поти'], short: ['Аукцион', 'В пути', 'Порт', 'Поти'], current: 'Текущий этап', photos: 'фото', none: 'Фото пока нет',
       done: 'Завершён', now: 'Текущий', next: 'Ожидается', showAll: 'Показать все фото', showLess: 'Свернуть',
       copy: 'Копировать ссылку', copied: 'Скопировано', open: 'Открыть в системе дилера',
       unavailable: 'Данные временно недоступны. Попробуйте чуть позже или закажите звонок - менеджер вам поможет.',
@@ -851,7 +851,7 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
   var t = T[lang] || T.ka;
   var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
   var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>';
-  var PREVIEW = 8;   /* photos shown per stage before "show all" */
+  var PREVIEW = window.matchMedia && window.matchMedia('(max-width: 700px)').matches ? 6 : 8;   /* photos shown per stage before "show all" */
   var esc = function (v) {
     return String(v === null || v === undefined ? '' : v).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -896,15 +896,20 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       (cur ? '<span class="vin-card__badge">' + esc(t.current) + ': ' + esc(stageName(cur)) + '</span>' : '') +
       (total ? '<span class="vin-card__count">' + total + ' ' + esc(t.photos) + '</span>' : '') +
       '</p></div>' +
-      '<button class="vin-copy" type="button" data-vin-copy>' + ICON_LINK + '<span>' + esc(t.copy) + '</span></button></div>';
+      '<button class="vin-copy" type="button" data-vin-copy title="' + esc(t.copy) + '" aria-label="' + esc(t.copy) + '"><span class="vin-copy__ico">' + ICON_LINK + '</span><span class="vin-copy__ok">' + ICON_CHECK + '</span><span class="vin-copy__label">' + esc(t.copy) + '</span></button></div>';
 
     /* progress tracker, also the navigation between stages */
     if (stages.length) {
-      html += '<ol class="vin-track">' + stages.map(function (s) {
+      var n = stages.length;
+      var pos = 0;
+      stages.forEach(function (s, i) { if (s.id === current) pos = i; });
+      var geo = '--vin-edge:' + (50 / n) + '%;--vin-span:' + (100 - 100 / n) + '%;--vin-frac:' + (n > 1 ? pos / (n - 1) : 0);
+      html += '<ol class="vin-track" style="' + geo + '">' + stages.map(function (s) {
         var st = stateOf(s);
         return '<li class="vin-track__step ' + st + '"><a href="#vin-stage-' + s.id + '" data-vin-go="' + s.id + '">' +
           '<span class="vin-track__num">' + (st === 'is-done' ? ICON_CHECK : s.id) + '</span>' +
-          '<span class="vin-track__name">' + esc(stageName(s)) + '</span>' +
+          '<span class="vin-track__name vin-track__name--full">' + esc(stageName(s)) + '</span>' +
+          '<span class="vin-track__name vin-track__name--short">' + esc(t.short[s.id - 1] || stageName(s)) + '</span>' +
           '<span class="vin-track__meta">' + esc(s.photos.length ? s.photos.length + ' ' + t.photos : t.none) + '</span></a></li>';
       }).join('') + '</ol>';
     }
@@ -975,8 +980,8 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       var url = window.location.href;
       var done = function () {
         copy.classList.add('is-done');
-        copy.querySelector('span').textContent = t.copied;
-        setTimeout(function () { copy.classList.remove('is-done'); copy.querySelector('span').textContent = t.copy; }, 2000);
+        copy.querySelector('.vin-copy__label').textContent = t.copied;
+        setTimeout(function () { copy.classList.remove('is-done'); copy.querySelector('.vin-copy__label').textContent = t.copy; }, 2000);
       };
       var legacy = function () {
         try {
