@@ -54,6 +54,17 @@ function cleanPhoto(v) {
   if (!url) return null;
   return { url, thumb: cleanPhotoUrl(o.thumb) || url };
 }
+/* free-form rows [{label, value}] added by the dealer system (label may be "ka|en|ru") */
+function cleanInfo(list) {
+  const out = [];
+  for (const r of Array.isArray(list) ? list.slice(0, 30) : []) {
+    if (!r || typeof r !== 'object') continue;
+    const label = cleanText(r.label, 120);
+    const value = cleanText(r.value, 300);
+    if (label && value) out.push({ label, value });
+  }
+  return out;
+}
 function cleanVinResult(data, vin) {
   const car = {};
   const src = data.car && typeof data.car === 'object' ? data.car : {};
@@ -68,9 +79,9 @@ function cleanVinResult(data, vin) {
     if (!s || typeof s !== 'object') continue;
     const photos = (Array.isArray(s.photos) ? s.photos : []).map(cleanPhoto).filter(Boolean).slice(0, 80);
     const id = parseInt(s.id, 10);
-    stages.push({ id: id > 0 ? id : stages.length + 1, name: cleanText(s.name, 80), date: cleanText(s.date, 40) || null, photos });
+    stages.push({ id: id > 0 ? id : stages.length + 1, name: cleanText(s.name, 80), date: cleanText(s.date, 40) || null, info: cleanInfo(s.info), photos });
   }
-  return { ok: true, vin: cleanText(data.vin, 17).toUpperCase() || vin, car, stages };
+  return { ok: true, vin: cleanText(data.vin, 17).toUpperCase() || vin, car, info: cleanInfo(data.info), stages };
 }
 
 /* constant-time comparison of two secrets (compares SHA-256 digests, so length never leaks) */

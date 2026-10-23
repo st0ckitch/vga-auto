@@ -9,8 +9,8 @@
  *       X-Api-Key: <the shared secret from the settings below>
  * - Answers application/json. Full format: README.md next to this file.
  *
- * Adapt section 1 (settings: database, two SQL queries, photo location) and nothing else.
- * If your system already has a function that loads a car by VIN, replace load_car() instead.
+ * Adapt section 1 (settings: database, the car query, the four stage photo queries) and nothing
+ * else. If your system already has code that loads a car and its photos, replace load_car().
  */
 
 ini_set('display_errors', '0');   /* never leak PHP warnings into the JSON */
@@ -20,60 +20,75 @@ error_reporting(E_ALL);
 $CFG = array(
     /* Shared secret. The same value is stored on the website side as VIN_API_KEY.
        Any long random string, e.g. 40 characters. Requests without it get 401. */
-    'api_key'    => 'CHANGE-ME-to-a-long-random-string',
+    'api_key' => 'CHANGE-ME-to-a-long-random-string',
 
-    /* Database connection (PDO). To reuse the cabinet's own config instead, see load_car(). */
-    'db_dsn'     => 'mysql:host=localhost;dbname=DATABASE_NAME;charset=utf8',
-    'db_user'    => 'DB_USER',
-    'db_pass'    => 'DB_PASSWORD',
+    /* Database connection (PDO). */
+    'db_dsn'  => 'mysql:host=localhost;dbname=DATABASE_NAME;charset=utf8',
+    'db_user' => 'DB_USER',
+    'db_pass' => 'DB_PASSWORD',
 
-    /* Public base URL of photo files; prepended to relative paths coming from the database. */
-    'photo_base' => 'https://account.vgae.com.ge/uploads/',
+    /* The car row. Only id and vin are required. The aliases make, model, year, lot, auction,
+       status, stage (1-4), location, container, eta, updated_at are known to the website and get
+       translated labels there; all of them are optional - delete the lines you do not have.
 
-    /* Same for the thumbnails (small copies), if they live somewhere else than the photos. */
-    'thumb_base' => 'https://account.vgae.com.ge/uploads/',
+       ANY OTHER COLUMN is shown on the page as well, with its alias as the label:
+         c.color  AS 'ფერი'               -> a row "ფერი: ..." in the car's details
+         c.vessel AS '3:გემი'             -> a row inside stage 3 (prefix 1: 2: 3: 4: = stage)
+         c.color  AS 'ფერი|Color|Цвет'    -> label per language (ka|en|ru), optional
+       Empty values are skipped. Everything selected here becomes PUBLIC on the website, so do
+       not select owner names, phone numbers, prices or other private data. */
+    'sql_car' => "SELECT c.id         AS id,
+                         c.vin        AS vin,
+                         c.make       AS make,
+                         c.model      AS model,
+                         c.year       AS year,
+                         c.lot        AS lot,
+                         c.auction    AS auction,
+                         c.status     AS status,
+                         c.stage      AS stage,
+                         c.location   AS location,
+                         c.container  AS container,
+                         c.eta        AS eta,
+                         c.updated_at AS updated_at
+                    FROM cars c
+                   WHERE c.vin = :vin
+                     AND c.active = 1          /* only active cars; remove if you have no such column */
+                   LIMIT 1",
 
-    /* The car row. The aliases (AS ...) are what the website understands; keep the names,
-       change tables/columns. Every field except id and vin is optional. */
-    'sql_car'    => "SELECT c.id         AS id,
-                            c.vin        AS vin,
-                            c.make       AS make,
-                            c.model      AS model,
-                            c.year       AS year,
-                            c.lot        AS lot,
-                            c.auction    AS auction,
-                            c.status     AS status,
-                            c.stage      AS stage,
-                            c.location   AS location,
-                            c.container  AS container,
-                            c.eta        AS eta,
-                            c.updated_at AS updated_at
-                       FROM cars c
-                      WHERE c.vin = :vin
-                      LIMIT 1",
-
-    /* The car's photos: path (relative to photo_base, or a full URL), stage, created_at (optional)
-       and thumb (optional): the small copy of the photo, relative to thumb_base or a full URL.
-       The website shows thumb in the gallery grid and opens path in full size.
-       No thumbnail column? Build it in SQL, e.g. REPLACE(p.path, '/photos/', '/thumbs/') AS thumb,
-       or delete the thumb line: the site then shows the full photo in the grid as well. */
-    'sql_photos' => "SELECT p.path       AS path,
-                            p.thumb      AS thumb,
-                            p.stage      AS stage,
-                            p.created_at AS created_at
-                       FROM car_photos p
-                      WHERE p.car_id = :car_id
-                      ORDER BY p.id",
-
-    /* How your stage values (p.stage, lower-cased) map to the website's four stages:
-       1 = auction, 2 = transport in the USA (warehouse / terminal), 3 = US port (container loading),
-       4 = Poti (arrived in Georgia). Unknown values go to stage 1. */
-    'stage_map'  => array(
-        '1' => 1, '2' => 2, '3' => 3, '4' => 4,
-        'auction' => 1, 'auc' => 1,
-        'transport' => 2, 'warehouse' => 2, 'terminal' => 2, 'yard' => 2, 'usa' => 2,
-        'port' => 3, 'container' => 3, 'loading' => 3, 'ship' => 3, 'sea' => 3,
-        'poti' => 4, 'batumi' => 4, 'georgia' => 4, 'arrived' => 4, 'delivered' => 4,
+    /* Photos: one query per stage of the website (1 auction, 2 transport in the USA, 3 US port,
+       4 Poti). Every stage may have its own table and its own folder.
+         sql        - must return the column path (file name / path, or a full URL); optionally
+                      thumb (the small copy) and created_at (date of the photo). In the WHERE use
+                      :car_id (the id from sql_car) or :vin, whichever your table stores.
+         base       - public URL of the folder, prepended to relative paths
+         thumb_base - same for the small copies (optional, defaults to base). No thumb column?
+                      Delete "p.thumb AS thumb," and the site shows the full photo in the grid.
+       Same table for all stages? Use the same query with a different WHERE per stage. */
+    'stages' => array(
+        1 => array(
+            'sql'        => "SELECT p.file AS path, p.thumb AS thumb, p.created_at AS created_at
+                               FROM photos_auction p WHERE p.car_id = :car_id ORDER BY p.id",
+            'base'       => 'https://account.vgae.com.ge/uploads/auction/',
+            'thumb_base' => 'https://account.vgae.com.ge/uploads/auction/thumbs/',
+        ),
+        2 => array(
+            'sql'        => "SELECT p.file AS path, p.thumb AS thumb, p.created_at AS created_at
+                               FROM photos_warehouse p WHERE p.car_id = :car_id ORDER BY p.id",
+            'base'       => 'https://account.vgae.com.ge/uploads/warehouse/',
+            'thumb_base' => 'https://account.vgae.com.ge/uploads/warehouse/thumbs/',
+        ),
+        3 => array(
+            'sql'        => "SELECT p.file AS path, p.thumb AS thumb, p.created_at AS created_at
+                               FROM photos_port p WHERE p.car_id = :car_id ORDER BY p.id",
+            'base'       => 'https://account.vgae.com.ge/uploads/port/',
+            'thumb_base' => 'https://account.vgae.com.ge/uploads/port/thumbs/',
+        ),
+        4 => array(
+            'sql'        => "SELECT p.file AS path, p.thumb AS thumb, p.created_at AS created_at
+                               FROM photos_poti p WHERE p.car_id = :car_id ORDER BY p.id",
+            'base'       => 'https://account.vgae.com.ge/uploads/poti/',
+            'thumb_base' => 'https://account.vgae.com.ge/uploads/poti/thumbs/',
+        ),
     ),
     'max_photos_per_stage' => 80,
 );
@@ -102,21 +117,34 @@ function same_secret($a, $b)
     return $r === 0;
 }
 
-/* Loads one car + its photos. Replace the body with a call into your own code if you prefer,
-   as long as it returns build_result(...) or null when the VIN is unknown. */
+/* runs a query, binding only the placeholders it actually contains (:car_id and/or :vin) */
+function fetch_rows($pdo, $sql, $car_id, $vin)
+{
+    $params = array();
+    if (strpos($sql, ':car_id') !== false) {
+        $params[':car_id'] = $car_id;
+    }
+    if (strpos($sql, ':vin') !== false) {
+        $params[':vin'] = $vin;
+    }
+    $st = $pdo->prepare($sql);
+    $st->execute($params);
+    return $st->fetchAll();
+}
+
+/* Loads one car + its photos per stage. Replace the body with calls into your own code if you
+   prefer, as long as it returns build_result(...) or null when the VIN is unknown. */
 function load_car($pdo, $CFG, $vin)
 {
-    $st = $pdo->prepare($CFG['sql_car']);
-    $st->execute(array(':vin' => $vin));
-    $row = $st->fetch();
-    if (!$row) {
+    $rows = fetch_rows($pdo, $CFG['sql_car'], null, $vin);
+    if (!$rows) {
         return null;
     }
+    $row    = $rows[0];
+    $car_id = isset($row['id']) ? $row['id'] : null;
     $photos = array();
-    if (isset($row['id']) && $row['id'] !== '') {
-        $ps = $pdo->prepare($CFG['sql_photos']);
-        $ps->execute(array(':car_id' => $row['id']));
-        $photos = $ps->fetchAll();
+    foreach ($CFG['stages'] as $id => $stage) {
+        $photos[$id] = empty($stage['sql']) ? array() : fetch_rows($pdo, $stage['sql'], $car_id, $vin);
     }
     return build_result($CFG, $vin, $row, $photos);
 }
@@ -134,48 +162,57 @@ function public_url($base, $path)
     return rtrim($base, '/') . '/' . ltrim($path, '/');
 }
 
+/* $row: the car row; $photos: array(stage id => rows with path / thumb / created_at) */
 function build_result($CFG, $vin, $row, $photos)
 {
-    $car = array();
-    $fields = array('make', 'model', 'year', 'lot', 'auction', 'status', 'stage', 'location', 'container', 'eta', 'updated_at');
-    foreach ($fields as $k) {
-        $v = isset($row[$k]) ? trim((string) $row[$k]) : '';
-        if ($v === '') {
-            continue;
-        }
-        if ($k === 'year' || $k === 'stage') {
-            if ((int) $v > 0) {
-                $car[$k] = (int) $v;
-            }
-        } else {
-            $car[$k] = $v;
-        }
-    }
-
-    /* default names (Georgian); the website shows its own translated names for ids 1-4 */
+    $car    = array();
+    $info   = array();                                   /* extra columns: label / value rows */
+    $known  = array('make', 'model', 'year', 'lot', 'auction', 'status', 'stage', 'location', 'container', 'eta', 'updated_at');
     $names  = array(1 => 'აუქციონი', 2 => 'ტრანსპორტირება აშშ-ში', 3 => 'პორტი აშშ-ში', 4 => 'ფოთი');
     $stages = array();
-    foreach ($names as $id => $name) {
-        $stages[$id] = array('id' => $id, 'name' => $name, 'date' => null, 'photos' => array());
+    foreach ($names as $id => $name) {   /* default names; the website shows its own translations for ids 1-4 */
+        $stages[$id] = array('id' => $id, 'name' => $name, 'date' => null, 'info' => array(), 'photos' => array());
     }
 
-    foreach ($photos as $p) {
-        $raw = isset($p['stage']) ? strtolower(trim((string) $p['stage'])) : '';
-        $id  = isset($CFG['stage_map'][$raw]) ? (int) $CFG['stage_map'][$raw] : 1;
-        if (!isset($stages[$id])) {
-            $id = 1;
-        }
-        if (count($stages[$id]['photos']) >= $CFG['max_photos_per_stage']) {
+    foreach ($row as $col => $val) {
+        $col = (string) $col;
+        $v   = ($val === null) ? '' : trim((string) $val);
+        if ($v === '' || $col === '' || $col === 'id' || $col === 'vin' || ctype_digit($col)) {
             continue;
         }
-        $url = public_url($CFG['photo_base'], isset($p['path']) ? $p['path'] : '');
-        if ($url === '') {
-            continue;
+        if (in_array($col, $known, true)) {
+            if ($col === 'year' || $col === 'stage') {
+                if ((int) $v > 0) {
+                    $car[$col] = (int) $v;
+                }
+            } else {
+                $car[$col] = $v;
+            }
+        } elseif (preg_match('/^([1-4])\s*:\s*(.+)$/su', $col, $m)) {
+            $stages[(int) $m[1]]['info'][] = array('label' => trim($m[2]), 'value' => $v);
+        } else {
+            $info[] = array('label' => $col, 'value' => $v);
         }
-        $thumb = public_url(isset($CFG['thumb_base']) ? $CFG['thumb_base'] : $CFG['photo_base'], isset($p['thumb']) ? $p['thumb'] : '');
-        $stages[$id]['photos'][] = array('url' => $url, 'thumb' => $thumb !== '' ? $thumb : $url);
-        if (!$stages[$id]['date'] && !empty($p['created_at'])) {
-            $stages[$id]['date'] = substr((string) $p['created_at'], 0, 10);
+    }
+
+    foreach ($stages as $id => $s) {
+        $cfg   = isset($CFG['stages'][$id]) ? $CFG['stages'][$id] : array();
+        $base  = isset($cfg['base']) ? $cfg['base'] : '';
+        $tbase = !empty($cfg['thumb_base']) ? $cfg['thumb_base'] : $base;
+        $rows  = isset($photos[$id]) && is_array($photos[$id]) ? $photos[$id] : array();
+        foreach ($rows as $p) {
+            if (count($stages[$id]['photos']) >= $CFG['max_photos_per_stage']) {
+                break;
+            }
+            $url = public_url($base, isset($p['path']) ? $p['path'] : '');
+            if ($url === '') {
+                continue;
+            }
+            $thumb = public_url($tbase, isset($p['thumb']) ? $p['thumb'] : '');
+            $stages[$id]['photos'][] = array('url' => $url, 'thumb' => $thumb !== '' ? $thumb : $url);
+            if (!$stages[$id]['date'] && !empty($p['created_at'])) {
+                $stages[$id]['date'] = substr((string) $p['created_at'], 0, 10);
+            }
         }
     }
 
@@ -196,6 +233,7 @@ function build_result($CFG, $vin, $row, $photos)
         'ok'     => true,
         'vin'    => (isset($row['vin']) && $row['vin'] !== '') ? strtoupper((string) $row['vin']) : $vin,
         'car'    => $car,
+        'info'   => $info,
         'stages' => array_values($stages),
     );
 }

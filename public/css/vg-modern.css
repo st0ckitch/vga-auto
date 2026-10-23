@@ -2091,6 +2091,9 @@ button.nav__link {
 .vin-stage.is-todo .vin-stage__num { background: transparent; color: var(--c-body); border: 1px solid var(--glass-border); }
 .vin-stage__meta { margin-left: auto; font-size: 0.85rem; color: var(--c-body); }
 .vin-stage .gallery { margin-top: 14px; }
+.vin-facts--stage { margin: 12px 0 0; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.vin-facts--stage div { background: rgba(255, 255, 255, 0.04); }
+[data-theme="light"] .vin-facts--stage div { background: rgba(36, 31, 32, 0.04); }
 .vin-stage__empty { margin: 10px 0 0; font-size: 0.9rem; color: var(--c-body); }
 .vin-notfound {
   margin: 0; padding: 14px 16px; border-radius: var(--r-md); font-weight: 600;

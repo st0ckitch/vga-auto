@@ -868,10 +868,22 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     return { url: o.url, thumb: isUrl(o.thumb) ? o.thumb : o.url };
   };
 
+  /* free-form rows from the dealer system: label "ka|en|ru" or a single string */
+  var pickLabel = function (label) {
+    var parts = String(label || '').split('|');
+    var i = { ka: 0, en: 1, ru: 2 }[lang] || 0;
+    return (parts[i] || parts[0] || '').trim();
+  };
+  var infoRows = function (list) {
+    return (list || []).filter(function (r) { return r && r.label && r.value; }).slice(0, 30).map(function (r) {
+      return '<div><dt>' + esc(pickLabel(r.label)) + '</dt><dd>' + esc(r.value) + '</dd></div>';
+    }).join('');
+  };
+
   var renderJson = function (d) {
     var car = d.car || {};
     var stages = (d.stages || []).slice(0, 8).map(function (s) {
-      return { id: parseInt(s.id, 10) || 0, name: s.name || '', date: s.date || '', photos: (s.photos || []).map(photoOf).filter(Boolean) };
+      return { id: parseInt(s.id, 10) || 0, name: s.name || '', date: s.date || '', info: s.info || [], photos: (s.photos || []).map(photoOf).filter(Boolean) };
     }).filter(function (s) { return s.id > 0; });
     var current = parseInt(car.stage, 10) || 0;
     if (!current) stages.forEach(function (s) { if (s.photos.length) current = s.id; });
@@ -882,12 +894,10 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       if (s.id === current) html += '<span class="vin-card__badge">' + esc(t.current) + ': ' + esc(stageName(s)) + '</span>';
     });
     html += '</div>';
-    var facts = ['status', 'location', 'lot', 'auction', 'container', 'eta', 'updated_at'].filter(function (k) { return car[k]; });
-    if (facts.length) {
-      html += '<dl class="vin-facts">' + facts.map(function (k) {
-        return '<div><dt>' + esc(t[k]) + '</dt><dd>' + esc(car[k]) + '</dd></div>';
-      }).join('') + '</dl>';
-    }
+    var facts = ['status', 'location', 'lot', 'auction', 'container', 'eta', 'updated_at'].filter(function (k) { return car[k]; }).map(function (k) {
+      return '<div><dt>' + esc(t[k]) + '</dt><dd>' + esc(car[k]) + '</dd></div>';
+    }).join('') + infoRows(d.info);
+    if (facts) html += '<dl class="vin-facts">' + facts + '</dl>';
     if (stages.length) {
       html += '<ol class="vin-stages">' + stages.map(function (s) {
         var name = stageName(s);
@@ -899,8 +909,10 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
               '<img src="' + esc(p.thumb) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
           }).join('') + '</div>'
           : '<p class="vin-stage__empty">' + esc(t.none) + '</p>';
+        var rows = infoRows(s.info);
         return '<li class="vin-stage ' + state + '"><div class="vin-stage__head"><span class="vin-stage__num">' + s.id + '</span><h3>' + esc(name) + '</h3>' +
-          (meta ? '<span class="vin-stage__meta">' + esc(meta) + '</span>' : '') + '</div>' + body + '</li>';
+          (meta ? '<span class="vin-stage__meta">' + esc(meta) + '</span>' : '') + '</div>' +
+          (rows ? '<dl class="vin-facts vin-facts--stage">' + rows + '</dl>' : '') + body + '</li>';
       }).join('') + '</ol>';
     }
     html += '</div>';
