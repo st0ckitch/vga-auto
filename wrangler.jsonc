@@ -4,6 +4,8 @@
   "main": "worker/admin-proxy.js",
   "compatibility_date": "2026-10-06",
   "observability": { "enabled": true },
+  // variables typed into the dashboard (VIN_API_URL, CALLBACK_TO, ...) must survive every deploy
+  "keep_vars": true,
   // "Request a call" form -> email to the staff address in CALLBACK_TO (Cloudflare Email Service;
   // the domain vgae.com.ge must be onboarded under Email Service -> Email Sending)
   "send_email": [{ "name": "CALLBACK_MAIL" }],
