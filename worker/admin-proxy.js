@@ -47,6 +47,13 @@ function cleanPhotoUrl(v) {
   try { const u = new URL(s); u.protocol = 'https:'; return u.href; } /* the site is https: http photos would be blocked */
   catch (e) { return ''; }
 }
+/* a photo is {url, thumb} or a plain URL string; thumb (grid) falls back to url (lightbox) */
+function cleanPhoto(v) {
+  const o = v && typeof v === 'object' ? v : { url: v };
+  const url = cleanPhotoUrl(o.url);
+  if (!url) return null;
+  return { url, thumb: cleanPhotoUrl(o.thumb) || url };
+}
 function cleanVinResult(data, vin) {
   const car = {};
   const src = data.car && typeof data.car === 'object' ? data.car : {};
@@ -59,7 +66,7 @@ function cleanVinResult(data, vin) {
   const stages = [];
   for (const s of Array.isArray(data.stages) ? data.stages.slice(0, 8) : []) {
     if (!s || typeof s !== 'object') continue;
-    const photos = (Array.isArray(s.photos) ? s.photos : []).map(cleanPhotoUrl).filter(Boolean).slice(0, 80);
+    const photos = (Array.isArray(s.photos) ? s.photos : []).map(cleanPhoto).filter(Boolean).slice(0, 80);
     const id = parseInt(s.id, 10);
     stages.push({ id: id > 0 ? id : stages.length + 1, name: cleanText(s.name, 80), date: cleanText(s.date, 40) || null, photos });
   }

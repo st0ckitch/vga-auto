@@ -30,6 +30,9 @@ $CFG = array(
     /* Public base URL of photo files; prepended to relative paths coming from the database. */
     'photo_base' => 'https://account.vgae.com.ge/uploads/',
 
+    /* Same for the thumbnails (small copies), if they live somewhere else than the photos. */
+    'thumb_base' => 'https://account.vgae.com.ge/uploads/',
+
     /* The car row. The aliases (AS ...) are what the website understands; keep the names,
        change tables/columns. Every field except id and vin is optional. */
     'sql_car'    => "SELECT c.id         AS id,
@@ -49,8 +52,13 @@ $CFG = array(
                       WHERE c.vin = :vin
                       LIMIT 1",
 
-    /* The car's photos: path (relative to photo_base, or a full URL), stage, created_at (optional). */
+    /* The car's photos: path (relative to photo_base, or a full URL), stage, created_at (optional)
+       and thumb (optional): the small copy of the photo, relative to thumb_base or a full URL.
+       The website shows thumb in the gallery grid and opens path in full size.
+       No thumbnail column? Build it in SQL, e.g. REPLACE(p.path, '/photos/', '/thumbs/') AS thumb,
+       or delete the thumb line: the site then shows the full photo in the grid as well. */
     'sql_photos' => "SELECT p.path       AS path,
+                            p.thumb      AS thumb,
                             p.stage      AS stage,
                             p.created_at AS created_at
                        FROM car_photos p
@@ -113,6 +121,19 @@ function load_car($pdo, $CFG, $vin)
     return build_result($CFG, $vin, $row, $photos);
 }
 
+/* relative path -> public URL (full URLs are kept as they are) */
+function public_url($base, $path)
+{
+    $path = trim((string) $path);
+    if ($path === '') {
+        return '';
+    }
+    if (preg_match('#^https?://#i', $path)) {
+        return $path;
+    }
+    return rtrim($base, '/') . '/' . ltrim($path, '/');
+}
+
 function build_result($CFG, $vin, $row, $photos)
 {
     $car = array();
@@ -147,12 +168,12 @@ function build_result($CFG, $vin, $row, $photos)
         if (count($stages[$id]['photos']) >= $CFG['max_photos_per_stage']) {
             continue;
         }
-        $path = isset($p['path']) ? trim((string) $p['path']) : '';
-        if ($path === '') {
+        $url = public_url($CFG['photo_base'], isset($p['path']) ? $p['path'] : '');
+        if ($url === '') {
             continue;
         }
-        $url = preg_match('#^https?://#i', $path) ? $path : rtrim($CFG['photo_base'], '/') . '/' . ltrim($path, '/');
-        $stages[$id]['photos'][] = $url;
+        $thumb = public_url(isset($CFG['thumb_base']) ? $CFG['thumb_base'] : $CFG['photo_base'], isset($p['thumb']) ? $p['thumb'] : '');
+        $stages[$id]['photos'][] = array('url' => $url, 'thumb' => $thumb !== '' ? $thumb : $url);
         if (!$stages[$id]['date'] && !empty($p['created_at'])) {
             $stages[$id]['date'] = substr((string) $p['created_at'], 0, 10);
         }

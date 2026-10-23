@@ -861,11 +861,17 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     });
   };
   var isUrl = function (u) { return /^https?:\/\//i.test(String(u || '')); };
+  /* a photo is {url, thumb} or a plain URL: the grid shows thumb, the lightbox opens url */
+  var photoOf = function (p) {
+    var o = p && typeof p === 'object' ? p : { url: p };
+    if (!isUrl(o.url)) return null;
+    return { url: o.url, thumb: isUrl(o.thumb) ? o.thumb : o.url };
+  };
 
   var renderJson = function (d) {
     var car = d.car || {};
     var stages = (d.stages || []).slice(0, 8).map(function (s) {
-      return { id: parseInt(s.id, 10) || 0, name: s.name || '', date: s.date || '', photos: (s.photos || []).filter(isUrl) };
+      return { id: parseInt(s.id, 10) || 0, name: s.name || '', date: s.date || '', photos: (s.photos || []).map(photoOf).filter(Boolean) };
     }).filter(function (s) { return s.id > 0; });
     var current = parseInt(car.stage, 10) || 0;
     if (!current) stages.forEach(function (s) { if (s.photos.length) current = s.id; });
@@ -888,9 +894,9 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
         var state = s.id === current ? 'is-current' : (s.id < current ? 'is-done' : 'is-todo');
         var meta = [s.date, s.photos.length ? s.photos.length + ' ' + t.photos : ''].filter(Boolean).join(' · ');
         var body = s.photos.length
-          ? '<div class="gallery">' + s.photos.map(function (u, i) {
-            return '<a href="' + esc(u) + '" data-lightbox="vin-' + s.id + '" data-title="' + esc(name) + '">' +
-              '<img src="' + esc(u) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
+          ? '<div class="gallery">' + s.photos.map(function (p, i) {
+            return '<a href="' + esc(p.url) + '" data-lightbox="vin-' + s.id + '" data-title="' + esc(name) + '">' +
+              '<img src="' + esc(p.thumb) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
           }).join('') + '</div>'
           : '<p class="vin-stage__empty">' + esc(t.none) + '</p>';
         return '<li class="vin-stage ' + state + '"><div class="vin-stage__head"><span class="vin-stage__num">' + s.id + '</span><h3>' + esc(name) + '</h3>' +
