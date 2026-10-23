@@ -182,6 +182,55 @@ export default {
       return cached(new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' } }));
     }
 
+    /* "Request a call" form: validates the visitor's details, throttles per address and emails them to
+       the staff (CALLBACK_TO, comma-separated; CALLBACK_FROM defaults to noreply@vgae.com.ge).
+       Not configured or mail failure -> 503, and the page shows the phone number instead. */
+    if (url.pathname === '/api/callback') {
+      if (request.method !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
+      const to = String(env.CALLBACK_TO || '').split(',').map((a) => a.trim()).filter((a) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a));
+      if (!env.CALLBACK_MAIL || !to.length) return json(503, { ok: false, error: 'not_configured' });
+      if (env.CALLBACK_RL) {
+        const ip = request.headers.get('cf-connecting-ip') || 'unknown';
+        const { success } = await env.CALLBACK_RL.limit({ key: ip });
+        if (!success) return json(429, { ok: false, error: 'too_many_requests' });
+      }
+      let body;
+      try { body = await request.json(); } catch (e) { return json(400, { ok: false, error: 'bad_json' }); }
+      if (!body || typeof body !== 'object') return json(400, { ok: false, error: 'bad_json' });
+      const name = cleanText(body.name, 80);
+      const phone = cleanText(body.phone, 30);
+      const note = cleanText(body.note, 500);
+      const lang = cleanText(body.lang, 2).toLowerCase();
+      let page = cleanText(body.page, 300);
+      if (page.indexOf(url.origin + '/') !== 0) page = '';          /* only our own pages are quoted */
+      if (name.length < 2 || phone.replace(/\D/g, '').length < 9) return json(400, { ok: false, error: 'bad_input' });
+      if (cleanText(body.website, 10)) return json(200, { ok: true });  /* honeypot field filled in: a bot, pretend success */
+      const when = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Tbilisi', hour12: false });
+      const text = [
+        'ახალი ზარის მოთხოვნა საიტიდან vgae.com.ge',
+        '',
+        'სახელი: ' + name,
+        'ტელეფონი: ' + phone,
+        'კომენტარი: ' + (note || '-'),
+        '',
+        'გვერდი: ' + (page || '-'),
+        'ენა: ' + (lang || '-'),
+        'დრო: ' + when + ' (თბილისი)',
+      ].join('\n');
+      try {
+        await env.CALLBACK_MAIL.send({
+          from: { email: env.CALLBACK_FROM || 'noreply@vgae.com.ge', name: 'VG Auto Export - საიტი' },
+          to,
+          subject: 'ზარის მოთხოვნა: ' + name + ', ' + phone,
+          text,
+        });
+      } catch (e) {
+        console.log('callback mail failed: ' + (e && e.message ? e.message : e));
+        return json(503, { ok: false, error: 'mail_failed' });
+      }
+      return json(200, { ok: true });
+    }
+
     if (url.pathname === '/api/admin/ping') {
       return json(configured ? 200 : 503, { ok: configured });
     }

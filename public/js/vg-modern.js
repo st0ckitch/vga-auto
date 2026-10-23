@@ -454,14 +454,19 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
         msg.innerHTML = tr('cbFail', 'Requests are temporarily unavailable - please call: ') +
           '<a href="tel:+995322500504">0322 50 05 04</a>';
       };
-      fetch((window.siteUrl || '/') + 'index.php?class=Action&method=callback_request' +
-        '&name=' + encodeURIComponent(name) +
-        '&phone=' + encodeURIComponent(phone) +
-        '&note=' + encodeURIComponent(noteEl ? noteEl.value || '' : ''))
-        .then(function (r) { return r.text(); })
-        .then(function (t) {
-          var ok = false;
-          try { ok = JSON.parse(t).error === 0; } catch (err) { ok = false; }
+      /* the site's own /api/callback (Cloudflare Worker) emails the request to the staff */
+      var hp = form.querySelector('[name="website"]');
+      fetch(VG_ROOT + 'api/callback', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          name: name, phone: phone, note: noteEl ? (noteEl.value || '').trim() : '',
+          page: window.location.href, lang: document.documentElement.lang || '', website: hp ? hp.value : ''
+        })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          var ok = !!(d && d.ok === true);
           if (ok) {
             if (msg) { msg.className = 'form-msg form-msg--ok'; msg.textContent = tr('cbOk', 'Thank you! Our manager will call you back shortly.'); }
             form.reset();
