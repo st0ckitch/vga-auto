@@ -2068,18 +2068,54 @@ button.nav__link {
 
 /* native VIN result drawn from the dealer system's JSON service (docs/vin-api) */
 .vin-card { width: 100%; }
-.vin-card__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 6px 0 14px; }
-.vin-card__title { margin: 0; font-size: 1.35rem; font-weight: 800; }
+.vin-card__head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 16px; margin: 6px 0 16px; }
+.vin-card__title { margin: 0 0 8px; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.01em; }
+.vin-card__sub { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
 .vin-card__badge {
   display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700;
   color: var(--c-primary); background: rgba(255, 128, 57, 0.12); border: 1px solid rgba(255, 128, 57, 0.35);
 }
+.vin-card__count { font-size: 0.85rem; color: var(--c-body); }
+.vin-copy {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--c-ink); background: var(--glass-2); border: 1px solid var(--glass-border);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.vin-copy:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.vin-copy.is-done { border-color: #3fbf7f; color: #3fbf7f; }
+.vin-copy svg { width: 16px; height: 16px; }
+
+/* progress tracker */
+.vin-track { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.vin-track__step a {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; padding: 14px 10px; text-align: center;
+  border-radius: var(--r-md); border: 1px solid var(--glass-border); background: var(--glass-2); color: inherit; text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.vin-track__step a:hover { transform: translateY(-2px); border-color: rgba(255, 128, 57, 0.55); }
+.vin-track__num {
+  width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: var(--c-body); border: 2px solid var(--glass-border);
+}
+.vin-track__num svg { width: 16px; height: 16px; }
+.vin-track__step.is-done .vin-track__num { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
+.vin-track__step.is-current .vin-track__num { border-color: var(--c-primary); color: var(--c-primary); box-shadow: 0 0 0 4px rgba(255, 128, 57, 0.18); }
+.vin-track__step.is-current a { border-color: rgba(255, 128, 57, 0.55); }
+.vin-track__step.is-todo a { opacity: 0.7; }
+.vin-track__name { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; line-height: 1.25; }
+.vin-track__meta { font-size: 0.78rem; color: var(--c-body); }
+
 .vin-facts { margin: 0 0 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
 .vin-facts div { padding: 10px 14px; border-radius: var(--r-md); background: var(--glass-2); border: 1px solid var(--glass-border); }
 .vin-facts dt { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-body); }
 .vin-facts dd { margin: 0; font-weight: 700; color: var(--c-ink); overflow-wrap: anywhere; }
+.vin-facts--stage { margin: 12px 0 0; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.vin-facts--stage div { background: rgba(255, 255, 255, 0.04); }
+[data-theme="light"] .vin-facts--stage div { background: rgba(36, 31, 32, 0.04); }
+
+/* stages */
 .vin-stages { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.vin-stage { padding: 16px 18px; border-radius: var(--r-lg); border: 1px solid var(--glass-border); background: var(--glass-2); }
+.vin-stage { padding: 16px 18px; border-radius: var(--r-lg); border: 1px solid var(--glass-border); background: var(--glass-2); scroll-margin-top: 96px; }
 .vin-stage.is-current { border-color: rgba(255, 128, 57, 0.55); }
 .vin-stage.is-todo { opacity: 0.72; }
 .vin-stage__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
@@ -2088,16 +2124,37 @@ button.nav__link {
   flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #fff; background: var(--c-primary);
 }
+.vin-stage__num svg { width: 14px; height: 14px; }
 .vin-stage.is-todo .vin-stage__num { background: transparent; color: var(--c-body); border: 1px solid var(--glass-border); }
+.vin-stage__state {
+  padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--c-body); border: 1px solid var(--glass-border);
+}
+.vin-stage.is-done .vin-stage__state { color: #3fbf7f; border-color: rgba(63, 191, 127, 0.4); background: rgba(63, 191, 127, 0.1); }
+.vin-stage.is-current .vin-stage__state { color: var(--c-primary); border-color: rgba(255, 128, 57, 0.4); background: rgba(255, 128, 57, 0.1); }
 .vin-stage__meta { margin-left: auto; font-size: 0.85rem; color: var(--c-body); }
 .vin-stage .gallery { margin-top: 14px; }
-.vin-facts--stage { margin: 12px 0 0; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-.vin-facts--stage div { background: rgba(255, 255, 255, 0.04); }
-[data-theme="light"] .vin-facts--stage div { background: rgba(36, 31, 32, 0.04); }
-.vin-stage__empty { margin: 10px 0 0; font-size: 0.9rem; color: var(--c-body); }
-.vin-notfound {
-  margin: 0; padding: 14px 16px; border-radius: var(--r-md); font-weight: 600;
-  background: rgba(255, 128, 57, 0.1); border: 1px solid rgba(255, 128, 57, 0.35);
+.vin-stage .gallery a { position: relative; }
+.vin-stage .gallery a[hidden] { display: none; }
+.gallery__more {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: #fff; background: rgba(10, 8, 8, 0.58);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
 }
+.vin-stage.is-expanded .gallery__more { display: none; }
+.vin-more { margin-top: 14px; }
+.vin-stage__empty { margin: 10px 0 0; padding: 18px; border-radius: var(--r-md); border: 1px dashed var(--glass-border); text-align: center; font-size: 0.9rem; color: var(--c-body); }
+
+/* not found / unavailable */
+.vin-notice { padding: 16px 18px; border-radius: var(--r-md); background: rgba(255, 128, 57, 0.1); border: 1px solid rgba(255, 128, 57, 0.35); }
+.vin-notice p { margin: 0; font-weight: 600; }
+.vin-notice__link { display: inline-block; margin-top: 10px; font-weight: 700; color: var(--c-primary); text-decoration: none; }
+.vin-notice__link:hover { text-decoration: underline; }
+
 @media (min-width: 1100px) { .vin-stage .gallery { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 560px) { .vin-stage .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+@media (max-width: 700px) { .vin-track { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+  .vin-stage .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .vin-card__title { font-size: 1.25rem; }
+  .vin-stage__meta { margin-left: 0; flex-basis: 100%; }
+}

@@ -820,46 +820,38 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
   var input = document.querySelector('form[data-vin-form] input[name="vin"]');
   if (input && !input.value) input.value = vin;
 
-  /* stopgap until the dealer system exposes an API: show its own VIN page in a frame.
-     The address template comes from the page (data-vin-lookup) and can be changed
-     in the admin panel (site.json -> contacts.vinLookupUrl); {vin} is replaced. */
   var embed = box.querySelector('[data-vin-embed]');
-  if (!embed) return;
+  if (!embed || !window.fetch) return;
   var shown = '';
-  var render = function (tpl) {
-    if (!tpl || tpl.indexOf('{vin}') < 0 || tpl === shown) return;
-    shown = tpl;
-    var url = tpl.replace('{vin}', encodeURIComponent(vin)).replace(/"/g, '&quot;');
-    var open = box.getAttribute('data-vin-open') || 'Open in a new window';
-    embed.innerHTML = '<iframe src="' + url + '" title="VIN ' + vin + '" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
-      '<p class="vin-embed__open"><a href="' + url + '" target="_blank" rel="noopener">' + open + ' &#8599;</a></p>';
-    embed.hidden = false;
-  };
-  var useFrame = function () {
-    render(box.getAttribute('data-vin-lookup') || '');
-    fetch(VG_ROOT + 'public/data/site.json?t=' + Date.now())
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (site) { var t = site && site.contacts && site.contacts.vinLookupUrl; if (t) render(t); })
-      .catch(function () {});
-  };
-  if (!window.fetch) return;
 
-  /* preferred: the site's own /api/vin (Cloudflare Worker). It answers with JSON from the dealer
-     system's vin-api.php (docs/vin-api) and the page draws the car itself; with an HTML fragment
-     the fragment is shown as is; otherwise the frame above is used. */
+  /* The site's own /api/vin (Cloudflare Worker) answers with JSON from the dealer system's
+     vin-api.php (docs/vin-api) and the page draws the tracking card itself. An HTML fragment is
+     shown as is. Anything else: a short notice with a link to the dealer system's own page. */
   var lang = (document.documentElement.lang || 'ka').slice(0, 2);
   var T = {
     ka: { car: 'ავტომობილი', status: 'სტატუსი', location: 'მდებარეობა', lot: 'ლოტი', auction: 'აუქციონი', container: 'კონტეინერი', eta: 'ჩამოსვლა', updated_at: 'განახლდა',
       stages: ['აუქციონი', 'ტრანსპორტირება აშშ-ში', 'პორტი აშშ-ში', 'ფოთი'], current: 'მიმდინარე ეტაპი', photos: 'ფოტო', none: 'ფოტო ჯერ არ არის',
+      done: 'დასრულებულია', now: 'მიმდინარე', next: 'მოლოდინში', showAll: 'ყველა ფოტოს ნახვა', showLess: 'ჩაკეცვა',
+      copy: 'ბმულის კოპირება', copied: 'დაკოპირდა', open: 'გახსენით დილერის სისტემაში',
+      unavailable: 'მონაცემები დროებით მიუწვდომელია. სცადეთ ცოტა ხანში ან მოითხოვეთ ზარი - მენეჯერი დაგეხმარებათ.',
       notfound: 'ამ VIN კოდით ავტომობილი ვერ მოიძებნა. შეამოწმეთ კოდი ან მოითხოვეთ ზარი - მენეჯერი დაგეხმარებათ.' },
     en: { car: 'Vehicle', status: 'Status', location: 'Location', lot: 'Lot', auction: 'Auction', container: 'Container', eta: 'Arrival', updated_at: 'Updated',
       stages: ['Auction', 'Transport in the USA', 'US Port', 'Poti'], current: 'Current stage', photos: 'photos', none: 'No photos yet',
+      done: 'Completed', now: 'In progress', next: 'Upcoming', showAll: 'Show all photos', showLess: 'Show less',
+      copy: 'Copy link', copied: 'Copied', open: 'Open in the dealer system',
+      unavailable: 'The data is temporarily unavailable. Try again in a moment or request a call - a manager will help you.',
       notfound: 'No vehicle was found for this VIN. Check the code or request a call - a manager will help you.' },
     ru: { car: 'Автомобиль', status: 'Статус', location: 'Местоположение', lot: 'Лот', auction: 'Аукцион', container: 'Контейнер', eta: 'Прибытие', updated_at: 'Обновлено',
       stages: ['Аукцион', 'Транспортировка по США', 'Порт в США', 'Поти'], current: 'Текущий этап', photos: 'фото', none: 'Фото пока нет',
+      done: 'Завершён', now: 'Текущий', next: 'Ожидается', showAll: 'Показать все фото', showLess: 'Свернуть',
+      copy: 'Копировать ссылку', copied: 'Скопировано', open: 'Открыть в системе дилера',
+      unavailable: 'Данные временно недоступны. Попробуйте чуть позже или закажите звонок - менеджер вам поможет.',
       notfound: 'Автомобиль с таким VIN не найден. Проверьте код или закажите звонок - менеджер вам поможет.' }
   };
   var t = T[lang] || T.ka;
+  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+  var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>';
+  var PREVIEW = 8;   /* photos shown per stage before "show all" */
   var esc = function (v) {
     return String(v === null || v === undefined ? '' : v).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -872,7 +864,6 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     if (!isUrl(o.url)) return null;
     return { url: o.url, thumb: isUrl(o.thumb) ? o.thumb : o.url };
   };
-
   /* free-form rows from the dealer system: label "ka|en|ru" or a single string */
   var pickLabel = function (label) {
     var parts = String(label || '').split('|');
@@ -893,29 +884,57 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     var current = parseInt(car.stage, 10) || 0;
     if (!current) stages.forEach(function (s) { if (s.photos.length) current = s.id; });
     var stageName = function (s) { return t.stages[s.id - 1] || s.name || ('#' + s.id); };
+    var stateOf = function (s) { return s.id === current ? 'is-current' : (s.id < current ? 'is-done' : 'is-todo'); };
+    var stateLabel = { 'is-current': t.now, 'is-done': t.done, 'is-todo': t.next };
+    var total = 0;
+    var cur = null;
+    stages.forEach(function (s) { total += s.photos.length; if (s.id === current) cur = s; });
     var title = [car.year, car.make, car.model].filter(Boolean).join(' ') || t.car;
-    var html = '<div class="vin-card"><div class="vin-card__head"><h2 class="vin-card__title">' + esc(title) + '</h2>';
-    stages.forEach(function (s) {
-      if (s.id === current) html += '<span class="vin-card__badge">' + esc(t.current) + ': ' + esc(stageName(s)) + '</span>';
-    });
-    html += '</div>';
+
+    var html = '<div class="vin-card"><div class="vin-card__head"><div class="vin-card__titles">' +
+      '<h2 class="vin-card__title">' + esc(title) + '</h2><p class="vin-card__sub">' +
+      (cur ? '<span class="vin-card__badge">' + esc(t.current) + ': ' + esc(stageName(cur)) + '</span>' : '') +
+      (total ? '<span class="vin-card__count">' + total + ' ' + esc(t.photos) + '</span>' : '') +
+      '</p></div>' +
+      '<button class="vin-copy" type="button" data-vin-copy>' + ICON_LINK + '<span>' + esc(t.copy) + '</span></button></div>';
+
+    /* progress tracker, also the navigation between stages */
+    if (stages.length) {
+      html += '<ol class="vin-track">' + stages.map(function (s) {
+        var st = stateOf(s);
+        return '<li class="vin-track__step ' + st + '"><a href="#vin-stage-' + s.id + '" data-vin-go="' + s.id + '">' +
+          '<span class="vin-track__num">' + (st === 'is-done' ? ICON_CHECK : s.id) + '</span>' +
+          '<span class="vin-track__name">' + esc(stageName(s)) + '</span>' +
+          '<span class="vin-track__meta">' + esc(s.photos.length ? s.photos.length + ' ' + t.photos : t.none) + '</span></a></li>';
+      }).join('') + '</ol>';
+    }
+
     var facts = ['status', 'location', 'lot', 'auction', 'container', 'eta', 'updated_at'].filter(function (k) { return car[k]; }).map(function (k) {
       return '<div><dt>' + esc(t[k]) + '</dt><dd>' + esc(car[k]) + '</dd></div>';
     }).join('') + infoRows(d.info);
     if (facts) html += '<dl class="vin-facts">' + facts + '</dl>';
+
     if (stages.length) {
       html += '<ol class="vin-stages">' + stages.map(function (s) {
         var name = stageName(s);
-        var state = s.id === current ? 'is-current' : (s.id < current ? 'is-done' : 'is-todo');
+        var st = stateOf(s);
         var meta = [s.date, s.photos.length ? s.photos.length + ' ' + t.photos : ''].filter(Boolean).join(' · ');
-        var body = s.photos.length
-          ? '<div class="gallery">' + s.photos.map(function (p, i) {
-            return '<a href="' + esc(p.url) + '" data-lightbox="vin-' + s.id + '" data-title="' + esc(name) + '">' +
-              '<img src="' + esc(p.thumb) + '" data-full="' + esc(p.url) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy"></a>';
-          }).join('') + '</div>'
-          : '<p class="vin-stage__empty">' + esc(t.none) + '</p>';
         var rows = infoRows(s.info);
-        return '<li class="vin-stage ' + state + '"><div class="vin-stage__head"><span class="vin-stage__num">' + s.id + '</span><h3>' + esc(name) + '</h3>' +
+        var body;
+        if (s.photos.length) {
+          var extra = Math.max(0, s.photos.length - PREVIEW);
+          body = '<div class="gallery">' + s.photos.map(function (p, i) {
+            var more = extra && i === PREVIEW - 1 ? '<span class="gallery__more" data-vin-more="' + s.id + '">+' + extra + '</span>' : '';
+            return '<a href="' + esc(p.url) + '" data-lightbox="vin-' + s.id + '" data-title="' + esc(name) + '"' + (i >= PREVIEW ? ' hidden' : '') + '>' +
+              '<img src="' + esc(p.thumb) + '" data-full="' + esc(p.url) + '" alt="' + esc(name + ' ' + (i + 1)) + '" loading="lazy">' + more + '</a>';
+          }).join('') + '</div>' +
+          (extra ? '<button class="btn btn--ghost btn--sm vin-more" type="button" data-vin-more="' + s.id + '" data-show-all="' + esc(t.showAll + ' (' + s.photos.length + ')') + '" data-show-less="' + esc(t.showLess) + '">' + esc(t.showAll) + ' (' + s.photos.length + ')</button>' : '');
+        } else {
+          body = '<p class="vin-stage__empty">' + esc(t.none) + '</p>';
+        }
+        return '<li class="vin-stage ' + st + '" id="vin-stage-' + s.id + '" data-vin-stage="' + s.id + '">' +
+          '<div class="vin-stage__head"><span class="vin-stage__num">' + (st === 'is-done' ? ICON_CHECK : s.id) + '</span><h3>' + esc(name) + '</h3>' +
+          '<span class="vin-stage__state">' + esc(stateLabel[st]) + '</span>' +
           (meta ? '<span class="vin-stage__meta">' + esc(meta) + '</span>' : '') + '</div>' +
           (rows ? '<dl class="vin-facts vin-facts--stage">' + rows + '</dl>' : '') + body + '</li>';
       }).join('') + '</ol>';
@@ -927,6 +946,49 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     var note = box.querySelector('.vin-status__note'); /* the report is on screen, no need to promise it */
     if (note) note.hidden = true;
   };
+
+  /* show all / collapse a stage's photos, jump to a stage, copy the page link */
+  embed.addEventListener('click', function (e) {
+    var more = e.target.closest('[data-vin-more]');
+    if (more) {
+      e.preventDefault();
+      e.stopPropagation();   /* the "+N" tile sits inside a lightbox link */
+      var li = embed.querySelector('[data-vin-stage="' + more.getAttribute('data-vin-more') + '"]');
+      if (!li) return;
+      var expand = !li.classList.contains('is-expanded');
+      li.classList.toggle('is-expanded', expand);
+      li.querySelectorAll('.gallery a').forEach(function (a, i) { if (i >= PREVIEW) a.hidden = !expand; });
+      var btn = li.querySelector('.vin-more');
+      if (btn) btn.textContent = btn.getAttribute(expand ? 'data-show-less' : 'data-show-all');
+      if (!expand) li.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    var go = e.target.closest('[data-vin-go]');
+    if (go) {
+      var target = embed.querySelector('[data-vin-stage="' + go.getAttribute('data-vin-go') + '"]');
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      return;
+    }
+    var copy = e.target.closest('[data-vin-copy]');
+    if (copy) {
+      e.preventDefault();
+      var url = window.location.href;
+      var done = function () {
+        copy.classList.add('is-done');
+        copy.querySelector('span').textContent = t.copied;
+        setTimeout(function () { copy.classList.remove('is-done'); copy.querySelector('span').textContent = t.copy; }, 2000);
+      };
+      var legacy = function () {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = url; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+        } catch (err) {}
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, legacy);
+      else legacy();
+    }
+  });
   /* a thumbnail that fails to load (missing small copy) is replaced by the full photo once */
   embed.addEventListener('error', function (e) {
     var img = e.target;
@@ -934,11 +996,16 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
     var full = img.getAttribute('data-full');
     if (full && img.getAttribute('src') !== full) img.setAttribute('src', full);
   }, true);
-  var notFound = function () {
-    embed.innerHTML = '<p class="vin-notfound">' + esc(t.notfound) + '</p>';
+
+  var notice = function (text, cls) {
+    var tpl = box.getAttribute('data-vin-lookup') || '';
+    var link = tpl.indexOf('{vin}') > -1 ? tpl.replace('{vin}', encodeURIComponent(vin)) : '';
+    embed.innerHTML = '<div class="vin-notice ' + cls + '"><p>' + esc(text) + '</p>' +
+      (link ? '<a class="vin-notice__link" href="' + esc(link) + '" target="_blank" rel="noopener">' + esc(t.open) + ' &#8599;</a>' : '') + '</div>';
     embed.hidden = false;
-    shown = 'notfound';
   };
+  var notFound = function () { notice(t.notfound, 'vin-notice--notfound'); shown = 'notfound'; };
+  var unavailable = function () { notice(t.unavailable, 'vin-notice--unavailable'); shown = 'unavailable'; };
 
   fetch(VG_ROOT + 'api/vin?vin=' + encodeURIComponent(vin))
     .then(function (r) {
@@ -951,7 +1018,7 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       if (res.json && res.json.ok === true && res.json.stages) renderJson(res.json);
       else if (res.json && res.status === 404 && res.json.error === 'not_found') notFound();
       else if (res.html) { embed.innerHTML = '<div class="search-result">' + res.html + '</div>'; embed.hidden = false; shown = 'fragment'; }
-      else useFrame();
+      else unavailable();
     })
-    .catch(useFrame);
+    .catch(unavailable);
 })();
