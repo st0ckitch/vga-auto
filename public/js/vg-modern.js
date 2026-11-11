@@ -210,11 +210,15 @@ var VG_ROOT = (function () { var s = document.currentScript; return s ? new URL(
       var msg = newsForm.parentElement.querySelector('.form-msg');
       var email = (input.value || '').trim();
       if (!email || email.indexOf('@') < 1) { input.focus(); return; }
-      fetch((window.siteUrl || '/') + 'index.php?class=Action&method=submit_email&email=' + encodeURIComponent(email))
-        .then(function (r) { return r.text(); })
-        .then(function (t) {
-          var ok = false;
-          try { ok = JSON.parse(t).error === 0; } catch (err) { ok = false; }
+      /* the site's own /api/subscribe (Cloudflare Worker) emails the address to the staff */
+      fetch(VG_ROOT + 'api/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: email, page: window.location.href, lang: document.documentElement.lang || '' })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          var ok = !!(d && d.ok === true);
           if (msg) {
             msg.className = ok ? 'form-msg form-msg--ok' : 'form-msg form-msg--err';
             msg.textContent = ok ? ((window.VG_T||{}).newsOk||'Subscribed!') : ((window.VG_T||{}).newsErr||'Subscription failed.');

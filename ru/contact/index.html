@@ -326,11 +326,15 @@
                 <input id="fb-lastname" class="input" type="text" name="lastname" placeholder="Фамилия" autocomplete="family-name">
               </div>
               <div class="field field--full">
+                <label for="fb-contact">Телефон или e-mail - необязательно</label>
+                <input id="fb-contact" class="input" type="text" name="contact" placeholder="Чтобы мы могли ответить" autocomplete="tel">
+              </div>
+              <div class="field field--full">
                 <label for="fb-message">Сообщение</label>
                 <textarea id="fb-message" class="textarea" name="message" rows="6" placeholder="Сообщение..."></textarea>
               </div>
             </div>
-            <p class="form-note u-mt-16">При нажатии на кнопку откроется ваша почтовая программа с готовым письмом.</p>
+            <p class="form-note u-mt-16">Сообщение сразу попадёт к нашей команде.</p>
             <div class="u-mt-16">
               <button type="submit" class="btn btn--primary">Отправить</button>
             </div>
@@ -384,7 +388,9 @@
     bodyName: 'Имя, фамилия',
     bodyType: 'Тип обратной связи',
     bodyTopic: 'Тема обращения',
-    okOpening: 'Открывается ваша почтовая программа…'
+    okOpening: 'Спасибо! Ваше сообщение получено.',
+    errSend: 'Не удалось отправить - попробуйте позже или позвоните: 032 2 500 504',
+    sending: 'Отправка…'
   };
   
   (function () {
@@ -394,12 +400,6 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-
-      if (!vgContactEmail) {
-        msg.className = 'form-msg form-msg--err';
-        msg.textContent = VG_CT.errNoEmail;
-        return;
-      }
 
       var type = document.getElementById('fb-type').value;
       var topic = document.getElementById('fb-topic').value;
@@ -413,20 +413,27 @@
         return;
       }
 
-      var subject = VG_CT.subject + (type ? ' (' + type + ')' : '');
-      var lines = [];
-      if (name || lastname) { lines.push(VG_CT.bodyName + ': ' + (name + ' ' + lastname).trim()); }
-      if (type) { lines.push(VG_CT.bodyType + ': ' + type); }
-      if (topic) { lines.push(VG_CT.bodyTopic + ': ' + topic); }
-      lines.push('');
-      lines.push(message);
-
-      window.location.href = 'mailto:' + vgContactEmail +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(lines.join('\n'));
-
-      msg.className = 'form-msg form-msg--ok';
-      msg.textContent = VG_CT.okOpening;
+      var contactEl = document.getElementById('fb-contact');
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      msg.className = 'form-msg';
+      msg.textContent = VG_CT.sending;
+      var fail = function () { msg.className = 'form-msg form-msg--err'; msg.textContent = VG_CT.errSend; };
+      fetch(VG_ROOT + 'api/feedback', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          type: type, topic: topic, name: (name + ' ' + lastname).trim(), message: message,
+          contact: contactEl ? contactEl.value.trim() : '', page: window.location.href, lang: document.documentElement.lang || ''
+        })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          if (d && d.ok === true) { msg.className = 'form-msg form-msg--ok'; msg.textContent = VG_CT.okOpening; form.reset(); }
+          else fail();
+        })
+        .catch(fail)
+        .then(function () { if (btn) btn.disabled = false; });
     });
   })();
   
@@ -501,6 +508,6 @@
   </div>
 </footer>
 
-<script src="../../public/js/vg-modern.js?v=25" defer></script>
+<script src="../../public/js/vg-modern.js?v=26" defer></script>
 </body>
 </html>

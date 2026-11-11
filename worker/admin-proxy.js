@@ -28,6 +28,51 @@ function json(status, body) {
   });
 }
 
+/* ----- website forms (see /api/callback, /api/feedback, /api/subscribe below) ----- */
+const DEFAULT_FORMS_TO = 'salesvgae@gmail.com';
+const FORM_PATHS = ['/api/callback', '/api/feedback', '/api/subscribe'];
+const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']{2,}$/;
+/* returns {subject, lines, replyTo?} or null when the submission is not valid */
+function buildFormMail(path, b) {
+  if (path === '/api/callback') {
+    const name = cleanText(b.name, 80);
+    const phone = cleanText(b.phone, 30);
+    const note = cleanText(b.note, 500);
+    if (name.length < 2 || phone.replace(/\D/g, '').length < 9) return null;
+    return {
+      subject: 'ზარის მოთხოვნა: ' + name + ', ' + phone,
+      lines: ['ახალი ზარის მოთხოვნა საიტიდან vgae.com.ge', '', 'სახელი: ' + name, 'ტელეფონი: ' + phone, 'კომენტარი: ' + (note || '-')],
+    };
+  }
+  if (path === '/api/feedback') {
+    const message = String(b.message == null ? '' : b.message).replace(/\r\n?/g, '\n').trim().slice(0, 4000);
+    if (message.length < 2) return null;
+    const name = cleanText(b.name, 120);
+    const type = cleanText(b.type, 80);
+    const topic = cleanText(b.topic, 80);
+    const contact = cleanText(b.contact, 120);
+    const email = EMAIL_RE.test(contact) ? contact : cleanText(b.email, 120);
+    const phone = contact && !EMAIL_RE.test(contact) ? contact.slice(0, 40) : cleanText(b.phone, 30);
+    return {
+      subject: 'უკუკავშირი' + (type ? ' (' + type + ')' : '') + (name ? ': ' + name : ''),
+      lines: ['ახალი უკუკავშირი საიტიდან vgae.com.ge', '', 'სახელი, გვარი: ' + (name || '-'), 'ტიპი: ' + (type || '-'), 'რას ეხება: ' + (topic || '-')]
+        .concat(phone ? ['ტელეფონი: ' + phone] : []).concat(EMAIL_RE.test(email) ? ['ელ-ფოსტა: ' + email] : [])
+        .concat(['', 'შეტყობინება:', message]),
+      replyTo: EMAIL_RE.test(email) ? email : undefined,
+    };
+  }
+  if (path === '/api/subscribe') {
+    const email = cleanText(b.email, 120);
+    if (!EMAIL_RE.test(email)) return null;
+    return {
+      subject: 'სიახლეების გამოწერა: ' + email,
+      lines: ['ახალი გამოწერა საიტიდან vgae.com.ge', '', 'ელ-ფოსტა: ' + email],
+      replyTo: email,
+    };
+  }
+  return null;
+}
+
 function jsonCacheable(status, body, seconds) {
   return new Response(JSON.stringify(body), {
     status,
@@ -182,12 +227,13 @@ export default {
       return cached(new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' } }));
     }
 
-    /* "Request a call" form: validates the visitor's details, throttles per address and emails them to
-       the staff (CALLBACK_TO, comma-separated; CALLBACK_FROM defaults to noreply@vgae.com.ge).
-       Not configured or mail failure -> 503, and the page shows the phone number instead. */
-    if (url.pathname === '/api/callback') {
+    /* Website forms -> email to the staff. Recipient: FORMS_TO (comma-separated) or, if unset, the
+       sales inbox below; sender CALLBACK_FROM or noreply@vgae.com.ge (the domain must be onboarded under
+       Cloudflare Email Service -> Email Sending). Each visitor address may submit 5 forms a minute.
+       Mail not configured or failed -> 503, and the page tells the visitor to call instead. */
+    if (FORM_PATHS.includes(url.pathname)) {
       if (request.method !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
-      const to = String(env.CALLBACK_TO || '').split(',').map((a) => a.trim()).filter((a) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a));
+      const to = String(env.FORMS_TO || env.CALLBACK_TO || DEFAULT_FORMS_TO).split(',').map((a) => a.trim()).filter((a) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a));
       if (!env.CALLBACK_MAIL || !to.length) return json(503, { ok: false, error: 'not_configured' });
       if (env.CALLBACK_RL) {
         const ip = request.headers.get('cf-connecting-ip') || 'unknown';
@@ -197,35 +243,19 @@ export default {
       let body;
       try { body = await request.json(); } catch (e) { return json(400, { ok: false, error: 'bad_json' }); }
       if (!body || typeof body !== 'object') return json(400, { ok: false, error: 'bad_json' });
-      const name = cleanText(body.name, 80);
-      const phone = cleanText(body.phone, 30);
-      const note = cleanText(body.note, 500);
-      const lang = cleanText(body.lang, 2).toLowerCase();
+      if (cleanText(body.website, 10)) return json(200, { ok: true });  /* honeypot field filled in: a bot, pretend success */
+      const mail = buildFormMail(url.pathname, body);
+      if (!mail) return json(400, { ok: false, error: 'bad_input' });
       let page = cleanText(body.page, 300);
       if (page.indexOf(url.origin + '/') !== 0) page = '';          /* only our own pages are quoted */
-      if (name.length < 2 || phone.replace(/\D/g, '').length < 9) return json(400, { ok: false, error: 'bad_input' });
-      if (cleanText(body.website, 10)) return json(200, { ok: true });  /* honeypot field filled in: a bot, pretend success */
       const when = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Tbilisi', hour12: false });
-      const text = [
-        'ახალი ზარის მოთხოვნა საიტიდან vgae.com.ge',
-        '',
-        'სახელი: ' + name,
-        'ტელეფონი: ' + phone,
-        'კომენტარი: ' + (note || '-'),
-        '',
-        'გვერდი: ' + (page || '-'),
-        'ენა: ' + (lang || '-'),
-        'დრო: ' + when + ' (თბილისი)',
-      ].join('\n');
+      const text = mail.lines.concat(['', 'გვერდი: ' + (page || '-'), 'ენა: ' + (cleanText(body.lang, 2).toLowerCase() || '-'), 'დრო: ' + when + ' (თბილისი)']).join('\n');
+      const msg = { from: { email: env.CALLBACK_FROM || 'noreply@vgae.com.ge', name: 'VG Auto Export - საიტი' }, to, subject: mail.subject, text };
+      if (mail.replyTo) msg.replyTo = mail.replyTo;
       try {
-        await env.CALLBACK_MAIL.send({
-          from: { email: env.CALLBACK_FROM || 'noreply@vgae.com.ge', name: 'VG Auto Export - საიტი' },
-          to,
-          subject: 'ზარის მოთხოვნა: ' + name + ', ' + phone,
-          text,
-        });
+        await env.CALLBACK_MAIL.send(msg);
       } catch (e) {
-        console.log('callback mail failed: ' + (e && e.message ? e.message : e));
+        console.log('form mail failed (' + url.pathname + '): ' + (e && e.message ? e.message : e));
         return json(503, { ok: false, error: 'mail_failed' });
       }
       return json(200, { ok: true });
