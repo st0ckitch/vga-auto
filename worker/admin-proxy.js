@@ -16,6 +16,7 @@
  * permanently to the matching new page, or to the home page. Everything else is
  * served from the static site.
  */
+import { EmailMessage } from 'cloudflare:email';
 const REPO = 'st0ckitch/vga-auto';
 const API_PREFIX = '/api/admin/github';
 const ALLOWED_PATH = new RegExp('^/repos/' + REPO + '(/|$)');
@@ -71,6 +72,42 @@ function buildFormMail(path, b) {
     };
   }
   return null;
+}
+
+/* ----- plain-text email as raw MIME: accepted by Cloudflare Email Routing (free, verified
+   recipients) and by Email Sending alike ----- */
+function b64utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+/* RFC 2047 encoded words, split so that no word exceeds 75 characters */
+function mimeHeader(str) {
+  if (/^[\x20-\x7e]*$/.test(str)) return str;
+  const words = [];
+  let chunk = '';
+  for (const ch of Array.from(str)) {
+    if (new TextEncoder().encode(chunk + ch).length > 42) { words.push(chunk); chunk = ''; }
+    chunk += ch;
+  }
+  if (chunk) words.push(chunk);
+  return words.map((w) => '=?UTF-8?B?' + b64utf8(w) + '?=').join('\r\n ');
+}
+function buildMime({ fromEmail, fromName, to, replyTo, subject, text }) {
+  const body = b64utf8(text.replace(/\r?\n/g, '\r\n')).replace(/.{1,76}/g, '$&\r\n');
+  const headers = [
+    'From: ' + mimeHeader(fromName) + ' <' + fromEmail + '>',
+    'To: <' + to + '>',
+    replyTo ? 'Reply-To: <' + replyTo + '>' : '',
+    'Subject: ' + mimeHeader(subject),
+    'Date: ' + new Date().toUTCString().replace('GMT', '+0000'),
+    'Message-ID: <' + crypto.randomUUID() + '@' + fromEmail.split('@')[1] + '>',
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: base64',
+  ].filter(Boolean);
+  return headers.join('\r\n') + '\r\n\r\n' + body;
 }
 
 function jsonCacheable(status, body, seconds) {
@@ -228,8 +265,8 @@ export default {
     }
 
     /* Website forms -> email to the staff. Recipient: FORMS_TO (comma-separated) or, if unset, the
-       sales inbox below; sender CALLBACK_FROM or noreply@vgae.com.ge (the domain must be onboarded under
-       Cloudflare Email Service -> Email Sending). Each visitor address may submit 5 forms a minute.
+       sales inbox below; sender CALLBACK_FROM or noreply@vgae.com.ge. Free setup: Email Routing enabled on vgae.com.ge and
+       the recipient verified there as a destination address (Email Sending, paid, also works). Each visitor address may submit 5 forms a minute.
        Mail not configured or failed -> 503, and the page tells the visitor to call instead. */
     if (FORM_PATHS.includes(url.pathname)) {
       if (request.method !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
@@ -250,10 +287,12 @@ export default {
       if (page.indexOf(url.origin + '/') !== 0) page = '';          /* only our own pages are quoted */
       const when = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Tbilisi', hour12: false });
       const text = mail.lines.concat(['', 'გვერდი: ' + (page || '-'), 'ენა: ' + (cleanText(body.lang, 2).toLowerCase() || '-'), 'დრო: ' + when + ' (თბილისი)']).join('\n');
-      const msg = { from: { email: env.CALLBACK_FROM || 'noreply@vgae.com.ge', name: 'VG Auto Export - საიტი' }, to, subject: mail.subject, text };
-      if (mail.replyTo) msg.replyTo = mail.replyTo;
+      const fromEmail = env.CALLBACK_FROM || 'noreply@vgae.com.ge';
       try {
-        await env.CALLBACK_MAIL.send(msg);
+        for (const rcpt of to) {
+          const raw = buildMime({ fromEmail, fromName: 'VG Auto Export - საიტი', to: rcpt, replyTo: mail.replyTo, subject: mail.subject, text });
+          await env.CALLBACK_MAIL.send(new EmailMessage(fromEmail, rcpt, raw));
+        }
       } catch (e) {
         const detail = String(e && e.message ? e.message : e).slice(0, 200);
         console.log('form mail failed (' + url.pathname + '): ' + detail);
