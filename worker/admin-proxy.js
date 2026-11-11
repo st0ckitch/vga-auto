@@ -255,8 +255,9 @@ export default {
       try {
         await env.CALLBACK_MAIL.send(msg);
       } catch (e) {
-        console.log('form mail failed (' + url.pathname + '): ' + (e && e.message ? e.message : e));
-        return json(503, { ok: false, error: 'mail_failed' });
+        const detail = String(e && e.message ? e.message : e).slice(0, 200);
+        console.log('form mail failed (' + url.pathname + '): ' + detail);
+        return json(503, { ok: false, error: 'mail_failed', detail });  /* Cloudflare's reason, for setup diagnosis */
       }
       return json(200, { ok: true });
     }
