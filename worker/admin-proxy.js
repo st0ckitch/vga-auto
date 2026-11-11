@@ -265,13 +265,15 @@ export default {
     }
 
     /* Website forms -> email to the staff. Recipient: FORMS_TO (comma-separated) or, if unset, the
-       sales inbox below; sender CALLBACK_FROM or noreply@vgae.com.ge. Free setup: Email Routing enabled on vgae.com.ge and
-       the recipient verified there as a destination address (Email Sending, paid, also works). Each visitor address may submit 5 forms a minute.
+       sales inbox below; delivered either by the Google Apps Script in docs/forms-mail (secrets FORMS_SCRIPT_URL +
+       FORMS_SCRIPT_TOKEN; free, no DNS changes) or, without those, by the CALLBACK_MAIL email binding
+       (Email Routing with a verified destination, or paid Email Sending; sender CALLBACK_FROM). Each visitor address may submit 5 forms a minute.
        Mail not configured or failed -> 503, and the page tells the visitor to call instead. */
     if (FORM_PATHS.includes(url.pathname)) {
       if (request.method !== 'POST') return json(405, { ok: false, error: 'method_not_allowed' });
       const to = String(env.FORMS_TO || env.CALLBACK_TO || DEFAULT_FORMS_TO).split(',').map((a) => a.trim()).filter((a) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a));
-      if (!env.CALLBACK_MAIL || !to.length) return json(503, { ok: false, error: 'not_configured' });
+      const viaScript = Boolean(env.FORMS_SCRIPT_URL && env.FORMS_SCRIPT_TOKEN);
+      if ((!viaScript && !env.CALLBACK_MAIL) || !to.length) return json(503, { ok: false, error: 'not_configured' });
       if (env.CALLBACK_RL) {
         const ip = request.headers.get('cf-connecting-ip') || 'unknown';
         const { success } = await env.CALLBACK_RL.limit({ key: ip });
@@ -288,6 +290,26 @@ export default {
       const when = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Tbilisi', hour12: false });
       const text = mail.lines.concat(['', 'გვერდი: ' + (page || '-'), 'ენა: ' + (cleanText(body.lang, 2).toLowerCase() || '-'), 'დრო: ' + when + ' (თბილისი)']).join('\n');
       const fromEmail = env.CALLBACK_FROM || 'noreply@vgae.com.ge';
+      if (viaScript) {
+        /* free route: the Google Apps Script in docs/forms-mail sends the mail from the sales Gmail account */
+        try {
+          const r = await fetch(env.FORMS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ token: env.FORMS_SCRIPT_TOKEN, to: to.join(','), subject: mail.subject, text, replyTo: mail.replyTo || '' }),
+            redirect: 'follow',
+          });
+          const out = await r.text();
+          let res = null;
+          try { res = JSON.parse(out); } catch (e) { res = null; }
+          if (!res || res.ok !== true) throw new Error('script answered ' + r.status + ': ' + out.slice(0, 150));
+        } catch (e) {
+          const detail = String(e && e.message ? e.message : e).slice(0, 200);
+          console.log('form mail failed (' + url.pathname + ', script): ' + detail);
+          return json(503, { ok: false, error: 'mail_failed', detail });
+        }
+        return json(200, { ok: true });
+      }
       try {
         for (const rcpt of to) {
           const raw = buildMime({ fromEmail, fromName: 'VG Auto Export - საიტი', to: rcpt, replyTo: mail.replyTo, subject: mail.subject, text });
