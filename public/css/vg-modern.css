@@ -1112,6 +1112,8 @@ details.accordion .accordion__body { padding: 0 22px 20px; }
   font-size: 0.86rem;
 }
 .social-row { display: flex; gap: 10px; }
+.footer-credit { display: block; margin-top: 4px; font-size: 0.72rem; color: inherit; opacity: 0.6; text-decoration: none; transition: opacity 0.2s ease, color 0.2s ease; }
+.footer-credit:hover { opacity: 1; color: var(--c-primary); text-decoration: underline; }
 .social-row a {
   width: 40px; height: 40px; border-radius: 50%;
   background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12);
