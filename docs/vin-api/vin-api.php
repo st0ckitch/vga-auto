@@ -56,7 +56,7 @@ $CFG = array(
                    LIMIT 1",
 
     /* Photos: one query per stage of the website (1 auction, 2 transport in the USA, 3 US port,
-       4 Poti). Every stage may have its own table and its own folder.
+       4 Georgia (Poti / Batumi)). Every stage may have its own table and its own folder.
          sql        - must return the column path (file name / path, or a full URL); optionally
                       thumb (the small copy) and created_at (date of the photo). In the WHERE use
                       :car_id (the id from sql_car) or :vin, whichever your table stores.
@@ -168,7 +168,7 @@ function build_result($CFG, $vin, $row, $photos)
     $car    = array();
     $info   = array();                                   /* extra columns: label / value rows */
     $known  = array('make', 'model', 'year', 'lot', 'auction', 'status', 'stage', 'location', 'container', 'eta', 'updated_at');
-    $names  = array(1 => 'აუქციონი', 2 => 'ტრანსპორტირება აშშ-ში', 3 => 'პორტი აშშ-ში', 4 => 'ფოთი');
+    $names  = array(1 => 'აუქციონი', 2 => 'ტრანსპორტირება აშშ-ში', 3 => 'პორტი აშშ-ში', 4 => 'საქართველო');
     $stages = array();
     foreach ($names as $id => $name) {   /* default names; the website shows its own translations for ids 1-4 */
         $stages[$id] = array('id' => $id, 'name' => $name, 'date' => null, 'info' => array(), 'photos' => array());
